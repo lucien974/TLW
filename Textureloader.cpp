@@ -5,6 +5,9 @@ Textureloader::Textureloader(std::string image_folder , std::string buffer_folde
     m_texture_folder = image_folder;
     m_buffer_folder = buffer_folder;
     m_font_folder = font_folder;
+    m_seek = false;
+    m_vect.x = 450;
+    m_vect.y = 300;
 }
 
 Textureloader::Textureloader(std::string image_folder)
@@ -12,6 +15,9 @@ Textureloader::Textureloader(std::string image_folder)
     m_texture_folder = image_folder;
     m_buffer_folder = "";
     m_font_folder = "";
+    m_seek = false;
+    m_vect.x = 0;
+    m_vect.y = 0;
 }
 
 Textureloader::~Textureloader()
@@ -79,4 +85,43 @@ sf::Font& Textureloader::Getfont(std::string filename)
         m_font[filename].loadFromFile(c);
         return m_font[filename];
     }
+}
+
+sf::Image& Textureloader::Getmap(std::string filename)
+{
+    std::string r;
+    r = m_texture_folder + filename;
+    m_map_it = m_map.find(filename);
+    if(m_map_it != m_map.end())
+    {
+        return m_map_it->second;
+    }
+    else
+    {
+        m_map[filename].loadFromFile(r);
+        return m_map[filename];
+    }
+}
+
+sf::Vector2f Textureloader::getRedPxl(std::string filename)
+{
+    if(m_seek == false)
+    {
+        sf::Color color;
+        for( int za(0) ; za < Getmap(filename).getSize().x ; za++ )
+        {
+            for( int j(0) ; j < Getmap(filename).getSize().y ; j++ )
+            {
+                color = Getmap(filename).getPixel(za,j);
+                if(color.b <= 5 && color.g <= 5 && color.r >= 250)
+                {
+                    m_vect.x = za;
+                    m_vect.y = j;
+                    m_seek = true;
+                    return m_vect;
+                }
+            }
+        }
+    }
+    return m_vect;
 }

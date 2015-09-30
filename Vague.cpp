@@ -1,17 +1,17 @@
 #include "Vague.h"
 
-Vague::Vague(sf::Image carte_v , int type)
+Vague::Vague(int type , std::string carte)
 {
     m_inter = 0;
     m_nbbloon = 0;
     m_cursor = 0;
-    m_carte = carte_v;
     m_read = true;
     m_nbvague = 0;
     m_type = type;
     m_way = 0;
     m_already = false;
     m_damages = 0;
+    m_carte = carte;
 }
 
 int Vague::Move(sf::RenderWindow* ecran , int nbbloon , int inter , Textureloader* textload)
@@ -24,9 +24,9 @@ int Vague::Move(sf::RenderWindow* ecran , int nbbloon , int inter , Textureloade
     }
     m_nbbloon = nbbloon;
     m_inter = inter;
-    if( m_cursor == m_inter && m_nbvague < m_nbbloon )
+    if( m_cursor == m_inter && m_nbvague <= m_nbbloon )
     {
-        m_bloon.push_back(new Bloon(m_carte , m_type , textload));
+        m_bloon.push_back(new Bloon(m_type , textload , m_carte));
         m_cursor = 0;
         m_nbvague++;
     }
@@ -35,24 +35,23 @@ int Vague::Move(sf::RenderWindow* ecran , int nbbloon , int inter , Textureloade
     int k(0);
     while( k < m_bloon.size() )
     {
-        m_bloon[k]->update();
-        ecran->draw(*m_bloon[k]);
+        m_bloon[k]->Update(textload);
+        if(m_bloon[k]->getHealth() > 0)
+            ecran->draw(*m_bloon[k]);
         m_damages += m_bloon[k]->Getdamages();
         if( m_bloon[k]->Exit() == true )
         {
-            m_sound.push_back(new sf::Sound(textload->Getbuffer("pop.ogg")));
+            m_sound.push_back(NULL);
+            m_sound.back() = new sf::Sound(textload->Getbuffer("pop.ogg"));
             (m_sound.back())->play();
-            std::cout << "pop play" << std::endl;
             delete m_bloon.at(k);
             m_bloon.erase(m_bloon.begin() + k);
         }
         k++;
         for(int c(0) ; c < m_sound.size() ; ++c)
         {
-            std::cout << "size sound : " << m_sound.size() << std::endl;
-            if(m_sound[c]->getStatus() == m_sound[c]->Stopped)
+            if(m_sound[c]->getStatus() == sf::Sound::Stopped)
             {
-                std::cout << "pop" << c << " stopped" << std::endl;
                 delete m_sound[c];
                 m_sound.erase(m_sound.begin() + c);
             }
@@ -69,7 +68,7 @@ bool Vague::Next(int distance)
         return false;
 }
 
-int Vague::Size()
+bool Vague::Size()
 {
     if(m_bloon.size() == 0 && m_nbvague >= m_nbbloon)
         return true;
@@ -79,7 +78,6 @@ int Vague::Size()
 
 Vague::~Vague()
 {
-    m_sound.clear();
     for( int n(0) ; n < m_bloon.size() ; ++n )
     {
         delete m_bloon.front();
@@ -87,23 +85,26 @@ Vague::~Vague()
     }
     for(int ty(0) ; ty < m_sound.size() ; ++ty)
     {
-        std::cout << "sound" << ty << " deleted" << std::endl;
-        delete m_sound[ty];
-        m_sound.erase(m_sound.begin() + ty);
+        while(m_sound[ty]->getStatus() == sf::Sound::Playing)
+        {
+
+        }
+        delete m_sound.back();
+        m_sound.pop_back();
     }
 }
 
-Bloon* Vague::Getbloon(int a)
+Bloon* Vague::getBloon(int a)
 {
     return m_bloon.at(a);
 }
 
-int Vague::Getsize()
+int Vague::getSize()
 {
     return m_bloon.size();
 }
 
-int Vague::Getbloonspeed(int num_bloon)
+int Vague::getBloonSpeed(int num_bloon)
 {
-    return Getbloon(num_bloon)->Getspeed();
+    return getBloon(num_bloon)->Getspeed();
 }

@@ -1,36 +1,46 @@
 #ifndef TOWER_H_INCLUDED
 #define TOWER_H_INCLUDED
 
-#include <deque>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
-#include <random>
-#include <time.h>
-#include <cmath>
 #include "entity.h"
 #include "Textureloader.h"
 
 class Tower : public Entity
 {
   public:
-      Tower(int type , Textureloader* textload , int cost);
-      int Fire();
+      Tower(int type , Textureloader* textload);
+      Tower(int type , Textureloader* textload , sf::Vector2f position);
+      int Fire(sf::Vector2f bloon);
       virtual ~Tower();
       void update();
-      void Range(sf::RenderWindow* screen);
-      int Getrange();
+      void drawBullet(sf::RenderWindow* screen);
+      void destroyBullet();
+      sf::Vector2f getBullet(int a);
+      int getNumberBullet();
       int Sell();
+      int getCost();
+      void upgradeLeft(Textureloader* textload);
+      void upgradeRight(Textureloader* textload);
+      void Init(Textureloader* textload);
+      int getEffect();
+      int getNbBall();
+      void iceMove(int r);
+      std::string getPrice();
+      std::string getLeftUpgrade();
+      std::string getRightUpgrade();
+      int getUpPrice(Textureloader* textload);
   private:
-      sf::Texture m_texture;
       sf::Sprite m_tower;
       sf::Clock m_clock;
-      sf::Time m_time;
       sf::CircleShape m_range;
-      bool m_shoot;
-      float m_angle , m_tir, m_firerate;
-      int m_portee , m_cost;
+      std::deque<sf::Vector2f> m_forward;
+      std::deque<sf::RectangleShape> m_bullet;
+      bool m_shoot , m_up_price , m_pass_canon[3];
+      float m_angle , m_tir, m_firerate , m_radian , m_rand_x , m_rand_y;
+      int m_portee , m_cost , m_type , m_damages, m_turrets , m_nb_ball , m_type_effect , m_upgrade , m_canon;
+      std::deque<sf::Vector2f> m_last_pos;
+      std::deque<int> m_incrementation;
+      sf::Color m_color;
+      enum m_effect{none = -1 , ice = 0 , burn = 1 , glue = 2 , reverse = 3};
 };
 
 #endif // TOWER_H_INCLUDED

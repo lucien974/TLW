@@ -1,207 +1,152 @@
 #include "Multitour.h"
 
-Multitower::Multitower(sf::Image carte_v , Textureloader* textload)
+Multitower::Multitower(Textureloader* textload)
 {
-    m_carte = carte_v;
-    /*
-    m_choice.setTexture(textload->Gettexture("tower_1.png"));
-    m_choice.setPosition(840,60);
-    ///*/
-    int pos_y(60);
-    for(int go(0) ; go < 2 ; ++go)
+    for(int a(1) ; a < 5 ; ++a)
+        m_selection.push_back(new Tower(a,textload,sf::Vector2f(785 , 75*a + 50)));
+    for(int n(0) ; n < 4 ; ++n)
     {
-        std::stringstream a;
-        a << go+1;
-        m_choice.push_back(NULL);
-        m_choice.back() = new sf::Sprite(textload->Gettexture("tower_" + a.str() +".png"));
-        m_choice.back()->setPosition(840,pos_y);
-        m_choice.back()->setOrigin(40,60);
-        m_cost.push_back(10 + (10*go));
-        pos_y += 80;
-        std::stringstream ss;
-        ss << m_cost.back();
-        m_sprite_cost.push_back(NULL);
-        m_sprite_cost.back() = new sf::Text( ss.str() , textload->Getfont("nb.ttf") , 10 );
-        m_sprite_cost.back()->setColor(sf::Color::Black);
-        m_sprite_cost.back()->setPosition(800 , 45 + (80*go));
+        m_cost_sprite.push_back(Bouton());
+        m_cost_sprite.back().set(textload->Getfont("nb.ttf") , m_selection[n]->getPrice() ,
+                                 12 , sf::Color::Black , sf::Color::Yellow , sf::Vector2i(825 , 75*n + 100));
     }
-    m_sprite_money.setFont(textload->Getfont("nb.ttf"));
-    m_lives.setFont(textload->Getfont("nb.ttf"));
-    m_sprite_money.setCharacterSize(20);
-    m_lives.setCharacterSize(20);
-    m_sprite_money.setColor(sf::Color::Yellow);
-    m_lives.setColor(sf::Color::Red);
-    m_sprite_money.setPosition(450 , 20);
-    m_set = false;
-    m_button_pressed = false;
-    m_type = 1;
-    m_rayon.setFillColor(sf::Color(0, 0, 255, 128));
     m_select = -1;
-    m_sel = 0;
-    m_suppression = false;
+    m_tower_selected = -1;
+    m_up[0].setPosition(50 , 555);
+    m_up[1].setPosition(380 , 555);
+    m_up_price[0].set(textload->Getfont("nb.ttf") , "" ,
+                      12 , sf::Color::Black , sf::Color::Yellow , sf::Vector2i(80 , 555));
+    m_up_price[1].set(textload->Getfont("nb.ttf") , "" ,
+                      12 , sf::Color::Black , sf::Color::Yellow , sf::Vector2i(440 , 555));
 }
 
 Multitower::~Multitower()
 {
-    for(int h(0) ; h < m_tower.size() ; ++h)
-    {
-        delete m_tower.back();
-        m_tower.pop_back();
-    }
+    for(int a(0) ; a < 4 ; ++a)
+        delete m_selection[a];
+    for(int b(0) ; b < m_tower.size() ; ++b)
+        delete m_tower[b];
+    m_selection.clear();
+    m_tower.clear();
 }
 
-int Multitower::Panel(bool sup , sf::RenderWindow* screen , int money , int lives , Textureloader* textload)
+int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int& money , bool sup)
 {
-    std::stringstream ss;
-    ss << money;
-    std::string str = ss.str();
-    m_sprite_money.setString(str);
-    std::stringstream ar;
-    ar << lives;
-    str = ar.str();
-    m_lives.setString(str);
-    if(m_set)
+    if(m_select == -1)
     {
-        m_choice[m_sel]->setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y );
-        m_rayon.setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y );
-        screen->draw(m_rayon);
-    }
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        m_button_pressed = true;
-    }
-    else
-    {
-        m_button_pressed = false;
-    }
-    if(m_set == true && m_button_pressed == false)
-    {
-        m_set = false;
-        m_choice[m_sel]->setPosition(840 , 60 + (80 * m_sel));
-        if(Settower(screen , textload))
-            return money - m_cost[m_sel];
-        else
-            return money;
-    }
-    screen->pollEvent(m_event);
-    for( int ah(0) ; ah < m_choice.size() ; ++ah )
-    {
-        screen->draw(*m_choice[ah]);
-        screen->draw(*m_sprite_cost[ah]);
-    }
-    screen->draw(m_sprite_money);
-    screen->draw(m_lives);
-    m_suppression = sup;
-    for(int t(0) ; t < m_tower.size() ; ++t)
-    {
-        if( sf::Mouse::getPosition(*screen).x >= (*m_tower[t]).getPosition().x - 20 &&
-            sf::Mouse::getPosition(*screen).x <= (*m_tower[t]).getPosition().x + 20 &&
-            sf::Mouse::getPosition(*screen).y >= (*m_tower[t]).getPosition().y - 60 &&
-            sf::Mouse::getPosition(*screen).y <= (*m_tower[t]).getPosition().y + 20 )
+        for(int a(0) ; a < 4 ; ++a)
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if(m_selection[a]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
+                sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
             {
-                if(m_select == -1)
-                {
-                    m_select = t;
-                    std::cout << "tower" << t << " selected" << std::endl;
-                }
+                std::cout << "ALLRIGHT" << std::endl;
+                m_select = a;
             }
+        }
+    }
+    if(m_select != -1)
+    {
+        m_selection[m_select]->setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
+        if(carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) != sf::Color(0,153,0) &&
+           sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+        {
+            m_tower.push_back(new Tower(m_select+1 , textload , (sf::Vector2f)sf::Mouse::getPosition(*screen)));
+            m_selection[m_select]->drawRange(false);
+            m_selection[m_select]->setPosition(785 , 75*(m_select+1) + 50);
+            m_select = -1;
         }
         else
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                if(t == m_select)
-                {
-                    m_select = -1;
-                    std::cout << "no tower selected" << std::endl;
-                }
-            }
+            m_selection[m_select]->drawRange(true);
+            screen->draw(*m_selection[m_select]);
         }
-        if(t == m_select)
-        {
-            m_tower[t]->Range(screen);
-            screen->draw(*m_tower[t]);
-            if(m_suppression)
-            {
-                std::cout << "delete tower" << t << std::endl;
-                money += m_tower[t]->Sell();
-                delete m_tower[t];
-                m_tower.erase( m_tower.begin() + t );
-                m_suppression = false;
-            }
-        }
-        else
-            screen->draw(*m_tower[t]);
     }
-    for(int yu(0) ; yu < m_choice.size() ; ++yu)
+    for(int y(0) ; y < 4 ; ++y)
     {
-        if(money >= m_cost[yu])
+        if(y != m_select)
+            screen->draw(*m_selection[y]);
+        m_cost_sprite[y].changeColor(money >= m_selection[y]->getCost());
+        m_cost_sprite[y].affiche(screen);
+        screen->draw(*m_selection[y]);
+    }
+    for(int z(0) ; z < m_tower.size() ; ++z)
+    {
+        m_tower[z]->drawBullet(screen);
+        if(m_tower[z]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
+           sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
         {
-            m_sprite_cost[yu]->setColor(sf::Color::Yellow);
-            if( sf::Mouse::getPosition(*screen).x >= m_choice[yu]->getGlobalBounds().left &&
-                sf::Mouse::getPosition(*screen).x <= m_choice[yu]->getGlobalBounds().left + m_choice[yu]->getGlobalBounds().width &&
-                sf::Mouse::getPosition(*screen).y >= m_choice[yu]->getGlobalBounds().top &&
-                sf::Mouse::getPosition(*screen).y <= m_choice[yu]->getGlobalBounds().top + m_choice[yu]->getGlobalBounds().height )
+            std::cout << ";)" << std::endl;
+            m_tower_selected = z;
+        }
+        if(m_tower[z]->getGlobalBounds(sf::Mouse::getPosition(*screen)) == false &&
+           carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) != sf::Color(0,153,0) &&
+           sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+        {
+            m_tower_selected = -1;
+        }
+        screen->draw(*m_tower[z]);
+        if(m_tower_selected != -1)
+            m_tower[m_tower_selected]->drawRange(true);
+    }
+    if(m_tower_selected != -1)
+    {
+        if(m_tower[m_tower_selected]->getLeftUpgrade() != "")
+        {
+            std::stringstream a;
+            m_up[0].setTexture(textload->Gettexture(m_tower[m_tower_selected]->getLeftUpgrade()));
+            m_up[0].setOrigin(m_up[0].getLocalBounds().height/2 , m_up[0].getLocalBounds().width/2);
+            m_up_price[0].changeColor(money < m_tower[m_tower_selected]->getUpPrice(textload));
+            a << m_tower[m_tower_selected]->getUpPrice(textload);
+            m_up_price[0].setString(a.str());
+            if(m_up[0].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
+               sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
-                    if(m_set == false)
-                    {
-                        m_set = true;
-                        m_choice[yu]->setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-                        m_button_pressed = true;
-                        m_rayon.setRadius(100.0);
-                        m_rayon.setOrigin(m_rayon.getGlobalBounds().width / 2 , m_rayon.getGlobalBounds().height / 2);
-                        m_rayon.setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-                        m_sel = yu;
-                    }
-                }
+                m_tower[m_tower_selected]->upgradeLeft(textload);
             }
+        }
+        if(m_tower[m_tower_selected]->getRightUpgrade() != "")
+        {
+            std::stringstream b;
+            m_up[1].setTexture(textload->Gettexture(m_tower[m_tower_selected]->getRightUpgrade()));
+            m_up[1].setOrigin(m_up[1].getLocalBounds().height/2 , m_up[1].getLocalBounds().width/2);
+            m_up_price[1].changeColor(money < m_tower[m_tower_selected]->getUpPrice(textload));
+            b << m_tower[m_tower_selected]->getUpPrice(textload);
+            m_up_price[1].setString(b.str());
+            if(m_up[1].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
+               sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                m_tower[m_tower_selected]->upgradeRight(textload);
+            }
+        }
+        if(sup)
+        {
+            delete m_tower[m_tower_selected];
+            m_tower.erase(m_tower.begin() + m_tower_selected);
         }
         else
         {
-            m_sprite_cost[yu]->setColor(sf::Color::Black);
+            screen->draw(m_up[0]);
+            screen->draw(m_up[1]);
+            m_up_price[0].affiche(screen);
+            m_up_price[1].affiche(screen);
         }
     }
-    return money;
 }
 
-bool Multitower::Settower(sf::RenderWindow* screen , Textureloader* textload)
-{
-    if(sf::Mouse::getPosition(*screen).x < m_carte.getSize().x && sf::Mouse::getPosition(*screen).y < m_carte.getSize().y)
-    {
-        m_color = m_carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-        if(m_color == sf::Color::Black)
-        {
-            m_tower.push_back(NULL);
-            m_tower.back() = new Tower(m_sel + 1 , textload , m_cost[m_sel]);
-            m_tower.back()->setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-            m_tower.back()->update();
-            m_choice[m_sel]->setPosition(840,60 + (m_sel * 80));
-            return true;
-        }
-    }
-    return false;
-}
-
-int Multitower::Getsize()
+int Multitower::getSize()
 {
     return m_tower.size();
 }
 
-Tower* Multitower::Gettower(int b)
+Tower* Multitower::getTower(int b)
 {
     return m_tower[b];
 }
 
-bool Multitower::Getstatus()
+bool Multitower::getStatus()
 {
-    return m_set;
-}
-
-int Multitower::Getrange(int n)
-{
-    return m_tower[n]->Getrange();
+    if(m_select != -1)
+        return true;
+    else
+        return false;
 }

@@ -1,39 +1,34 @@
 #ifndef BLOON_H_INCLUDED
 #define BLOON_H_INCLUDED
 
-#include <deque>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
-#include <random>
-#include <time.h>
-#include <cmath>
 #include "entity.h"
 #include "Textureloader.h"
 
 class Bloon : public Entity
 {
 public:
-    Bloon(sf::Image carte_v , int type , Textureloader* textload);
+    Bloon(int type , Textureloader* textload , std::string carte);
     virtual ~Bloon();
-    void Init(int type , Textureloader* textload);
+    void Init(Textureloader* textload);
+    void Update(Textureloader* textload);
     void update();
-    void Findway(int x, int y , int postab);
+    void Findway(int x, int y , int postab , Textureloader* textload);
     bool Exit();
     int Getspeed();
     int Getincrementation();
-    int Touch(int ball_pos_x , int ball_pos_y , int damages , Textureloader* textload);
+    int Touch(sf::Vector2f pos_ball , int damages , Textureloader* textload , int effect , int ice_limit);
     int Getmoney();
     void Setspeed(int speed);
     int Getdamages();
+    int getHealth();
 
 private:
-    int m_speed , m_vie , m_earn , m_position_x , m_position_y , m_way;
-    sf::Image m_carte_v;
+    int m_speed , m_vie , m_earn , m_way , m_ice , m_ice_limit , m_status , m_life_lost;
     sf::Color m_color;
-    bool m_enter , m_exit , m_hunt , m_boucle , m_direction[8] , m_find , m_first , m_touch , m_kill;
-    sf::Sound m_sound;
+    bool m_exit , m_direction[8] , m_find , m_first , m_touch , m_earn_money;
+    std::string m_carte;
+    sf::Clock m_clock;
+    enum m_effect{none = -1 , ice = 0 , burn = 1 , glue = 2 , reverse = 3};
 };
 
 #endif // BLOON_H_INCLUDED

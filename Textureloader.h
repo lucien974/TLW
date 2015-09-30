@@ -15,6 +15,8 @@ class Textureloader
         sf::Texture& Gettexture(std::string filename);
         sf::SoundBuffer& Getbuffer(std::string filename);
         sf::Font& Getfont(std::string filename);
+        sf::Image& Getmap(std::string filename);
+        sf::Vector2f getRedPxl(std::string filename);
         void setTextureFolder(std::string folder);
         void setBufferFolder(std::string folder);
         void setFontFolder(std::string folder);
@@ -26,6 +28,10 @@ class Textureloader
         std::map< std::string , sf::Font > m_font;
         std::map< std::string , sf::Font >::iterator m_font_it;
         std::string m_texture_folder , m_buffer_folder , m_font_folder;
+        std::map< std::string , sf::Image > m_map;
+        std::map< std::string , sf::Image >::iterator m_map_it;
+        bool m_seek;
+        sf::Vector2f m_vect;
 };
 
 #endif // TEXTURELOADER_H_INCLUDED
