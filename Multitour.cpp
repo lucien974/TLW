@@ -30,7 +30,7 @@ Multitower::~Multitower()
     m_tower.clear();
 }
 
-int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int money , bool sup)
+int Multitower::updateTower(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int money , bool sup)
 {
     if(m_select == -1)
     {

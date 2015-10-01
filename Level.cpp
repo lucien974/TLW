@@ -223,7 +223,7 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
                 }
             }
             ecran->draw(m_tower_bar);
-            m_money = m_tower->update(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup);
+            m_money = m_tower->updateTower(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup);
             m_sup = false;
         }
         else

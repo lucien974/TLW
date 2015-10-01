@@ -343,6 +343,7 @@ void Bloon::Update(Textureloader* textload)
 /**/
 void Bloon::update()
 {
+    std::cout << "Bloon" << std::endl;
 }
 //*/
 ////////////////////////////////////////

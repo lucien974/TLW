@@ -43,33 +43,40 @@ Tower::~Tower()
 
 void Tower::update()
 {
+    std::cout << "Tower" << std::endl;
 }
 
-void Tower::iceMove(int r)
+void Tower::iceMove(int r , sf::RenderWindow *screen)
 {
     m_incrementation[r]++;
+    //float a = (float)m_portee/90;
     if(m_incrementation[r] < 20 )
     {
-        m_forward[r].x = sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-        m_forward[r].y = -cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].x = 5*sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].y = -5*cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 20 && m_incrementation[r] < 90)
     {
         m_radian = (float)rand()*0.5f;
-        m_forward[r].x = sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-        m_forward[r].y = -cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].x = 4*sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].y = -4*cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
     {
         m_forward[r].x = rand();
         m_forward[r].y = rand();
     }
-    if(m_incrementation[r] > 150)
+    if(m_incrementation[r] > 150 && m_incrementation.size() > 0 && r == 0)
     {
-        m_bullet.erase( m_bullet.begin() + r );
-        m_last_pos.erase(m_last_pos.begin() + r);
-        m_incrementation.erase(m_incrementation.begin() + r);
-        m_forward.erase(m_forward.begin() + r);
+        m_bullet.pop_front();
+        m_last_pos.pop_front();
+        m_incrementation.pop_front();
+        m_forward.pop_front();
+    }
+    else
+    {
+        m_bullet[r].move(m_forward[r]);
+        screen->draw(m_bullet[r]);
     }
 }
 
@@ -79,8 +86,11 @@ void Tower::drawBullet(sf::RenderWindow* screen)
     {
         if(m_type_effect == m_effect::ice)
         {
-            iceMove(r);
-            screen->draw(m_bullet[r]);
+            if(r < m_bullet.size())
+            {
+                iceMove(r , screen);
+            }
+
         }
         else
         {
@@ -185,6 +195,7 @@ int Tower::Fire(sf::Vector2f bloon)
         }
         m_forward.push_back(sf::Vector2f(30 * sin(m_bullet.back().getRotation()*(3.1415f / 180.0f)) ,
                                          -30 * cos(m_bullet.back().getRotation()*(3.1415f / 180.0f))));
+        m_bullet.back().setFillColor(m_color);
         m_clock.restart();
         return m_damages;
     }
@@ -488,7 +499,7 @@ void Tower::Init(Textureloader* textload)
             }
             break;
         case 4:
-            m_canon == 2;
+            m_canon = 2;
             switch(m_upgrade)
             {
                 case 1:
