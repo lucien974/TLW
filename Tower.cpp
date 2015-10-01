@@ -117,16 +117,22 @@ int Tower::Fire(sf::Vector2f bloon)
         {
             pass = true;
             m_bullet.back().setPosition(getPosition().x - 7 , getPosition().y);
+            if(m_bullet.back().getPosition().x == 0 && m_bullet.back().getPosition().y == 0)
+                std::cout << ":(  0" << std::endl;
         }
         if(m_canon == 2 || m_pass_canon[1] == true)
         {
             pass = true;
             m_bullet.back().setPosition(getPosition().x + 7 , getPosition().y);
+            if(m_bullet.back().getPosition().x == 0 && m_bullet.back().getPosition().y == 0)
+                std::cout << ":(  1" << std::endl;
         }
-        if(m_canon == 4 && m_pass_canon[2] == true)
+        if(m_canon == 4 || m_pass_canon[2] == true)
         {
             pass = true;
             m_bullet.back().setPosition(getPosition().x , getPosition().y);
+            if(m_bullet.back().getPosition().x == 0 && m_bullet.back().getPosition().y == 0)
+                std::cout << ":(  2" << std::endl;
         }
         m_bullet.back().rotate(getRotation());
         if(m_type_effect == m_effect::ice)
@@ -177,8 +183,8 @@ int Tower::Fire(sf::Vector2f bloon)
             }
             //*/
         }
-        m_forward.push_back(sf::Vector2f(10 * sin(m_bullet.back().getRotation()*(3.1415f / 180.0f)) ,
-                                         -10 * cos(m_bullet.back().getRotation()*(3.1415f / 180.0f))));
+        m_forward.push_back(sf::Vector2f(30 * sin(m_bullet.back().getRotation()*(3.1415f / 180.0f)) ,
+                                         -30 * cos(m_bullet.back().getRotation()*(3.1415f / 180.0f))));
         m_clock.restart();
         return m_damages;
     }
