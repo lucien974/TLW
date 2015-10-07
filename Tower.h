@@ -23,7 +23,7 @@ class Tower : public Entity
       void Init(Textureloader* textload);
       int getEffect();
       int getNbBall();
-      void iceMove(int r , sf::RenderWindow *screen);
+      void iceMove(int r);
       std::string getPrice();
       std::string getLeftUpgrade();
       std::string getRightUpgrade();

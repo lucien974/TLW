@@ -9,7 +9,7 @@ class Multitower
     public:
         Multitower(Textureloader* textload);
         ~Multitower();
-        int updateTower(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int money , bool sup);
+        int update(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int& money , bool sup);
         int getSize();
         Tower* getTower(int b);
         sf::CircleShape getRange(int n);

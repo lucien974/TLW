@@ -33,6 +33,16 @@ Bloon::~Bloon()
 void Bloon::Init(Textureloader* textload)
 {
     std::string ndefich = "";
+    int inter = m_vie;
+    if(inter > 9 && inter < 100)
+        m_vie /= 10;
+    if(inter > 100 && inter < 200)
+    {
+        m_vie -= 90;
+        m_vie /= 10;
+        if(m_vie > 9)
+            m_vie = 9;
+    }
     switch(m_vie)
     {
         case 1:
@@ -91,116 +101,145 @@ void Bloon::Init(Textureloader* textload)
         default:
             break;
     }
-    if(m_vie > 9 && m_vie <= 20)
+    m_vie = inter;
+    if(m_vie > 9 && m_vie < 100)
     {
         m_earn = 15;
-        m_speed = 3;
-        setTexture(textload->Gettexture("bloon_1.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_shield.png") , SHIELD);
+        spriteStatus(true , SHIELD);
     }
+    else
+    {
+        spriteStatus(false , SHIELD);
+    }
+    /*
     if(m_vie <= 30 && m_vie > 20)
     {
         m_earn = 25;
         m_speed = 4;
-        setTexture(textload->Gettexture("bloon_2.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_2.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 40 && m_vie > 30)
     {
         m_earn = 35;
         m_speed = 5;
-        setTexture(textload->Gettexture("bloon_3.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_3.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 50 && m_vie > 40)
     {
         m_earn = 45;
         m_speed = 5;
-        setTexture(textload->Gettexture("bloon_4.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_4.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 60 && m_vie > 50)
     {
         m_earn = 55;
         m_speed = 8;
-        setTexture(textload->Gettexture("bloon_5.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_5.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 70 && m_vie > 60)
     {
         m_earn = 65;
         m_speed = 8;
-        setTexture(textload->Gettexture("bloon_6.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_6.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 80 && m_vie > 70)
     {
         m_earn = 75;
         m_speed = 4;
-        setTexture(textload->Gettexture("bloon_7.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_7.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie <= 90 && m_vie > 80)
     {
         m_earn = 85;
         m_speed = 4;
-        setTexture(textload->Gettexture("bloon_8.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_8.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
     if(m_vie < 100 && m_vie > 90)
     {
         m_earn = 95;
         m_speed = 4;
-        setTexture(textload->Gettexture("bloon_9.png") , textload->Gettexture("bloon_shield.png"));
+        setTexture(textload->Gettexture("bloon_9.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield.png"));
     }
-    if(m_vie > 100 && m_vie <= 120)
+    //*/
+    if(m_vie > 100 && m_vie < 200)
     {
         m_earn = 15;
-        m_speed = 3;
-        setTexture(textload->Gettexture("bloon_1.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_shield_1.png") , SHIELD);
+        spriteStatus(true , SHIELD);
     }
+    else
+    {
+        spriteStatus(false , SHIELD);
+    }
+    /*
     if(m_vie <= 130 && m_vie > 120)
     {
         m_earn = 25;
         m_speed = 6;
-        setTexture(textload->Gettexture("bloon_2.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_2.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 140 && m_vie > 130)
     {
         m_earn = 35;
         m_speed = 7;
-        setTexture(textload->Gettexture("bloon_3.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_3.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 150 && m_vie > 140)
     {
         m_earn = 100;
         m_speed = 7;
-        setTexture(textload->Gettexture("bloon_4.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_4.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 160 && m_vie > 150)
     {
         m_earn = 105;
         m_speed = 12;
-        setTexture(textload->Gettexture("bloon_5.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_5.png") , BLOON);
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 170 && m_vie > 160)
     {
         m_earn = 110;
         m_speed = 15;
-        setTexture(textload->Gettexture("bloon_6.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_6.png"));
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 180 && m_vie > 170)
     {
         m_earn = 115;
         m_speed = 6;
-        setTexture(textload->Gettexture("bloon_7.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_7.png"));
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie <= 190 && m_vie > 180)
     {
         m_earn = 120;
         m_speed = 6;
-        setTexture(textload->Gettexture("bloon_8.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_8.png"));
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
     if(m_vie < 200 && m_vie > 190)
     {
         m_earn = 125;
         m_speed = 6;
-        setTexture(textload->Gettexture("bloon_9.png") , textload->Gettexture("bloon_shield_1.png"));
+        setTexture(textload->Gettexture("bloon_9.png"));
+        setTexture(textload->Gettexture("bloon_shield_1.png"));
     }
+    //*/
     if(m_vie < 10 || m_vie == 100 || m_vie == 200)
-        setTexture(textload->Gettexture(ndefich));
+        setTexture(textload->Gettexture(ndefich) , BLOON);
 }
 
 void Bloon::Findway(int x, int y , int postab , Textureloader* textload)
@@ -210,7 +249,7 @@ void Bloon::Findway(int x, int y , int postab , Textureloader* textload)
         m_color = textload->Getmap(m_carte).getPixel(x,y);
         if( m_color == sf::Color::White)
         {
-            setPosition(x,y);
+            setPosition(sf::Vector2f(x,y));
             for( int v(0) ; v < 8 ; v++ )
             {
                 if( v == postab )
@@ -226,7 +265,7 @@ void Bloon::Findway(int x, int y , int postab , Textureloader* textload)
         }
         if( m_color == sf::Color::Blue)
         {
-            setPosition(x,y);
+            setPosition(sf::Vector2f(x,y));
             m_exit = true;
         }
     }
@@ -256,7 +295,7 @@ int Bloon::Touch(sf::Vector2f pos_ball , int damages , Textureloader* textload ,
                         m_vie -= damages;
                         m_touch = true;
                         Init(textload);
-                        disableEffect();
+                        spriteStatus(false , ALL);
                         m_life_lost = damages;
                         break;
                     case 0:
@@ -271,12 +310,12 @@ int Bloon::Touch(sf::Vector2f pos_ball , int damages , Textureloader* textload ,
                             m_clock.restart();
                             m_ice++;
                             m_status = m_effect::ice;
-                            setEffect(textload->Gettexture("ice_bloon.png") , m_status);
+                            setTexture(textload->Gettexture("ice_bloon.png") , ICE);
+                            spriteStatus(m_status , ICE);
                             m_earn_money = true;
                         }
                         break;
                     default:
-                        disableEffect();
                         break;
                 }
                 if(m_touch)
@@ -303,7 +342,7 @@ void Bloon::Update(Textureloader* textload)
     if(m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_vie > 0)
     {
         m_ice = 0;
-        disableEffect();
+        spriteStatus(false , ICE);
     }
     if((m_ice < m_ice_limit || m_status == m_effect::none) && m_vie > 0)
     {
@@ -343,7 +382,6 @@ void Bloon::Update(Textureloader* textload)
 /**/
 void Bloon::update()
 {
-    std::cout << "Bloon" << std::endl;
 }
 //*/
 ////////////////////////////////////////
@@ -363,7 +401,7 @@ int Bloon::Getmoney()
 {
     if(m_touch)
     {
-        m_touch == false;
+        m_touch = false;
         if(m_status == m_effect::none && m_life_lost > 0)
             return m_earn;
         if(m_status == m_effect::ice && m_life_lost > 0 && m_earn_money == true)

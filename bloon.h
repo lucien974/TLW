@@ -28,7 +28,7 @@ private:
     bool m_exit , m_direction[8] , m_find , m_first , m_touch , m_earn_money;
     std::string m_carte;
     sf::Clock m_clock;
-    enum m_effect{none = -1 , ice = 0 , burn = 1 , glue = 2 , reverse = 3};
+    enum m_shield{none = 0 , ice = 0 , burn = 1 , glue = 2 , reverse = 3};
 };
 
 #endif // BLOON_H_INCLUDED
