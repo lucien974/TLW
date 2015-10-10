@@ -17,10 +17,10 @@ private:
     std::deque<Vague*> m_level;
     std::deque<int> m_interlevel , m_nbbloon , m_inter;
     FILE *m_fichier , *m_save;
-    int m_type , m_play , m_pause , m_damages , m_money , m_play_save , m_inter_vague , m_tri , m_lives , m_wave;
+    int m_type , m_play , m_pause , m_damages , m_money , m_play_save , m_inter_vague , m_tri , m_lives , m_wave , m_mouse;
     long m_frontinter , m_seek , m_size;
     bool m_pass , m_passinter , m_end , m_done , m_one_time , m_bp , m_bool_pause , m_first_pass , m_win , m_sup , m_delete;
-    bool m_upgrade_1 , m_upgrade_2 , m_up_1 , m_up_2 , m_pass_save , m_pause_bool;
+    bool m_pass_save , m_pause_bool , m_click;
     sf::Event m_event;
     sf::Sprite m_sprite , m_tower_bar , m_bouton , m_loose;
     sf::Text m_sprite_money;

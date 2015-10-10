@@ -47,21 +47,28 @@ void Tower::update()
 void Tower::iceMove(int r)
 {
     m_incrementation[r]++;
+    float a;
+    if(m_incrementation[r] < 150)
+    {
+        sf::Vector2f bullet_to_bloon;
+        bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
+        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5 ;
+    }
     if(m_incrementation[r] < 20 )
     {
-        m_forward[r].x = sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-        m_forward[r].y = -cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].x = a*sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].y = -a*cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 20 && m_incrementation[r] < 90)
     {
         m_radian = (float)rand()*0.5f;
-        m_forward[r].x = sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-        m_forward[r].y = -cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].x = a*sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].y = -a*cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
     {
-        m_forward[r].x = rand();
-        m_forward[r].y = rand();
+        m_forward[r].x = rand()%5 - 2;
+        m_forward[r].y = rand()%5 - 2;
     }
     if(m_incrementation[r] > 150)
     {
@@ -70,6 +77,8 @@ void Tower::iceMove(int r)
         m_incrementation.erase(m_incrementation.begin() + r);
         m_forward.erase(m_forward.begin() + r);
     }
+    else
+        m_bullet[r].move(m_forward[r]);
 }
 
 void Tower::drawBullet(sf::RenderWindow* screen)
@@ -78,8 +87,8 @@ void Tower::drawBullet(sf::RenderWindow* screen)
     {
         if(m_type_effect == m_effect::ice)
         {
-            iceMove(r);
             screen->draw(m_bullet[r]);
+            iceMove(r);
         }
         else
         {
@@ -88,8 +97,7 @@ void Tower::drawBullet(sf::RenderWindow* screen)
             std::cout << "last pos , x : " << m_last_pos[r].x << " , y : " << m_last_pos[r].y << std::endl;
             std::cout << "bullet pos , x : " << m_bullet[r].getPosition().x << " , y : " << m_bullet[r].getPosition().y << std::endl;
             //*/
-            bullet_to_bloon.x = m_last_pos[r].x - m_bullet[r].getPosition().x;
-            bullet_to_bloon.y = m_last_pos[r].y - m_bullet[r].getPosition().y;
+            bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
 
             if((bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) <= 0)
             {
@@ -216,10 +224,10 @@ void Tower::upgradeLeft(Textureloader* textload)
 
 void Tower::upgradeRight(Textureloader* textload)
 {
+    if(m_upgrade < 9 && m_upgrade > 5)
+        m_upgrade++;
     if(m_upgrade == 1)
         m_upgrade = 6;
-    if(m_upgrade < 9)
-        m_upgrade++;
     Init(textload);
 }
 
@@ -617,7 +625,7 @@ std::string Tower::getLeftUpgrade()
 
 std::string Tower::getRightUpgrade()
 {
-    if((m_upgrade == 1) || (m_upgrade > 5 && m_upgrade != 9))
+    if((m_upgrade == 1) || (m_upgrade > 5 && m_upgrade < 9))
     {
         if(m_upgrade != 1)
         {
@@ -640,9 +648,9 @@ std::string Tower::getRightUpgrade()
 
 int Tower::getUpPrice(Textureloader* textload)
 {
-    int up(0);
-    if((m_upgrade > 5 && m_upgrade < 9) || (m_upgrade > 1 && m_upgrade < 5) || m_upgrade == 1)
+    if(m_upgrade != 5 && m_upgrade != 9)
     {
+        int up(0);
         if(m_upgrade == 1)
         {
             m_up_price = !m_up_price;
@@ -662,6 +670,8 @@ int Tower::getUpPrice(Textureloader* textload)
         int a = m_cost - b;
         m_upgrade = c;
         Init(textload);
+        if(m_upgrade != 1)
+            m_cost -= a;
         return a;
     }
     return 0;

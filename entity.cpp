@@ -11,11 +11,15 @@ Entity::~Entity()
     m_draw_status.clear();
 }
 
-void Entity::setTexture(sf::Texture& texture , std::string name) {
-    //m_sprite[name] = sf::Sprite();
+void Entity::setTexture(sf::Texture& texture , std::string name)
+{
 	m_sprite[name].setTexture(texture);
 	m_sprite[name].setOrigin(m_sprite[name].getGlobalBounds().height/2, m_sprite[name].getGlobalBounds().width/2);
 	m_draw_status[name] = true;
+	if(m_sprite.size() > 1)
+    {
+        m_sprite[name].setPosition(m_sprite.begin()->second.getPosition());
+    }
 }
 
 void Entity::setOrigin(int a , int b)
@@ -44,9 +48,22 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
         target.draw(m_range);
     for(auto &ent1 : m_sprite)
     {
+        //std::cout << ent1.first << std::endl;
+        std::string a;
+        if(ent1.first == ICE)
+        {
+            //std::cout << "Yes"  << std::endl;
+            a = ent1.first;
+        }
         if(m_draw_status.at(ent1.first) == true)
         {
             target.draw(ent1.second);
+            /*
+            if(ent1.first == BLOON)
+            {
+                std::cout << "No"  << std::endl;
+            }
+            //*/
         }
     }
 }
@@ -138,6 +155,15 @@ void Entity::spriteStatus(bool a , std::string name)
     if(m_sprite_it != m_sprite.end())
     {
         m_draw_status[name] = a;
+        /*
+        if(name == ICE)
+        {
+            m_sprite[BLOON].setColor(sf::Color(0 ,
+                                     0 ,
+                                     0 ,
+                                     128));
+        }
+        //*/
     }
     else
     {

@@ -304,6 +304,7 @@ int Bloon::Touch(sf::Vector2f pos_ball , int damages , Textureloader* textload ,
                             m_ice_limit = ice_limit;
                         if(m_ice == m_ice_limit)
                         {
+                            m_life_lost = damages;
                             m_vie -= damages;
                             m_touch = true;
                             Init(textload);
@@ -311,7 +312,7 @@ int Bloon::Touch(sf::Vector2f pos_ball , int damages , Textureloader* textload ,
                             m_ice++;
                             m_status = m_effect::ice;
                             setTexture(textload->Gettexture("ice_bloon.png") , ICE);
-                            spriteStatus(m_status , ICE);
+                            spriteStatus(true , ICE);
                             m_earn_money = true;
                         }
                         break;

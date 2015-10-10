@@ -2,6 +2,8 @@
 
 Level::Level(Textureloader* textload)
 {
+    m_mouse = 0;
+    m_click = false;
     m_pause_bool = false;
     m_wave = 0;
     m_pass_save = false;
@@ -56,10 +58,6 @@ Level::Level(Textureloader* textload)
     fseek(m_fichier , 0 , SEEK_SET);
     m_sup = false;
     m_delete = false;
-    m_upgrade_1 = false;
-    m_upgrade_2 = false;
-    m_up_1 = false;
-    m_up_2 = false;
     m_save = fopen("save/save.txt" , "w");
     m_music.openFromFile("sons/sound_1.ogg");
     m_music.setLoop(true);
@@ -223,8 +221,10 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
                 }
             }
             ecran->draw(m_tower_bar);
-            m_money = m_tower->update(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup);
+            m_money = m_tower->update(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup , m_click , m_mouse == 2);
             m_sup = false;
+            if(m_mouse == 2)
+                m_mouse = 0;
         }
         else
         {
@@ -296,7 +296,6 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
         {
             switch(m_event.type)
             {
-                    break;
                 case sf::Event::KeyPressed:
                     switch(m_event.key.code)
                     {
@@ -310,19 +309,6 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                                 m_delete = true;
                             }
                             break;
-                        case sf::Keyboard::A:
-                            if(!m_upgrade_1)
-                            {
-                                m_upgrade_1 = true;
-                                m_up_1 = true;
-                            }
-                            break;
-                        case sf::Keyboard::E:
-                            if(!m_upgrade_2)
-                            {
-                                m_upgrade_2 = true;
-                                m_up_2 = true;
-                            }
                         default:
                             break;
                     }
@@ -334,12 +320,6 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                             m_sup = false;
                             m_delete = false;
                             break;
-                        case sf::Keyboard::A:
-                            m_upgrade_1 = false;
-                            m_up_1 = false;
-                        case sf::Keyboard::E:
-                            m_upgrade_2 =false;
-                            m_up_2 = false;
                         default:
                             break;
                     }
@@ -351,9 +331,23 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                 case sf::Event::GainedFocus:
                     m_bool_pause = false;
                     break;
+                    /*
+                case sf::Event::MouseButtonPressed:
+                    if (sf::Mouse::Left)
+                        m_click;
+                        //*/
                 default:
                     break;
             }
+        }
+        m_click = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        if(m_mouse == 0)
+        {
+            m_mouse = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        }
+        if(m_mouse == 1 && sf::Mouse::isButtonPressed(sf::Mouse::Left) == false)
+        {
+            m_mouse = 2;
         }
         screen->draw(m_sprite);
         if(m_pause_bool == false && m_bool_pause == false)
