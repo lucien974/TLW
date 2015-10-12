@@ -44,7 +44,8 @@ int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloade
         for(int a(0) ; a < 4 ; ++a)
         {
             if(m_selection[a]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
-                sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
+               sf::Mouse::isButtonPressed(sf::Mouse::Left) == true &&
+               money >= m_selection[a]->getCost())
             {
                 m_select = a;
             }
@@ -121,7 +122,8 @@ int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloade
 
             m_up_price[0].setString(a.str());
             if(m_up[0].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
-               clic_up == true)
+               clic_up == true &&
+               money >= m_tower[m_tower_selected]->getUpPrice(textload))
             {
                 money -= m_tower[m_tower_selected]->getUpPrice(textload);
                 m_tower[m_tower_selected]->upgradeLeft(textload);
@@ -139,7 +141,8 @@ int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloade
             b << (m_tower[m_tower_selected]->getUpPrice(textload));
             m_up_price[1].setString(b.str());
             if(m_up[1].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
-               clic_up == true)
+               clic_up == true &&
+               money >= m_tower[m_tower_selected]->getUpPrice(textload))
             {
                 money -= m_tower[m_tower_selected]->getUpPrice(textload);
                 m_tower[m_tower_selected]->upgradeRight(textload);

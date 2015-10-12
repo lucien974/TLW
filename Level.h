@@ -24,7 +24,7 @@ private:
     sf::Event m_event;
     sf::Sprite m_sprite , m_tower_bar , m_bouton , m_loose;
     sf::Text m_sprite_money;
-    Bouton *m_text_pause , *m_text_loose , *m_restart , *m_text_win , *m_text_exit , *m_resume , *m_text_save;
+    Bouton *m_text_pause , *m_text_loose , *m_restart , *m_text_win , *m_text_exit , *m_resume , *m_text_save , m_life;
     Multitower* m_tower;
     sf::RectangleShape m_shape_pause;
     sf::Music m_music;

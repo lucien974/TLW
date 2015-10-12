@@ -38,6 +38,8 @@ Level::Level(Textureloader* textload)
                                100  , sf::Color::Yellow , sf::Color::Yellow , sf::Vector2i(450,150));
     m_text_save = new Bouton(textload->Getfont("abaddon.ttf") , "SAVE" ,
                                100  , sf::Color::Yellow , sf::Color::White , sf::Vector2i(450,350));
+    m_life.set(textload->Getfont("nb.ttf") , "" , 20 , sf::Color::Red , sf::Vector2i(750 , 550));
+    m_life.doubleBouton(textload->Getfont("nb.ttf") , -3 , -3 , sf::Color::Black);
     m_tower_bar.setTexture(textload->Gettexture("tower_bar_1.png"));
     m_tower_bar.setPosition(0,0);
     m_bouton.setTexture(textload->Gettexture("play.png"));
@@ -222,6 +224,10 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
             }
             ecran->draw(m_tower_bar);
             m_money = m_tower->update(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup , m_click , m_mouse == 2);
+            std::stringstream az;
+            az << m_lives;
+            m_life.setString(az.str());
+            m_life.affiche(ecran);
             m_sup = false;
             if(m_mouse == 2)
                 m_mouse = 0;

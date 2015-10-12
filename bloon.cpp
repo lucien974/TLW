@@ -273,7 +273,7 @@ void Bloon::Findway(int x, int y , int postab , Textureloader* textload)
 
 int Bloon::Getdamages()
 {
-    if(m_exit == true && m_touch == false)
+    if(m_exit == true && m_touch == false && m_vie > 0)
     {
         return m_vie;
     }
