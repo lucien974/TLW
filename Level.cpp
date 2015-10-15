@@ -70,7 +70,7 @@ Level::~Level()
 {
     fclose(m_fichier);
     fclose(m_save);
-    int f(0);
+    unsigned int f(0);
     while( f < m_level.size() )
     {
         delete m_level.at(f);
@@ -124,7 +124,7 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
             if(m_play == 0)
             {
                 m_end = false;
-                int k(0);
+                unsigned int k(0);
                 if(m_level.size() == 0)
                 {
                     m_pass = true;
@@ -247,7 +247,7 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
                 fopen("lvl_1.txt" , "r");
                 fseek(m_fichier , 0 , SEEK_SET);
                 m_seek = ftell(m_fichier);
-                int k(0);
+                unsigned int k(0);
                 while( k < m_level.size() )
                 {
                     delete m_level.at(k);
@@ -277,7 +277,7 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
             fseek(m_fichier , 0 , SEEK_SET);
             m_seek = ftell(m_fichier);
             m_win = false;
-            int o(0);
+            unsigned int o(0);
             while( o < m_level.size() )
             {
                 delete m_level.at(o);

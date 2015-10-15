@@ -242,7 +242,7 @@ void Bloon::Init(Textureloader* textload)
         setTexture(textload->Gettexture(ndefich) , BLOON);
 }
 
-void Bloon::Findway(int x, int y , int postab , Textureloader* textload)
+void Bloon::Findway(unsigned int x, unsigned int y , int postab , Textureloader* textload)
 {
     if(x < textload->Getmap(m_carte).getSize().x && y < textload->Getmap(m_carte).getSize().y)
     {

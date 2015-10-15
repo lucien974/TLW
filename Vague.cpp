@@ -32,7 +32,7 @@ int Vague::Move(sf::RenderWindow* ecran , int nbbloon , int inter , Textureloade
     }
     m_way++;
     m_cursor++;
-    int k(0);
+    unsigned int k(0);
     while( k < m_bloon.size() )
     {
         m_bloon[k]->Update(textload);
@@ -48,7 +48,7 @@ int Vague::Move(sf::RenderWindow* ecran , int nbbloon , int inter , Textureloade
             m_bloon.erase(m_bloon.begin() + k);
         }
         k++;
-        for(int c(0) ; c < m_sound.size() ; ++c)
+        for(unsigned int c(0) ; c < m_sound.size() ; ++c)
         {
             if(m_sound[c]->getStatus() == sf::Sound::Stopped)
             {
@@ -78,12 +78,12 @@ bool Vague::Size()
 
 Vague::~Vague()
 {
-    for( int n(0) ; n < m_bloon.size() ; ++n )
+    for(unsigned int n(0) ; n < m_bloon.size() ; ++n )
     {
         delete m_bloon.front();
         m_bloon.pop_front();
     }
-    for(int ty(0) ; ty < m_sound.size() ; ++ty)
+    for(unsigned int ty(0) ; ty < m_sound.size() ; ++ty)
     {
         while(m_sound[ty]->getStatus() == sf::Sound::Playing)
         {

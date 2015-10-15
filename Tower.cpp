@@ -83,7 +83,7 @@ void Tower::iceMove(int r)
 
 void Tower::drawBullet(sf::RenderWindow* screen)
 {
-    for(int r(0) ; r < m_bullet.size() ; ++r)
+    for(unsigned int r(0) ; r < m_bullet.size() ; ++r)
     {
         if(m_type_effect == m_effect::ice)
         {

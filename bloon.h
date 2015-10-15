@@ -12,7 +12,7 @@ public:
     void Init(Textureloader* textload);
     void Update(Textureloader* textload);
     void update();
-    void Findway(int x, int y , int postab , Textureloader* textload);
+    void Findway(unsigned int x, unsigned int y , int postab , Textureloader* textload);
     bool Exit();
     int Getspeed();
     int Getincrementation();

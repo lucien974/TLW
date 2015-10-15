@@ -1,6 +1,6 @@
 #include "entity.h"
 
-Entity::Entity(): sf::Drawable()
+Entity::Entity(): sf::Drawable(), m_range(0.f, std::size_t(30))
 {
     m_range_aviable = false;
 }

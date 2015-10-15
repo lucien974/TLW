@@ -108,9 +108,9 @@ sf::Vector2f Textureloader::getRedPxl(std::string filename)
     if(m_seek == false)
     {
         sf::Color color;
-        for( int za(0) ; za < Getmap(filename).getSize().x ; za++ )
+        for( unsigned int za(0) ; za < Getmap(filename).getSize().x ; za++ )
         {
-            for( int j(0) ; j < Getmap(filename).getSize().y ; j++ )
+            for( unsigned int j(0) ; j < Getmap(filename).getSize().y ; j++ )
             {
                 color = Getmap(filename).getPixel(za,j);
                 if(color.b <= 5 && color.g <= 5 && color.r >= 250)

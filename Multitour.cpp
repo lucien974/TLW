@@ -24,9 +24,9 @@ Multitower::Multitower(Textureloader* textload)
 
 Multitower::~Multitower()
 {
-    for(int a(0) ; a < 4 ; ++a)
+    for(unsigned int a(0) ; a < 4 ; ++a)
         delete m_selection[a];
-    for(int b(0) ; b < m_tower.size() ; ++b)
+    for(unsigned int b(0) ; b < m_tower.size() ; ++b)
         delete m_tower[b];
     m_selection.clear();
     m_tower.clear();
@@ -80,7 +80,7 @@ int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloade
         screen->draw(*m_selection[y]);
     }
     bool found = false , clic = click;
-    for(int z(0) ; z < m_tower.size() ; ++z)
+    for(unsigned int z(0) ; z < m_tower.size() ; ++z)
     {
         m_tower[z]->drawBullet(screen);
         if(m_tower_selected != -1 &&
