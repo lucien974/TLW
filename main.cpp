@@ -22,10 +22,11 @@ int main ( int argc, char** argv )
     Textureloader* textload;
     textload = new Textureloader("images/" , "sons/" , "polices/");
 
-    Interface *menu;
-    menu = new Interface(textload);
+    //Interface *menu;
+    //menu = new Interface(textload);
 
-    Level niv(textload);
+    Level niv(textload , window);
+    sf::Thread thread(&Level::physicsMotor , &niv);
     /*
     if(menu->Boucle(window , textload))
     {

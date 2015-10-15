@@ -1,7 +1,10 @@
 #include "Level.h"
 
-Level::Level(Textureloader* textload)
+Level::Level(Textureloader* textload , sf::RenderWindow *screen)
 {
+    m_screen = screen;
+    m_textload = textload;
+
     m_mouse = 0;
     m_click = false;
     m_pause_bool = false;
@@ -64,6 +67,54 @@ Level::Level(Textureloader* textload)
     m_music.openFromFile("sons/sound_1.ogg");
     m_music.setLoop(true);
     m_music.play();
+
+    m_thread = new sf::Thread(&Level::physicsMotor , this);
+    m_thread->launch();
+}
+
+void Level::physicsMotor()
+{
+    while(m_screen->isOpen())
+    {
+        m_mutex.lock();
+        int inter[2];
+        inter[0] = 0;
+        for( int v(m_tower->getSize() - 1) ; v >= 0  ; --v )
+        {
+            for( int n(m_level.size() - 1) ; n >= 0 ; --n )
+            {
+                for( int g(0) ; g < m_level[n]->getSize() ; ++g )
+                {
+                    if(m_level[n]->getBloon(g)->isOutOfScreen(m_screen) == false)
+                    {
+                        if(m_level[n]->getBloon(g)->isNearOf(m_tower->getTower(v) , m_tower->getTower(v)->getRange()) == true)
+                        {
+                            if(m_level[n]->getBloon(g)->Getincrementation() > inter[0])
+                            {
+                                inter[0] = m_level[n]->getBloon(g)->Getincrementation();
+                                inter[1] = g;
+                                m_tri = n;
+                                m_first_pass = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if(m_first_pass && inter[0] != 0)
+            {
+                m_tower->getTower(v)->rotateTowards(m_level[m_tri]->getBloon(inter[1]));
+                m_level[m_tri]->getBloon(inter[1])->Touch(m_level[m_tri]->getBloon(inter[1])->getPosition() ,
+                                                            m_tower->getTower(v)->Fire(m_level[m_tri]->getBloon(inter[1])->getPosition()) ,
+                                                            m_textload ,
+                                                            m_tower->getTower(v)->getEffect() ,
+                                                            m_tower->getTower(v)->getNbBall());
+                m_money += m_level[m_tri]->getBloon(inter[1])->Getmoney();
+                m_first_pass = false;
+                inter[0] = 0;
+            }
+        }
+        m_mutex.unlock();
+    }
 }
 
 Level::~Level()
@@ -89,6 +140,7 @@ Level::~Level()
 
 void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
 {
+    m_mutex.lock();
     if(m_pass == true)
     {
         m_play = 0;
@@ -157,42 +209,6 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
                             m_win = false;
                     }
                     k++;
-                }
-                int inter[2];
-                inter[0] = 0;
-                for( int v(m_tower->getSize() - 1) ; v >= 0  ; --v )
-                {
-                    for( int n(m_level.size() - 1) ; n >= 0 ; --n )
-                    {
-                        for( int g(0) ; g < m_level[n]->getSize() ; ++g )
-                        {
-                            if(m_level[n]->getBloon(g)->isOutOfScreen(ecran) == false)
-                            {
-                                if(m_level[n]->getBloon(g)->isNearOf(m_tower->getTower(v) , m_tower->getTower(v)->getRange()) == true)
-                                {
-                                    if(m_level[n]->getBloon(g)->Getincrementation() > inter[0])
-                                    {
-                                        inter[0] = m_level[n]->getBloon(g)->Getincrementation();
-                                        inter[1] = g;
-                                        m_tri = n;
-                                        m_first_pass = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if(m_first_pass && inter[0] != 0)
-                    {
-                        m_tower->getTower(v)->rotateTowards(m_level[m_tri]->getBloon(inter[1]));
-                        m_level[m_tri]->getBloon(inter[1])->Touch(m_level[m_tri]->getBloon(inter[1])->getPosition() ,
-                                                                    m_tower->getTower(v)->Fire(m_level[m_tri]->getBloon(inter[1])->getPosition()) ,
-                                                                    textload ,
-                                                                    m_tower->getTower(v)->getEffect() ,
-                                                                    m_tower->getTower(v)->getNbBall());
-                        m_money += m_level[m_tri]->getBloon(inter[1])->Getmoney();
-                        m_first_pass = false;
-                        inter[0] = 0;
-                    }
                 }
             }
             else
@@ -292,6 +308,7 @@ void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
             m_done = true;
         }
     }
+    m_mutex.unlock();
 }
 
 void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)

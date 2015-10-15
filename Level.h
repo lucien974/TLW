@@ -8,12 +8,14 @@
 class Level
 {
 public:
-    Level(Textureloader* textload);
+    Level(Textureloader* textload , sf::RenderWindow *screen);
     ~Level();
     void Launch(sf::RenderWindow *ecran , Textureloader* textload);
     void Event(sf::RenderWindow *ecran , Textureloader* textload);
+    void physicsMotor();
 
 private:
+
     std::deque<Vague*> m_level;
     std::deque<int> m_interlevel , m_nbbloon , m_inter;
     FILE *m_fichier , *m_save;
@@ -28,6 +30,11 @@ private:
     Multitower* m_tower;
     sf::RectangleShape m_shape_pause;
     sf::Music m_music;
+
+    sf::Thread *m_thread;
+    sf::RenderWindow *m_screen;
+    Textureloader *m_textload;
+    sf::Mutex m_mutex;
 };
 
 #endif // LEVEL_H_INCLUDED
