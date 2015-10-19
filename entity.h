@@ -41,7 +41,7 @@ class Entity: public sf::Transformable, public sf::Drawable {
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 		bool isColliding(Entity *entity);
 		bool isNearOf(Entity *entity, float radius);
-		bool isOutOfScreen(sf::RenderWindow* screen);
+		bool isOutOfScreen(sf::RenderWindow* screen) const;
 		void rotateTowards(Entity *entity);
 		bool getGlobalBounds(sf::Vector2i a);
 		void setRange(int range);

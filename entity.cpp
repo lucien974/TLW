@@ -94,13 +94,13 @@ bool Entity::isNearOf(Entity *entity, float radius) {
 	return (pow((pos2.x - pos1.x), 2) + pow((pos2.y - pos1.y), 2)) <= pow(radius, 2);
 }
 
-bool Entity::isOutOfScreen(sf::RenderWindow* screen)
+bool Entity::isOutOfScreen(sf::RenderWindow* screen) const
 {
 	if(m_sprite.begin()->second.getPosition().x > 0 &&
-    m_sprite.begin()->second.getPosition().x < 900 &&
+    m_sprite.begin()->second.getPosition().x < screen->getSize().x &&
 
     m_sprite.begin()->second.getPosition().y > 0 &&
-    m_sprite.begin()->second.getPosition().y < 600)
+    m_sprite.begin()->second.getPosition().y < screen->getSize().y)
     {
         return false;
     }
