@@ -200,5 +200,5 @@ void Entity::drawRange(bool range)
 
 int Entity::getRange()
 {
-    return (int)(m_range.getRadius());
+    return static_cast<int>(m_range.getRadius());
 }
