@@ -6,8 +6,9 @@
 class Bullet
 {
     public:
-        Bullet(float angle , int posx , int posy);
-        void Move(sf::RenderWindow* ecran);
+        Bullet(float angle, int posx, int posy);
+        void move(sf::RenderWindow* ecran);
+
     private:
         sf::RectangleShape m_bullet;
         float m_angle;

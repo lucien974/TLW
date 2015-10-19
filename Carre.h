@@ -5,16 +5,16 @@
 
 class Carre
 {
-public:
-    Carre(Point p1 , int distance);
-    int Ret1();
-    int Ret2();
-    int Ret3();
-    int Ret4();
-private:
-    std::deque<int> m_posx;
-    std::deque<int> m_posy;
+    public:
+        Carre(Point p1, int distance);
+        int ret1();
+        int ret2();
+        int ret3();
+        int ret4();
 
+    private:
+        std::deque<int> m_posx;
+        std::deque<int> m_posy;
 };
 
 #endif // CARRE_H_INCLUDED

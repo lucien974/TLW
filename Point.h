@@ -12,12 +12,13 @@ using namespace sf;
 
 class Point
 {
-public:
-    Point(int x , int y);
-    int Retx();
-    int Rety();
-private:
-    int m_x , m_y;
+    public:
+        Point(int x, int y);
+        int Retx();
+        int Rety();
+
+    private:
+        int m_x, m_y;
 };
 
 #endif // POINT_H_INCLUDED
