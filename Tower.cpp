@@ -56,14 +56,14 @@ void Tower::iceMove(int r)
     }
     if(m_incrementation[r] < 20 )
     {
-        m_forward[r].x = a*sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-        m_forward[r].y = -a*cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].x = a*std::sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].y = -a*std::cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 20 && m_incrementation[r] < 90)
     {
         m_radian = (float)rand()*0.5f;
-        m_forward[r].x = a*sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-        m_forward[r].y = -a*cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].x = a*std::sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].y = -a*std::cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
     }
     if(m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
     {

@@ -132,7 +132,7 @@ void Entity::rotateTowards(Entity *entity) {
     x = pos2.x - pos1.x;
     y = pos2.y - pos1.y;
 
-    angle = acos(y/sqrt(x*x + y*y))*(180.0f / 3.1415f) + 180.0f;
+    angle = std::acos(y/std::sqrt(x*x + y*y))*(180.0f / 3.1415f) + 180.0f;
     if(x > 0)
     {
         angle*=-1;
