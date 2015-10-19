@@ -59,9 +59,9 @@
 		<Unit filename="Level.cpp" />
 		<Unit filename="Level.h" />
 		<Unit filename="Menu.cpp" />
-		<Unit filename="Menu.h" />
+		<Unit filename="Interface.h" />
 		<Unit filename="Multitour.cpp" />
-		<Unit filename="Multitour.h" />
+		<Unit filename="MultiTower.h" />
 		<Unit filename="Textureloader.cpp" />
 		<Unit filename="Textureloader.h" />
 		<Unit filename="Tower.cpp" />
@@ -69,9 +69,9 @@
 		<Unit filename="Vague.cpp" />
 		<Unit filename="Vague.h" />
 		<Unit filename="bloon.cpp" />
-		<Unit filename="bloon.h" />
+		<Unit filename="Bloon.h" />
 		<Unit filename="entity.cpp" />
-		<Unit filename="entity.h" />
+		<Unit filename="Entity.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

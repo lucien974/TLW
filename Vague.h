@@ -1,7 +1,7 @@
 #ifndef VAGUE_H_INCLUDED
 #define VAGUE_H_INCLUDED
 
-#include "bloon.h"
+#include "Bloon.h"
 #include "Tower.h"
 
 class Vague// : public Bloon

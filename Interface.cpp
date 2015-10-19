@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "Interface.h"
 
 Interface::Interface(Textureloader* textload)
 {

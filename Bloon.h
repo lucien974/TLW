@@ -1,7 +1,7 @@
 #ifndef BLOON_H_INCLUDED
 #define BLOON_H_INCLUDED
 
-#include "entity.h"
+#include "Entity.h"
 #include "Textureloader.h"
 
 class Bloon : public Entity

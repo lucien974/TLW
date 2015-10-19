@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
 1431266776 source:c:\users\lucien\desktop\test\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
 1425132368 source:c:\users\lucien\desktop\test\carre.cpp
-	"carre.h"
+	"Carre.h"
 
-1425132359 c:\users\lucien\desktop\test\carre.h
-	"point.h"
+1425132359 c:\users\lucien\desktop\test\Carre.h
+	"Point.h"
 
-1425135384 c:\users\lucien\desktop\test\point.h
+1425135384 c:\users\lucien\desktop\test\Point.h
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	<iostream>
@@ -19,7 +19,7 @@
 	<cstdlib>
 
 1425126039 source:c:\users\lucien\desktop\test\point.cpp
-	"point.h"
+	"Point.h"
 
 1365233432 c:\users\lucien\desktop\sfml-2.0\include\sfml\window.hpp
 	<SFML/System.hpp>
@@ -690,9 +690,9 @@
 	<vector>
 
 1431271630 source:c:\users\lucien\desktop\test\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1431271630 c:\users\lucien\desktop\test\bloon.h
+1431271630 c:\users\lucien\desktop\test\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -701,7 +701,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 c:\users\lucien\desktop\test\lib\sfml\include\sfml\audio.hpp
@@ -768,11 +768,11 @@
 	"Vague.h"
 
 1431247501 c:\users\lucien\desktop\test\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1431247501 source:c:\users\lucien\desktop\test\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1431247501 source:c:\users\lucien\desktop\test\vague.cpp
 	"Vague.h"
@@ -782,7 +782,7 @@
 
 1431279305 c:\users\lucien\desktop\test\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 
 1431249901 source:c:\users\lucien\desktop\test\tower.cpp
 	"Tower.h"
@@ -796,13 +796,13 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1431451630 source:f:\test\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1431451630 f:\test\bloon.h
+1431451630 f:\test\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -811,7 +811,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 f:\test\lib\sfml\include\sfml\audio.hpp
@@ -1213,14 +1213,14 @@
 
 1431539326 f:\test\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 
 1431498800 f:\test\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1431266778 source:f:\test\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -1228,7 +1228,7 @@
 	"Vague.h"
 
 1431247502 source:f:\test\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1431434200 source:f:\test\tower.cpp
 	"Tower.h"
@@ -1242,16 +1242,16 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1431536772 source:f:\test\vague.cpp
 	"Vague.h"
 
 1431451630 source:d:\test\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1431451630 d:\test\bloon.h
+1431451630 d:\test\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -1260,7 +1260,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 d:\test\lib\sfml\include\sfml\audio.hpp
@@ -1662,14 +1662,14 @@
 
 1431494422 d:\test\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 
 1431498800 d:\test\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1431266778 source:d:\test\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -1677,7 +1677,7 @@
 	"Vague.h"
 
 1431247502 source:d:\test\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1431434200 source:d:\test\tower.cpp
 	"Tower.h"
@@ -1691,13 +1691,13 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1431502790 source:d:\test\vague.cpp
 	"Vague.h"
 
-1431246958 d:\test\entity.h
+1431246958 d:\test\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
@@ -1705,27 +1705,27 @@
 	"Bullet.h"
 
 1430396594 d:\test\bullet.h
-	"bloon.h"
+	"Bloon.h"
 
 1431246958 source:d:\test\entity.cpp
-	"entity.h"
+	"Entity.h"
 
-1431246958 f:\test\entity.h
+1431246958 f:\test\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
 1431246958 source:f:\test\entity.cpp
-	"entity.h"
+	"Entity.h"
 
-1431246956 c:\users\lucien\desktop\test\entity.h
+1431246956 c:\users\lucien\desktop\test\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
 1431246956 source:c:\users\lucien\desktop\test\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1431269553 source:c:\users\lucien\desktop\test\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1431268593 c:\users\lucien\desktop\test\multitour.h
 	"Tower.h"
@@ -1735,7 +1735,7 @@
 	"Com.h"
 
 1430589798 c:\users\lucien\desktop\test\com.h
-	"Multitour.h"
+	"MultiTower.h"
 	"Vague.h"
 
 1431271630 c:\users\lucien\desktop\test\textureloader.h
@@ -1754,7 +1754,7 @@
 	<iostream>
 
 1431269554 source:d:\test\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1431268594 d:\test\multitour.h
 	"Tower.h"
@@ -1774,15 +1774,15 @@
 	<sstream>
 
 1431269554 source:f:\test\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1431361498 source:f:\test\textureloader.cpp
 	"Textureloader.h"
 
 1431451630 source:e:\test\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1431451630 e:\test\bloon.h
+1431451630 e:\test\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -1791,7 +1791,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 e:\test\lib\sfml\include\sfml\audio.hpp
@@ -2188,7 +2188,7 @@
 	<string>
 	<vector>
 
-1431246958 e:\test\entity.h
+1431246958 e:\test\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
@@ -2199,17 +2199,17 @@
 	<iostream>
 
 1431246958 source:e:\test\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1431514584 source:e:\test\level.cpp
 	"Level.h"
 
 1431511230 e:\test\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 
 1431498800 e:\test\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1431176340 e:\test\tower.h
@@ -2221,7 +2221,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1431268594 e:\test\multitour.h
@@ -2229,7 +2229,7 @@
 	<sstream>
 
 1431266778 source:e:\test\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -2237,10 +2237,10 @@
 	"Vague.h"
 
 1431247502 source:e:\test\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1431269554 source:e:\test\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1431361498 source:e:\test\textureloader.cpp
 	"Textureloader.h"
@@ -2252,9 +2252,9 @@
 	"Vague.h"
 
 1431451630 source:f:\test_2.1\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1431544878 f:\test_2.1\bloon.h
+1431544878 f:\test_2.1\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -2263,7 +2263,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 f:\test_2.1\lib\sfml\include\sfml\audio.hpp
@@ -2660,7 +2660,7 @@
 	<string>
 	<vector>
 
-1431246958 f:\test_2.1\entity.h
+1431246958 f:\test_2.1\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
@@ -2671,17 +2671,17 @@
 	<iostream>
 
 1431246958 source:f:\test_2.1\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1431539326 source:f:\test_2.1\level.cpp
 	"Level.h"
 
 1431539326 f:\test_2.1\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 
 1431498800 f:\test_2.1\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1431176340 f:\test_2.1\tower.h
@@ -2693,7 +2693,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1431268594 f:\test_2.1\multitour.h
@@ -2701,7 +2701,7 @@
 	<sstream>
 
 1431544548 source:f:\test_2.1\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -2709,7 +2709,7 @@
 	"Vague.h"
 
 1431247502 source:f:\test_2.1\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1431361498 source:f:\test_2.1\textureloader.cpp
 	"Textureloader.h"
@@ -2721,12 +2721,12 @@
 	"Tower.h"
 
 1431544492 source:f:\test_2.1\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1433861841 source:c:\users\lucien\desktop\test_2.1\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1433861186 c:\users\lucien\desktop\test_2.1\bloon.h
+1433861186 c:\users\lucien\desktop\test_2.1\Bloon.h
 	<deque>
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
@@ -2735,7 +2735,7 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 c:\users\lucien\desktop\test_2.1\lib\sfml\include\sfml\audio.hpp
@@ -3132,7 +3132,7 @@
 	<string>
 	<vector>
 
-1433859349 c:\users\lucien\desktop\test_2.1\entity.h
+1433859349 c:\users\lucien\desktop\test_2.1\Entity.h
 	<cmath>
 	<SFML/Graphics.hpp>
 
@@ -3143,18 +3143,18 @@
 	<iostream>
 
 1433859565 source:c:\users\lucien\desktop\test_2.1\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1433862865 source:c:\users\lucien\desktop\test_2.1\level.cpp
 	"Level.h"
 
 1433694058 c:\users\lucien\desktop\test_2.1\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 	"Bouton.h"
 
 1433184230 c:\users\lucien\desktop\test_2.1\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1433861186 c:\users\lucien\desktop\test_2.1\tower.h
@@ -3167,14 +3167,14 @@
 	<random>
 	<time.h>
 	<cmath>
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1433177025 c:\users\lucien\desktop\test_2.1\multitour.h
 	"Tower.h"
 
 1433266367 source:c:\users\lucien\desktop\test_2.1\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -3184,7 +3184,7 @@
 	"Bouton.h"
 
 1433861186 source:c:\users\lucien\desktop\test_2.1\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1433268245 source:c:\users\lucien\desktop\test_2.1\textureloader.cpp
 	"Textureloader.h"
@@ -3196,10 +3196,10 @@
 	"Vague.h"
 
 1433787038 source:c:\users\lucien\desktop\test_2.1\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1432370303 c:\users\lucien\desktop\test_2.1\bouton.h
-	"bloon.h"
+	"Bloon.h"
 
 1432370333 source:c:\users\lucien\desktop\test_2.1\bouton.cpp
 	"Bouton.h"
@@ -3208,10 +3208,10 @@
 	"Bouton.h"
 
 1442751221 c:\users\lucien\desktop\test_2.5\bouton.h
-	"bloon.h"
+	"Bloon.h"
 
-1443956427 c:\users\lucien\desktop\test_2.5\bloon.h
-	"entity.h"
+1443956427 c:\users\lucien\desktop\test_2.5\Bloon.h
+	"Entity.h"
 	"Textureloader.h"
 
 1415807426 c:\users\lucien\desktop\test_2.5\lib\sfml\include\sfml\audio.hpp
@@ -3608,7 +3608,7 @@
 	<string>
 	<vector>
 
-1444241800 c:\users\lucien\desktop\test_2.5\entity.h
+1444241800 c:\users\lucien\desktop\test_2.5\Entity.h
 	<sstream>
 	<iostream>
 	<algorithm>
@@ -3634,22 +3634,22 @@
 	<iostream>
 
 1444241800 source:c:\users\lucien\desktop\test_2.5\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1443346436 source:c:\users\lucien\desktop\test_2.5\level.cpp
 	"Level.h"
 
 1433694058 c:\users\lucien\desktop\test_2.5\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 	"Bouton.h"
 
 1442857870 c:\users\lucien\desktop\test_2.5\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1443545322 c:\users\lucien\desktop\test_2.5\tower.h
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1443346436 c:\users\lucien\desktop\test_2.5\multitour.h
@@ -3657,7 +3657,7 @@
 	"Bouton.h"
 
 1442495427 source:c:\users\lucien\desktop\test_2.5\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -3667,10 +3667,10 @@
 	"Bouton.h"
 
 1442597881 source:c:\users\lucien\desktop\test_2.5\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1444240675 source:c:\users\lucien\desktop\test_2.5\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1433268245 source:c:\users\lucien\desktop\test_2.5\textureloader.cpp
 	"Textureloader.h"
@@ -3682,16 +3682,16 @@
 	"Tower.h"
 
 1444239386 source:c:\users\lucien\desktop\test_2.5\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
 1444674921 source:c:\users\lucien\desktop\tlw\bloon.cpp
-	"bloon.h"
+	"Bloon.h"
 
-1443956427 c:\users\lucien\desktop\tlw\bloon.h
-	"entity.h"
+1443956427 c:\users\lucien\desktop\tlw\Bloon.h
+	"Entity.h"
 	"Textureloader.h"
 
-1444241800 c:\users\lucien\desktop\tlw\entity.h
+1444241800 c:\users\lucien\desktop\tlw\Entity.h
 	<sstream>
 	<iostream>
 	<algorithm>
@@ -4114,25 +4114,25 @@
 	"Bouton.h"
 
 1442751221 c:\users\lucien\desktop\tlw\bouton.h
-	"bloon.h"
+	"Bloon.h"
 
 1444405214 source:c:\users\lucien\desktop\tlw\entity.cpp
-	"entity.h"
+	"Entity.h"
 
 1444674468 source:c:\users\lucien\desktop\tlw\level.cpp
 	"Level.h"
 
 1444674403 c:\users\lucien\desktop\tlw\level.h
 	"Vague.h"
-	"Multitour.h"
+	"MultiTower.h"
 	"Bouton.h"
 
 1442857870 c:\users\lucien\desktop\tlw\vague.h
-	"bloon.h"
+	"Bloon.h"
 	"Tower.h"
 
 1444479328 c:\users\lucien\desktop\tlw\tower.h
-	"entity.h"
+	"Entity.h"
 	"Textureloader.h"
 
 1444476560 c:\users\lucien\desktop\tlw\multitour.h
@@ -4140,7 +4140,7 @@
 	"Bouton.h"
 
 1442495427 source:c:\users\lucien\desktop\tlw\main.cpp
-	"Menu.h"
+	"Interface.h"
 	"Level.h"
 	"Textureloader.h"
 
@@ -4150,10 +4150,10 @@
 	"Bouton.h"
 
 1442597881 source:c:\users\lucien\desktop\tlw\menu.cpp
-	"Menu.h"
+	"Interface.h"
 
 1444675338 source:c:\users\lucien\desktop\tlw\multitour.cpp
-	"Multitour.h"
+	"MultiTower.h"
 
 1433268245 source:c:\users\lucien\desktop\tlw\textureloader.cpp
 	"Textureloader.h"

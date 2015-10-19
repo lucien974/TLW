@@ -2,7 +2,7 @@
 #define LEVEL_H_INCLUDED
 
 #include "Vague.h"
-#include "Multitour.h"
+#include "MultiTower.h"
 #include "Bouton.h"
 
 class Level

@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 
 Entity::Entity(): sf::Drawable(), m_range(0.f, std::size_t(30))
 {

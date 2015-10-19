@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "Interface.h"
 #include "Level.h"
 #include "Textureloader.h"
 

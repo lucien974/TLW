@@ -1,4 +1,4 @@
-#include "Multitour.h"
+#include "MultiTower.h"
 
 Multitower::Multitower(Textureloader* textload)
 {

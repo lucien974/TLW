@@ -16,7 +16,7 @@
 			<Cursor1 position="1037" topLine="11" />
 		</Cursor>
 	</File>
-	<File name="bloon.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Bloon.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="968" topLine="14" />
 		</Cursor>
@@ -46,7 +46,7 @@
 			<Cursor1 position="1734" topLine="120" />
 		</Cursor>
 	</File>
-	<File name="Multitour.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="MultiTower.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="302" topLine="5" />
 		</Cursor>
@@ -61,7 +61,7 @@
 			<Cursor1 position="1292" topLine="52" />
 		</Cursor>
 	</File>
-	<File name="entity.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Entity.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1367" topLine="36" />
 		</Cursor>
@@ -76,7 +76,7 @@
 			<Cursor1 position="191" topLine="6" />
 		</Cursor>
 	</File>
-	<File name="Menu.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Interface.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="399" topLine="15" />
 		</Cursor>

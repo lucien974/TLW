@@ -1,7 +1,7 @@
 #ifndef CARRE_H_INCLUDED
 #define CARRE_H_INCLUDED
 
-#include "point.h"
+#include "Point.h"
 
 class Carre
 {
