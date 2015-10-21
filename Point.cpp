@@ -8,14 +8,14 @@ Point::Point(int x, int y)
 
 
 
-int Point::Retx()
+int Point::retX()
 {
     return m_x;
 }
 
 
 
-int Point::Rety()
+int Point::retY()
 {
     return m_y;
 }

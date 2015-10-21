@@ -2,10 +2,10 @@
 
 Carre::Carre(Point p1, int distance)
 {
-    m_posx.push_back(p1.Retx());
-    m_posy.push_back(p1.Rety());
-    m_posx.push_back(p1.Retx() + distance);
-    m_posy.push_back(p1.Rety() + distance);
+    m_posx.push_back(p1.retX());
+    m_posy.push_back(p1.retY());
+    m_posx.push_back(p1.retX() + distance);
+    m_posy.push_back(p1.retY() + distance);
 }
 
 

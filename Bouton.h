@@ -12,7 +12,7 @@ class Bouton
         ~Bouton();
         void set(sf::Font& font, std::string message, int char_size, sf::Color color, sf::Color color_change, sf::Vector2i position);
         void set(sf::Font& font, std::string message, int char_size, sf::Color color, sf::Vector2i position);
-        bool inside(sf::Vector2i pos_ext, bool clic);
+        bool isInside(sf::Vector2i pos_ext, bool clic);
         bool setup(sf::Vector2i pos_ext);
         void affiche(sf::RenderWindow* screen);
         void doubleBouton(sf::Font& font, int ecart_x, int ecart_y, sf::Color color);
@@ -20,7 +20,7 @@ class Bouton
         void setColor(sf::Color color, sf::Color color_change);
         void changeColor(bool status);
         void setString(std::string a);
-        sf::Vector2f getPos();
+        sf::Vector2f getPos() const;
 
     private:
         sf::Text m_text, m_text_2;

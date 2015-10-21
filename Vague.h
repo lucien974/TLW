@@ -10,11 +10,11 @@ class Vague
         Vague(int type, std::string carte);
         ~Vague();
         int move(sf::RenderWindow* ecran, int nbbloon, int inter, Textureloader* textload);
-        bool next(int distance);
-        bool size();
+        bool next(int distance) const;
+        bool size() const;
         Bloon* getBloon(int a);
-        int getSize();
-        int getBloonSpeed(int num_bloon);
+        int getSize() const;
+        int getBloonSpeed(int num_bloon) const;
 
     private:
         int m_inter, m_nbbloon, m_cursor, m_nbvague, m_type, m_way, m_damages;

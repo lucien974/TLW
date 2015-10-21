@@ -10,9 +10,9 @@ class Multitower
         Multitower(Textureloader* textload);
         ~Multitower();
         int update(sf::Image carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool click, bool clic_up);
-        int getSize();
-        Tower* getTower(int b);
-        bool getStatus();
+        int getSize() const;
+        Tower* getTower(int n) const;
+        bool getStatus() const;
 
     private:
         std::deque<Tower*> m_tower, m_selection;

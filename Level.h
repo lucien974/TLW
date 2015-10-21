@@ -1,6 +1,8 @@
 #ifndef LEVEL_H_INCLUDED
 #define LEVEL_H_INCLUDED
 
+#include <sstream>
+
 #include "Vague.h"
 #include "MultiTower.h"
 #include "Bouton.h"
@@ -17,7 +19,7 @@ class Level
         std::deque<Vague*> m_level;
         std::deque<int> m_interlevel, m_nbbloon, m_inter;
         FILE *m_fichier, *m_save;
-        int m_type, m_play, m_pause, m_damages, m_money, m_inter_vague, m_tri, m_lives, m_wave, m_mouse;
+        int m_type, m_play, m_pause, m_money, m_inter_vague, m_lives, m_round, m_mouse;
         unsigned int m_play_save;
         long m_frontinter, m_seek, m_size;
         bool m_pass, m_passinter, m_end, m_done, m_one_time, m_bp, m_bool_pause, m_first_pass, m_win, m_sup, m_delete;

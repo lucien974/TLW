@@ -1,22 +1,22 @@
 #include "MultiTower.h"
 
-Multitower::Multitower(Textureloader* textload)
+Multitower::Multitower(Textureloader* textload) :
+m_select(-1),
+m_tower_selected(-1)
 {
     for (int a(1); a < 5; ++a)
         m_selection.push_back(new Tower(a, textload, sf::Vector2f(785, 75 * a + 50)));
     for (int n(0); n < 4; ++n)
     {
         m_cost_sprite.push_back(Bouton());
-        m_cost_sprite.back().set(textload->getFont("nb.ttf"), m_selection[n]->getPrice() ,
+        m_cost_sprite.back().set(textload->getFont("nb.ttf"), m_selection[n]->getPrice(),
                                  12, sf::Color::Black, sf::Color::Yellow, sf::Vector2i(825, 75 * n + 100));
     }
-    m_select = -1;
-    m_tower_selected = -1;
     m_up[0].setPosition(50, 555);
     m_up[1].setPosition(380, 555);
-    m_up_price[0].set(textload->getFont("nb.ttf"), "" ,
+    m_up_price[0].set(textload->getFont("nb.ttf"), "",
                       12, sf::Color::Black, sf::Color::Yellow, sf::Vector2i(80, 555));
-    m_up_price[1].set(textload->getFont("nb.ttf"), "" ,
+    m_up_price[1].set(textload->getFont("nb.ttf"), "",
                       12, sf::Color::Black, sf::Color::Yellow, sf::Vector2i(440, 555));
     m_money.set(textload->getFont("nb.ttf"), "", 20, sf::Color::Yellow, sf::Vector2i(750, 520));
     m_money.doubleBouton(textload->getFont("nb.ttf"), -3, -3, sf::Color::Black);
@@ -43,6 +43,7 @@ int Multitower::update(sf::Image carte, sf::RenderWindow* screen, Textureloader*
     z << " '";
     m_money.setString(z.str());
     m_money.affiche(screen);
+
     if (m_select == -1)
     {
         for (int a(0); a < 4; ++a)
@@ -83,6 +84,7 @@ int Multitower::update(sf::Image carte, sf::RenderWindow* screen, Textureloader*
         m_cost_sprite[y].affiche(screen);
         screen->draw(*m_selection[y]);
     }
+
     bool found = false, clic = click;
     for (unsigned int z(0); z < m_tower.size(); ++z)
     {
@@ -167,21 +169,21 @@ int Multitower::update(sf::Image carte, sf::RenderWindow* screen, Textureloader*
 
 
 
-int Multitower::getSize()
+int Multitower::getSize() const
 {
     return m_tower.size();
 }
 
 
 
-Tower* Multitower::getTower(int b)
+Tower* Multitower::getTower(int n) const
 {
-    return m_tower[b];
+    return m_tower[n];
 }
 
 
 
-bool Multitower::getStatus()
+bool Multitower::getStatus() const
 {
     if (m_select != -1)
         return true;

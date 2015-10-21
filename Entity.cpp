@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(): sf::Drawable(), m_range(0.f, std::size_t(30))
+Entity::Entity(): sf::Drawable()
 {
     m_range_aviable = false;
 }
@@ -88,6 +88,14 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 
 
+void Entity::drawRange(bool range)
+{
+    m_range_aviable = range;
+    m_range.setPosition(m_sprite.begin()->second.getPosition());
+}
+
+
+
 bool Entity::isColliding(Entity *entity)
 {
     m_sprite_it = m_sprite.begin();
@@ -153,7 +161,7 @@ void Entity::rotateTowards(Entity *entity)
 
 
 
-bool Entity::getGlobalBounds(sf::Vector2i a)
+bool Entity::getGlobalBounds(sf::Vector2i a) const
 {
     sf::FloatRect size = m_sprite.begin()->second.getGlobalBounds();
     if ((a.x >= size.left && a.x <= size.left + size.width) &&
@@ -161,18 +169,7 @@ bool Entity::getGlobalBounds(sf::Vector2i a)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
-}
-
-
-
-void Entity::drawRange(bool range)
-{
-    m_range_aviable = range;
-    m_range.setPosition(m_sprite.begin()->second.getPosition());
+    return false;
 }
 
 
@@ -187,7 +184,7 @@ void Entity::setOrigin(int a, int b)
 
 
 
-int Entity::getRange()
+int Entity::getRange() const
 {
     return static_cast<int>(m_range.getRadius());
 }
@@ -203,21 +200,21 @@ void Entity::setRange(int range)
 
 
 
-float Entity::getRotation()
+float Entity::getRotation() const
 {
     return m_sprite.begin()->second.getRotation();
 }
 
 
 
-sf::Vector2f Entity::getPosition()
+sf::Vector2f Entity::getPosition() const
 {
     return (m_sprite.begin()->second.getPosition());
 }
 
 
 
-int Entity::getLastSprite()
+int Entity::getLastSprite() const
 {
     return m_sprite.size() - 1;
 }

@@ -7,14 +7,8 @@
 
 int main (int argc, char** argv)
 {
-    sf::ContextSettings settings;
-    settings.depthBits = 24;
-    settings.stencilBits = 8;
-    settings.antialiasingLevel = 4;
-    settings.majorVersion = 3;
-    settings.minorVersion = 3;
     sf::RenderWindow *window;
-    window = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE", sf::Style::Titlebar | sf::Style::Close, settings);
+    window = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "Tower Defense", sf::Style::Titlebar | sf::Style::Close);
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
@@ -25,7 +19,6 @@ int main (int argc, char** argv)
     menu = new Interface(textload);
 
     Level niv(textload);
-
     niv.event(window, textload);
 
     return 0;

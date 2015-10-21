@@ -1,35 +1,51 @@
 #include "Tower.h"
 
-Tower::Tower(int type, Textureloader* textload) : Entity()
+Tower::Tower(int type, Textureloader* textload) :
+Entity(),
+m_shoot(true),
+m_up_price(false),
+m_tir(0.0f),
+m_firerate(0.0f),
+m_radian(0.0f),
+m_portee(0),
+m_cost(0),
+m_type(type),
+m_damages(0),
+m_turrets(0),
+m_nb_ball(0),
+m_type_effect(0),
+m_upgrade(1),
+m_canon(0),
+m_color(sf::Color::Black)
 {
     for (int r(0); r < 3; ++r)
         m_pass_canon[r] = false;
-    m_up_price = false;
-    m_upgrade = 1;
-    m_nb_ball = 0;
-    m_firerate = 0.0;
-    m_type = type;
     m_clock.restart();
-    m_shoot = true;
     setOrigin(40, 60);
-    m_damages = 0;
-    m_cost = 0;
-    m_color = sf::Color::Black;
     initialize(textload);
 }
 
 
 
-Tower::Tower(int type, Textureloader* textload, sf::Vector2f position) : Entity()
+Tower::Tower(int type, Textureloader* textload, sf::Vector2f position) :
+Entity(),
+m_shoot(true),
+m_up_price(false),
+m_tir(0.0f),
+m_firerate(0.0f),
+m_radian(0.0f),
+m_portee(0),
+m_cost(0),
+m_type(type),
+m_damages(0),
+m_turrets(0),
+m_nb_ball(0),
+m_type_effect(0),
+m_upgrade(1),
+m_canon(0),
+m_color(sf::Color::Black)
 {
-    m_damages = 0;
-    m_nb_ball = 0;
-    m_firerate = 0.0;
     m_clock.restart();
-    m_shoot = true;
-    m_type = type;
-    m_upgrade = 1;
-    m_color = sf::Color::Black;
     initialize(textload);
     setPosition(position);
 }
@@ -60,24 +76,26 @@ void Tower::iceMove(int r)
     {
         sf::Vector2f bullet_to_bloon;
         bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
-        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5 ;
+        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5;
     }
+
     if (m_incrementation[r] < 20)
     {
         m_forward[r].x = a*std::sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
         m_forward[r].y = -a*std::cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
     }
-    if (m_incrementation[r] >= 20 && m_incrementation[r] < 90)
+    else if (m_incrementation[r] >= 20 && m_incrementation[r] < 90)
     {
         m_radian = static_cast<float>(rand()*0.5f);
         m_forward[r].x = a*std::sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
         m_forward[r].y = -a*std::cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
     }
-    if (m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
+    else if (m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
     {
         m_forward[r].x = rand()%5 - 2;
         m_forward[r].y = rand()%5 - 2;
     }
+
     if (m_incrementation[r] > 150)
     {
         m_bullet.erase(m_bullet.begin() + r);
@@ -86,7 +104,9 @@ void Tower::iceMove(int r)
         m_forward.erase(m_forward.begin() + r);
     }
     else
+    {
         m_bullet[r].move(m_forward[r]);
+    }
 }
 
 
@@ -95,7 +115,7 @@ void Tower::drawBullet(sf::RenderWindow* screen)
 {
     for (unsigned int r(0); r < m_bullet.size(); ++r)
     {
-        if (m_type_effect == m_effect::ice)
+        if (m_type_effect == Effect::Ice)
         {
             screen->draw(m_bullet[r]);
             iceMove(r);
@@ -103,19 +123,10 @@ void Tower::drawBullet(sf::RenderWindow* screen)
         else
         {
             sf::Vector2f bullet_to_bloon;
-            /*
-            std::cout << "last pos, x : " << m_last_pos[r].x << ", y : " << m_last_pos[r].y << std::endl;
-            std::cout << "bullet pos, x : " << m_bullet[r].getPosition().x << ", y : " << m_bullet[r].getPosition().y << std::endl;
-            //*/
             bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
 
             if ((bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) <= 0)
             {
-                /*
-                std::cout << "bullet to bloon, x : " << bullet_to_bloon.x << ", y : " << bullet_to_bloon.y << std::endl;
-                std::cout << "forward, x : " << m_forward[r].x << ", y : " << m_forward[r].y << std::endl;
-                std::cout << "scalaire : " << (bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) << std::endl;
-                //*/
                 m_bullet.erase(m_bullet.begin() + r);
                 m_last_pos.erase(m_last_pos.begin() + r);
                 m_forward.erase(m_forward.begin() + r);
@@ -146,12 +157,12 @@ int Tower::fire(sf::Vector2f bloon)
             pass = true;
             m_bullet.back().setPosition(getPosition().x - 7, getPosition().y);
         }
-        if (m_canon == 2 || m_pass_canon[1] == true)
+        else if (m_canon == 2 || m_pass_canon[1] == true)
         {
             pass = true;
             m_bullet.back().setPosition(getPosition().x + 7, getPosition().y);
         }
-        if (m_canon == 4 || m_pass_canon[2] == true)
+        else if (m_canon == 4 || m_pass_canon[2] == true)
         {
             pass = true;
             m_bullet.back().setPosition(getPosition().x, getPosition().y);
@@ -162,7 +173,7 @@ int Tower::fire(sf::Vector2f bloon)
             std::cout << "0 : " << m_pass_canon[0] << ", 1 : " << m_pass_canon[1] << ", 2 : " << m_pass_canon[2] << std::endl;
         }
         m_bullet.back().rotate(getRotation());
-        if (m_type_effect == m_effect::ice)
+        if (m_type_effect == Effect::Ice)
         {
             pass = true;
             m_incrementation.push_back(0);
@@ -274,7 +285,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 750.0;
                     m_portee = 100;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost = 10;
                     break;
                 case 2 :
@@ -283,7 +294,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 110;
                     m_damages = 1;
                     m_color = sf::Color(50, 50, 50);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 3 :
@@ -292,7 +303,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 120;
                     m_damages = 1;
                     m_color = sf::Color(70, 70, 70);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 20;
                     break;
                 case 4 :
@@ -301,7 +312,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 130;
                     m_damages = 1;
                     m_color = sf::Color(90, 90, 90);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 5 :
@@ -310,7 +321,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 1;
                     m_color = sf::Color(0, 0, 55);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 6 :
@@ -318,7 +329,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 900.0;
                     m_portee = 120;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 7 :
@@ -326,7 +337,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 850.0;
                     m_portee = 150;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 8 :
@@ -334,7 +345,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 775.0;
                     m_portee = 160;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 9 :
@@ -342,7 +353,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 700.0;
                     m_portee = 200;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 default :
@@ -358,7 +369,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 666.0;
                     m_portee = 100;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost = 20;
                     break;
                 case 2 :
@@ -367,7 +378,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 1;
                     m_color = sf::Color::Yellow;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 3 :
@@ -375,7 +386,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 600.0;
                     m_portee = 200;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 4 :
@@ -383,7 +394,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 600.0;
                     m_portee = 250;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 5 :
@@ -391,7 +402,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 600.0;
                     m_portee = 300;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 6 :
@@ -400,7 +411,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 110;
                     m_damages = 1;
                     m_color = sf::Color::Red;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 7 :
@@ -408,7 +419,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 600.0;
                     m_portee = 150;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 8 :
@@ -416,7 +427,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 575.0;
                     m_portee = 160;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 9 :
@@ -424,7 +435,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 550.0;
                     m_portee = 170;
                     m_damages = 4;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 default :
@@ -440,7 +451,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost = 30;
                     break;
                 case 2 :
@@ -448,7 +459,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 3 :
@@ -456,7 +467,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 600.0;
                     m_portee = 140;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 4 :
@@ -464,7 +475,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 550.0;
                     m_portee = 160;
                     m_damages = 4;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 5 :
@@ -473,7 +484,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 170;
                     m_damages = 5;
                     m_color = sf::Color(0, 0, 255, 128);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 6 :
@@ -481,7 +492,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 750.0;
                     m_portee = 125;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 7 :
@@ -489,7 +500,7 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 700.0;
                     m_portee = 135;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 8 :
@@ -498,7 +509,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 145;
                     m_damages = 4;
                     m_color = sf::Color(255, 255, 255);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
                 case 9 :
@@ -507,7 +518,7 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 8;
                     m_color = sf::Color(255, 255, 255, 128);
-                    m_type_effect = m_effect::none;
+                    m_type_effect = Effect::None;
                     m_cost += 15;
                     break;
             }
@@ -523,7 +534,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost = 40;
                     break;
                 case 2 :
@@ -533,7 +544,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 3 :
@@ -543,7 +554,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 4 :
@@ -553,7 +564,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 5 :
@@ -563,7 +574,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 6 :
@@ -573,7 +584,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 25;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 7 :
@@ -583,7 +594,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 20;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 8 :
@@ -593,7 +604,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 15;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
                 case 9 :
@@ -603,7 +614,7 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(255, 255, 255, 200);
                     m_nb_ball = 5;
-                    m_type_effect = m_effect::ice;
+                    m_type_effect = Effect::Ice;
                     m_cost += 15;
                     break;
             }
@@ -617,16 +628,16 @@ void Tower::initialize(Textureloader* textload)
 
 
 
-int Tower::getEffect()
+int Tower::getEffect() const
 {
     return m_type_effect;
 }
 
 
 
-int Tower::getNbBall()
+int Tower::getNbBall() const
 {
-    if (m_type_effect == m_effect::ice)
+    if (m_type_effect == Effect::Ice)
         return m_nb_ball;
     else
         return 0;
@@ -634,7 +645,7 @@ int Tower::getNbBall()
 
 
 
-std::string Tower::getPrice()
+std::string Tower::getPrice() const
 {
     std::stringstream chaine;
     chaine << m_cost;
@@ -645,7 +656,7 @@ std::string Tower::getPrice()
 
 
 
-std::string Tower::getLeftUpgrade()
+std::string Tower::getLeftUpgrade() const
 {
     if (m_upgrade == 1 || m_upgrade < 5)
     {
@@ -661,7 +672,7 @@ std::string Tower::getLeftUpgrade()
 
 
 
-std::string Tower::getRightUpgrade()
+std::string Tower::getRightUpgrade() const
 {
     if ((m_upgrade == 1) || (m_upgrade > 5 && m_upgrade < 9))
     {

@@ -1,24 +1,27 @@
 #include "Bloon.h"
 
-Bloon::Bloon(int type, Textureloader* textload, std::string carte) : Entity()
+Bloon::Bloon(int type, Textureloader* textload, std::string carte) :
+Entity(),
+m_speed(0),
+m_life(type),
+m_life_lost(0),
+m_earn(0),
+m_way(0),
+m_ice(0),
+m_ice_limit(0),
+m_status(Effect::None),
+m_went_out(false),
+m_find(false),
+m_touch(false),
+m_earn_money(false),
+m_carte(carte)
 {
-    m_earn_money = false;
-    m_vie = type;
-    m_speed = 0;
-    m_find = false;
-    m_touch = false;
-    m_ice = 0;
     for (int m(0); m < 8; ++m)
     {
         m_direction[m] = true;
     }
-    m_earn = 0;
-    m_way = 0;
     initialize(textload);
-    m_exit = false;
-    m_carte = carte;
     setPosition(textload->getRedPxl(carte));
-    m_status = m_effect::none;
 }
 
 
@@ -33,24 +36,23 @@ Bloon::~Bloon()
 void Bloon::initialize(Textureloader* textload)
 {
     std::string ndefich = "";
-    int inter = m_vie;
+    int bloonType = m_life;
 
-    if (inter > 9 && inter < 100)
+    if (m_life > 9 && m_life < 100)
     {
-        m_vie /= 10;
+        bloonType /= 10;
     }
-
-    if (inter > 100 && inter < 200)
+    else if (m_life > 100 && m_life < 200)
     {
-        m_vie -= 90;
-        m_vie /= 10;
-        if (m_vie > 9)
+        bloonType -= 90;
+        bloonType /= 10;
+        if (bloonType > 9)
         {
-            m_vie = 9;
+            bloonType = 9;
         }
     }
 
-    switch (m_vie)
+    switch (bloonType)
     {
         case 1 :
             ndefich = "bloon_1.png";
@@ -101,25 +103,23 @@ void Bloon::initialize(Textureloader* textload)
             ndefich = "bloon_10.png";
             m_speed = 21;
             m_earn = 100;
+            break;
         case 200 :
             ndefich = "bloon_11.png";
             m_speed = 21;
             m_earn = 100;
+            break;
         default :
             break;
     }
-    m_vie = inter;
-    if (m_vie > 9 && m_vie < 100)
+
+    if (m_life > 9 && m_life < 100)
     {
         m_earn = 15;
         setTexture(textload->getTexture("bloon_shield.png"), SHIELD);
         spriteStatus(true, SHIELD);
     }
-    else
-    {
-        spriteStatus(false, SHIELD);
-    }
-    if (m_vie > 100 && m_vie < 200)
+    else if (m_life > 100 && m_life < 200)
     {
         m_earn = 15;
         setTexture(textload->getTexture("bloon_shield_1.png"), SHIELD);
@@ -129,7 +129,8 @@ void Bloon::initialize(Textureloader* textload)
     {
         spriteStatus(false, SHIELD);
     }
-    if (m_vie < 10 || m_vie == 100 || m_vie == 200)
+
+    if (m_life < 10 || m_life == 100 || m_life == 200)
     {
         setTexture(textload->getTexture(ndefich), BLOON);
     }
@@ -140,30 +141,30 @@ void Bloon::initialize(Textureloader* textload)
 // Recherche du chemin que doit suivre le ballon
 void Bloon::update(Textureloader* textload)
 {
-    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_vie > 0)
+    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_life > 0)
     {
         m_ice = 0;
         spriteStatus(false, ICE);
     }
-    if ((m_ice < m_ice_limit || m_status == m_effect::none) && m_vie > 0)
+    if ((m_ice < m_ice_limit || m_status == Effect::None) && m_life > 0)
     {
         for (int n(0); n < m_speed; ++n)
         {
             m_way++;
-            if (m_direction[0] == true && m_find == false)
-                findway(getPosition().x + 1, getPosition().y, 1, textload);
-
-            if (m_direction[2] == true && m_find == false)
-                findway(getPosition().x, getPosition().y + 1, 3, textload);
-
-            if (m_direction[1] == true && m_find == false)
-                findway(getPosition().x - 1, getPosition().y, 0, textload);
-
-            if (m_direction[3] == true && m_find == false)
-                findway(getPosition().x, getPosition().y - 1, 2, textload);
-
             if (m_find == false)
             {
+                if (m_direction[0] == true)
+                    findway(getPosition().x + 1, getPosition().y, 1, textload);
+
+                if (m_direction[2] == true)
+                    findway(getPosition().x, getPosition().y + 1, 3, textload);
+
+                if (m_direction[1] == true)
+                    findway(getPosition().x - 1, getPosition().y, 0, textload);
+
+                if (m_direction[3] == true)
+                    findway(getPosition().x, getPosition().y - 1, 2, textload);
+
                 if (m_direction[4] == true && m_find == false)
                     findway(getPosition().x + 1, getPosition().y - 1, 6, textload);
 
@@ -191,7 +192,8 @@ void Bloon::update()
 
 void Bloon::findway(unsigned int x, unsigned int y, int postab, Textureloader* textload)
 {
-    if (x < textload->getMap(m_carte).getSize().x && y < textload->getMap(m_carte).getSize().y)
+    sf::Vector2u mapSize = textload->getMap(m_carte).getSize();
+    if (x < mapSize.x && y < mapSize.y)
     {
         m_color = textload->getMap(m_carte).getPixel(x, y);
         if (m_color == sf::Color::White)
@@ -210,29 +212,29 @@ void Bloon::findway(unsigned int x, unsigned int y, int postab, Textureloader* t
             }
             m_find = true;
         }
-        if (m_color == sf::Color::Blue)
+        else if (m_color == sf::Color::Blue)
         {
             setPosition(sf::Vector2f(x, y));
-            m_exit = true;
+            m_went_out = true;
         }
     }
 }
 
 
 
-int Bloon::touch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
+bool Bloon::touch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
 {
     if (damages >= 0)
     {
         if ((pos_ball.x >= getPosition().x - 22 && pos_ball.x <= getPosition().x + 23) &&
             (pos_ball.y >= getPosition().y - 22 && pos_ball.y <= getPosition().y + 23))
         {
-            if (m_vie > 0)
+            if (m_life > 0)
             {
                 switch (effect)
                 {
                     case -1 :
-                        m_vie -= damages;
+                        m_life -= damages;
                         m_touch = true;
                         initialize(textload);
                         spriteStatus(false, ALL);
@@ -240,19 +242,16 @@ int Bloon::touch(sf::Vector2f pos_ball, int damages, Textureloader* textload, in
                         break;
                     case 0 :
                         m_ice++;
-                        if (m_ice_limit != ice_limit)
-                        {
-                            m_ice_limit = ice_limit;
-                        }
+                        m_ice_limit = ice_limit;
                         if (m_ice == m_ice_limit)
                         {
                             m_life_lost = damages;
-                            m_vie -= damages;
+                            m_life -= damages;
                             m_touch = true;
                             initialize(textload);
                             m_clock.restart();
                             m_ice++;
-                            m_status = m_effect::ice;
+                            m_status = Effect::Ice;
                             setTexture(textload->getTexture("ice_bloon.png"), ICE);
                             spriteStatus(true, ICE);
                             m_earn_money = true;
@@ -261,26 +260,27 @@ int Bloon::touch(sf::Vector2f pos_ball, int damages, Textureloader* textload, in
                     default :
                         break;
                 }
+
                 if (m_touch)
                 {
-                    return 1;
+                    return true;
                 }
             }
             else
             {
-                m_exit = true;
+                m_went_out = true;
             }
         }
     }
-    return 0;
+    return false;
 }
 
 
 
 // Ordonne la destruction du ballon
-bool Bloon::exit() const
+bool Bloon::isWentOut() const
 {
-    return m_exit;
+    return m_went_out;
 }
 
 
@@ -311,9 +311,9 @@ int Bloon::getMoney()
     if (m_touch)
     {
         m_touch = false;
-        if (m_status == m_effect::none && m_life_lost > 0)
+        if (m_status == Effect::None && m_life_lost > 0)
             return m_earn;
-        if (m_status == m_effect::ice && m_life_lost > 0 && m_earn_money == true)
+        if (m_status == Effect::Ice && m_life_lost > 0 && m_earn_money == true)
         {
             m_earn_money = false;
             return m_earn;
@@ -326,9 +326,9 @@ int Bloon::getMoney()
 
 int Bloon::getDamages() const
 {
-    if (m_exit == true && m_touch == false && m_vie > 0)
+    if (isWentOut() && m_touch == false && m_life > 0)
     {
-        return m_vie;
+        return m_life;
     }
     return 0;
 }
@@ -337,5 +337,5 @@ int Bloon::getDamages() const
 
 int Bloon::getHealth() const
 {
-    return m_vie;
+    return m_life;
 }

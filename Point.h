@@ -14,8 +14,8 @@ class Point
 {
     public:
         Point(int x, int y);
-        int Retx();
-        int Rety();
+        int retX();
+        int retY();
 
     private:
         int m_x, m_y;

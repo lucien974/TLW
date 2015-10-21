@@ -9,17 +9,7 @@ Bouton::Bouton()
 
 Bouton::Bouton(sf::Font& font, std::string message, int char_size, sf::Color color, sf::Color color_change, sf::Vector2i position)
 {
-    m_text.setFont(font);
-    m_text.setString(message);
-    m_text.setCharacterSize(char_size);
-    m_text.setColor(color);
-    m_text.setOrigin((m_text.getLocalBounds().width / 2), (m_text.getLocalBounds().height /2));
-    m_text.setPosition(position.x, position.y);
-    m_color_change = color_change;
-    m_color = color;
-    m_deux = false;
-    m_message = message;
-    m_char_size = char_size;
+    set(font, message, char_size, color, color_change, position);
 }
 
 
@@ -41,17 +31,8 @@ Bouton::~Bouton()
 
 void Bouton::set(sf::Font& font, std::string message, int char_size, sf::Color color, sf::Color color_change, sf::Vector2i position)
 {
-    m_text.setFont(font);
-    m_text.setString(message);
-    m_text.setCharacterSize(char_size);
-    m_text.setColor(color);
-    m_text.setOrigin((m_text.getLocalBounds().width / 2), (m_text.getLocalBounds().height /2));
-    m_text.setPosition(position.x, position.y);
+    set(font, message, char_size, color, position);
     m_color_change = color_change;
-    m_color = color;
-    m_deux = false;
-    m_message = message;
-    m_char_size = char_size;
 }
 
 
@@ -72,61 +53,53 @@ void Bouton::set(sf::Font& font, std::string message, int char_size, sf::Color c
 
 
 
-bool Bouton::inside(sf::Vector2i pos_ext, bool clic)
+bool Bouton::isInside(sf::Vector2i pos_ext, bool clic)
 {
     if (m_text.getColor() != m_color)
+    {
         m_text.setColor(m_color);
-    if (pos_ext.x <= m_text.getGlobalBounds().left + m_text.getGlobalBounds().width &&
-       pos_ext.x >= m_text.getGlobalBounds().left &&
-       pos_ext.y <= m_text.getGlobalBounds().top + m_text.getGlobalBounds().height &&
-       pos_ext.y >= m_text.getGlobalBounds().top)
+    }
+
+    sf::FloatRect textBounds = m_text.getGlobalBounds();
+    if (pos_ext.x <= textBounds.left + textBounds.width &&
+       pos_ext.x >= textBounds.left &&
+       pos_ext.y <= textBounds.top + textBounds.height &&
+       pos_ext.y >= textBounds.top)
     {
         if (m_text.getColor() != m_color_change)
+        {
             m_text.setColor(m_color_change);
+        }
         if (clic)
         {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 
 
 bool Bouton::setup(sf::Vector2i pos_ext)
 {
-    if (pos_ext.x <= m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width &&
-       pos_ext.x >= m_sprite.getGlobalBounds().left &&
-       pos_ext.y <= m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height &&
-       pos_ext.y >= m_sprite.getGlobalBounds().top)
+    sf::FloatRect spriteBounds = m_sprite.getGlobalBounds();
+    if (pos_ext.x <= spriteBounds.left + spriteBounds.width &&
+       pos_ext.x >= spriteBounds.left &&
+       pos_ext.y <= spriteBounds.top + spriteBounds.height &&
+       pos_ext.y >= spriteBounds.top)
     {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 
@@ -175,11 +148,15 @@ void Bouton::setColor(sf::Color color, sf::Color color_change)
 void Bouton::changeColor(bool status)
 {
     if (status == true)
+    {
         if (m_text.getColor() != m_color)
             m_text.setColor(m_color);
-    if (status == false)
+    }
+    else
+    {
         if (m_text.getColor() != m_color_change)
             m_text.setColor(m_color_change);
+    }
 }
 
 
@@ -192,7 +169,7 @@ void Bouton::setString(std::string a)
 
 
 
-sf::Vector2f Bouton::getPos()
+sf::Vector2f Bouton::getPos() const
 {
     return m_text.getPosition();
 }

@@ -1,24 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <sstream>
-#include <iostream>
-#include <algorithm>
 #include <string>
-#include <stdio.h>
-#include <deque>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <random>
-#include <time.h>
+#include <map>
 #include <cmath>
-#include <deque>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include <cstddef>
 
 #define BLOON "bloon"
 #define SHIELD "shield"
@@ -26,6 +15,10 @@
 #define ICE "ice"
 #define GLUE "glue"
 #define ALL "all"
+
+namespace Effect {
+    enum Effect {None = -1, Ice = 0, Burn = 1, Glue = 2, Reverse = 3};
+}
 
 class Entity: public sf::Transformable, public sf::Drawable
 {
@@ -38,18 +31,18 @@ class Entity: public sf::Transformable, public sf::Drawable
         void setTexture(sf::Texture& texture, sf::Vector2f origin, std::string name);
         void spriteStatus(bool a, std::string name);
         void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+        void drawRange(bool range);
         bool isColliding(Entity *entity);
         bool isNearOf(Entity *entity, float radius);
         bool isOutOfScreen(sf::RenderWindow* screen) const;
         void rotateTowards(Entity *entity);
-        bool getGlobalBounds(sf::Vector2i a);
-        void drawRange(bool range);
+        bool getGlobalBounds(sf::Vector2i a) const;
         void setOrigin(int a, int b);
-        int getRange();
+        int getRange() const;
         void setRange(int range);
-        float getRotation();
-        sf::Vector2f getPosition();
-        int getLastSprite();
+        float getRotation() const;
+        sf::Vector2f getPosition() const;
+        int getLastSprite() const;
         virtual void update() = 0;
 
     private:
@@ -59,8 +52,6 @@ class Entity: public sf::Transformable, public sf::Drawable
         std::map<std::string, bool>::iterator m_draw_status_it;
         bool m_range_aviable;
         sf::CircleShape m_range;
-    protected:
-        enum m_effect {none = -1, ice = 0, burn = 1, glue = 2, reverse = 3};
 };
 
 #endif //ENTITY_H
