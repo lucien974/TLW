@@ -2,7 +2,7 @@
 #define LEVEL_H_INCLUDED
 
 #include "Wave.h"
-#include "Multitour.h"
+#include "TowerManager.h"
 #include "Button.h"
 #include "Menu.h"
 
@@ -21,7 +21,7 @@ public:
 private:
 
     deque<Wave*> m_bloons;
-    Multitower *m_towers;
+    TowerManager *m_towers;
     int m_money , m_lives , m_play_save , m_status;
     char m_clic , m_animation;
     bool m_done , m_delete;

@@ -129,6 +129,7 @@ int Tower::shoot(sf::Vector2f bloon)
         m_last_pos.push_back(bloon);
         m_bullet.push_back(sf::RectangleShape(sf::Vector2f(5,12)));
         m_bullet.back().setOrigin(2 , 6);
+        m_bullet.back().setFillColor(m_color);
         if(m_canon == 1 || m_pass_canon[0] == true)
         {
             pass = true;

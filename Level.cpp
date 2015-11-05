@@ -48,7 +48,7 @@ void Level::initialize()
     m_button_play.setOrigin(25 , 25);
     m_button_play.setPosition(25 , 330);
 
-    m_towers = new Multitower(m_textload);
+    m_towers = new TowerManager(m_textload);
     /**/
     m_thread = new sf::Thread(&Level::physicsMotor , this);
     m_thread->launch();
@@ -248,6 +248,8 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                     break;
             }
         }
+        if(m_done == true)
+            cout << "End of game" << endl;
         if(Mouse::isButtonPressed(Mouse::Button::Left) == true && m_clic == 0)
         {
             m_clic = 1;

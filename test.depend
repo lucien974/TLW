@@ -4596,12 +4596,12 @@
 1445085206 source:/home/lucien/Documents/Projets/Temp/TLW/entity.cpp
 	"entity.h"
 
-1446743437 source:/home/lucien/Documents/Projets/Temp/TLW/Level.cpp
+1446745183 source:/home/lucien/Documents/Projets/Temp/TLW/Level.cpp
 	"Level.h"
 
-1446740937 /home/lucien/Documents/Projets/Temp/TLW/Level.h
+1446745183 /home/lucien/Documents/Projets/Temp/TLW/Level.h
 	"Wave.h"
-	"Multitour.h"
+	"TowerManager.h"
 	"Button.h"
 	"Menu.h"
 
@@ -4628,13 +4628,13 @@
 1446406699 source:/home/lucien/Documents/Projets/Temp/TLW/Menu.cpp
 	"Menu.h"
 
-1446736574 source:/home/lucien/Documents/Projets/Temp/TLW/Multitour.cpp
+1446744980 source:/home/lucien/Documents/Projets/Temp/TLW/Multitour.cpp
 	"Multitour.h"
 
 1446742777 source:/home/lucien/Documents/Projets/Temp/TLW/Textureloader.cpp
 	"Textureloader.h"
 
-1446492485 source:/home/lucien/Documents/Projets/Temp/TLW/Tower.cpp
+1446745504 source:/home/lucien/Documents/Projets/Temp/TLW/Tower.cpp
 	"Tower.h"
 
 1446452910 source:/home/lucien/Documents/Projets/Temp/TLW/Vague.cpp
@@ -4656,7 +4656,7 @@
 1446405848 /home/lucien/Documents/Projets/Temp/TLW/Button.h
 	"Textureloader.h"
 
-1446492751 source:/home/lucien/Documents/Projets/Temp/TLW/Entity.cpp
+1446744013 source:/home/lucien/Documents/Projets/Temp/TLW/Entity.cpp
 	"Entity.h"
 
 1446296798 source:/home/lucien/Documents/Projets/Temp/TLW/Game.cpp
@@ -4683,4 +4683,11 @@
 
 1446743339 source:/home/lucien/Documents/Projets/Temp/TLW/Wave.cpp
 	"Wave.h"
+
+1446745183 /home/lucien/Documents/Projets/Temp/TLW/TowerManager.h
+	"Tower.h"
+	"Button.h"
+
+1446745183 source:/home/lucien/Documents/Projets/Temp/TLW/TowerManager.cpp
+	"TowerManager.h"
 

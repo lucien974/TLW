@@ -1,14 +1,14 @@
-#ifndef MULTITOUR_H_INCLUDED
-#define MULTITOUR_H_INCLUDED
+#ifndef TOWER_MANAGER_H_INCLUDED
+#define TOWER_MANAGER_H_INCLUDED
 
 #include "Tower.h"
 #include "Button.h"
 
-class Multitower
+class TowerManager
 {
     public:
-        Multitower(Textureloader* textload);
-        ~Multitower();
+        TowerManager(Textureloader* textload);
+        ~TowerManager();
         int update(Image carte , RenderWindow* screen , Textureloader* textload , int money , bool sup , bool clic_up);
         int getSize();
         bool getStatus();
@@ -27,4 +27,4 @@ class Multitower
 };
 
 
-#endif // MULTITOUR_H_INCLUDED
+#endif // TOWER_MANAGER_H_INCLUDED
