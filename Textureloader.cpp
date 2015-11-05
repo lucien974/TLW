@@ -5,9 +5,6 @@ Textureloader::Textureloader(std::string image_folder , std::string buffer_folde
     m_texture_folder = image_folder;
     m_buffer_folder = buffer_folder;
     m_font_folder = font_folder;
-    m_seek = false;
-    m_vect.x = 0;
-    m_vect.y = 0;
 }
 
 Textureloader::Textureloader(std::string image_folder)
@@ -15,9 +12,6 @@ Textureloader::Textureloader(std::string image_folder)
     m_texture_folder = image_folder;
     m_buffer_folder = "";
     m_font_folder = "";
-    m_seek = false;
-    m_vect.x = 0;
-    m_vect.y = 0;
 }
 
 Textureloader::~Textureloader()
@@ -103,25 +97,32 @@ sf::Image& Textureloader::getMap(std::string filename)
     }
 }
 
-sf::Vector2f Textureloader::getRedPxl(std::string filename)
+sf::Vector2f Textureloader::getPxlPos(std::string filename , Color color_search , string type)
 {
-    if(m_seek == false)
+    m_map_pos_it = m_map_pos.find(type);
+    if(m_map_pos_it != m_map_pos.end())
+    {
+        return m_map_pos_it->second;
+    }
+    else
     {
         sf::Color color;
+        Vector2f vect;
         for(unsigned int za(0) ; za < getMap(filename).getSize().x ; za++ )
         {
             for(unsigned int j(0) ; j < getMap(filename).getSize().y ; j++ )
             {
                 color = getMap(filename).getPixel(za,j);
-                if(color.b <= 5 && color.g <= 5 && color.r >= 250)
+                if(color == color_search)
                 {
-                    m_vect.x = za;
-                    m_vect.y = j;
-                    m_seek = true;
-                    return m_vect;
+                    vect.x = za;
+                    vect.y = j;
+                    m_map_pos[type] = vect;
+                    return vect;
                 }
             }
         }
+        cout << "Error pxl of reference not found" << endl;
+        return Vector2f(0,0);
     }
-    return m_vect;
 }

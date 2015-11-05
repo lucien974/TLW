@@ -29,5 +29,7 @@
 #define EXIT "EXIT"
 #define RESTART "RESTART"
 #define TITLE "TITLE"
+///Type button
+#define BUTTON "button"
 
 #endif // INCLUDE_H_INCLUDED

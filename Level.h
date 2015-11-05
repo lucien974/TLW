@@ -14,19 +14,20 @@ public:
     void update(sf::RenderWindow *ecran , Textureloader* textload);
     void event(sf::RenderWindow *ecran , Textureloader* textload);
     void physicsMotor();
+    void buttonAnimation();
     void load();
+    void initialize();
 
 private:
 
     deque<Wave*> m_bloons;
     Multitower *m_towers;
-    int m_money , m_life , m_play_save;
-    char m_clic;
-    bool m_done , m_delete , m_pause_avaible;
+    int m_money , m_lives , m_play_save , m_status;
+    char m_clic , m_animation;
+    bool m_done , m_delete;
     ifstream m_file;
     Event m_event;
     Sprite m_map , m_button_play , m_interface;
-    Text m_sprite_money;
     Menu *m_pause , *m_win , *m_loose;
     Button *m_text_life;
     Music m_music;
@@ -35,6 +36,8 @@ private:
     RenderWindow *m_screen;
     Textureloader *m_textload;
     Mutex m_mutex;
+
+    enum game_status{normal = 0 , paused = 1 , win = 2 , loose = 3 , wait = 4 , play_animation = 5};
 };
 
 #endif // LEVEL_H_INCLUDED

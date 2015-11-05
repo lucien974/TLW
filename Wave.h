@@ -12,13 +12,14 @@ class Wave// : public Bloon
         int update(RenderWindow* ecran , Textureloader* textload);
         bool next();
         bool isEmpty();
-        int getSize();
+        int size();
         int getBloonSpeed(int num_bloon);
         void destroyBloon(int num);
         Vector2f getBloonPosition(int num);
         bool isNearOf(int bloon_num , Vector2f tower_pos , float radius);
         int isWentOut(int n);
         int getMoney(int n);
+        int getAdvance(int n);
         void isTouch(int n , Vector2f pos_ball , int damages , Textureloader* textload , int effect , int ice_limit);
     private:
         int m_gap , m_nb_bloons , m_cursor , m_type , m_way , m_damages;

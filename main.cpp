@@ -39,5 +39,6 @@ int main ( int argc, char** argv )
     //*/
     niv.event(window , textload);
     delete textload;
+    delete window;
     return 0;
 }

@@ -90,7 +90,9 @@ int Multitower::update(sf::Image carte , sf::RenderWindow* screen , Textureloade
         m_tower[z]->drawBullet(screen);
         if(m_tower_selected != -1 &&
            sf::Mouse::getPosition(*screen).x > 0 &&
-           sf::Mouse::getPosition(*screen).y > 0)
+           sf::Mouse::getPosition(*screen).y > 0 &&
+           sf::Mouse::getPosition(*screen).x < 900 &&
+           sf::Mouse::getPosition(*screen).y < 600)
         {
             if(m_tower[m_tower_selected]->getGlobalBounds(sf::Mouse::getPosition(*screen)) == false &&
                carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) != sf::Color(0,0,255) &&
