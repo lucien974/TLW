@@ -6,8 +6,8 @@ Textureloader::Textureloader(std::string image_folder , std::string buffer_folde
     m_buffer_folder = buffer_folder;
     m_font_folder = font_folder;
     m_seek = false;
-    m_vect.x = 450;
-    m_vect.y = 300;
+    m_vect.x = 0;
+    m_vect.y = 0;
 }
 
 Textureloader::Textureloader(std::string image_folder)
@@ -39,7 +39,7 @@ void Textureloader::setFontFolder(std::string folder)
     m_font_folder = folder;
 }
 
-sf::Texture& Textureloader::Gettexture(std::string filename)
+sf::Texture& Textureloader::getTexture(std::string filename)
 {
     std::string a;
     a = m_texture_folder + filename;
@@ -55,7 +55,7 @@ sf::Texture& Textureloader::Gettexture(std::string filename)
     }
 }
 
-sf::SoundBuffer& Textureloader::Getbuffer(std::string filename)
+sf::SoundBuffer& Textureloader::getBuffer(std::string filename)
 {
     std::string b;
     b = m_buffer_folder + filename;
@@ -71,7 +71,7 @@ sf::SoundBuffer& Textureloader::Getbuffer(std::string filename)
     }
 }
 
-sf::Font& Textureloader::Getfont(std::string filename)
+sf::Font& Textureloader::getFont(std::string filename)
 {
     std::string c;
     c = m_font_folder + filename;
@@ -87,7 +87,7 @@ sf::Font& Textureloader::Getfont(std::string filename)
     }
 }
 
-sf::Image& Textureloader::Getmap(std::string filename)
+sf::Image& Textureloader::getMap(std::string filename)
 {
     std::string r;
     r = m_texture_folder + filename;
@@ -108,11 +108,11 @@ sf::Vector2f Textureloader::getRedPxl(std::string filename)
     if(m_seek == false)
     {
         sf::Color color;
-        for( int za(0) ; za < Getmap(filename).getSize().x ; za++ )
+        for(unsigned int za(0) ; za < getMap(filename).getSize().x ; za++ )
         {
-            for( int j(0) ; j < Getmap(filename).getSize().y ; j++ )
+            for(unsigned int j(0) ; j < getMap(filename).getSize().y ; j++ )
             {
-                color = Getmap(filename).getPixel(za,j);
+                color = getMap(filename).getPixel(za,j);
                 if(color.b <= 5 && color.g <= 5 && color.r >= 250)
                 {
                     m_vect.x = za;

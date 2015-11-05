@@ -1,10 +1,7 @@
 #ifndef TEXTURELOADER_H_INCLUDED
 #define TEXTURELOADER_H_INCLUDED
 
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
+#include "Entity.h"
 
 class Textureloader
 {
@@ -12,10 +9,10 @@ class Textureloader
         Textureloader(std::string image_folder , std::string buffer_folder , std::string font_folder);
         Textureloader(std::string image_folder);
         ~Textureloader();
-        sf::Texture& Gettexture(std::string filename);
-        sf::SoundBuffer& Getbuffer(std::string filename);
-        sf::Font& Getfont(std::string filename);
-        sf::Image& Getmap(std::string filename);
+        sf::Texture& getTexture(std::string filename);
+        sf::SoundBuffer& getBuffer(std::string filename);
+        sf::Font& getFont(std::string filename);
+        sf::Image& getMap(std::string filename);
         sf::Vector2f getRedPxl(std::string filename);
         void setTextureFolder(std::string folder);
         void setBufferFolder(std::string folder);

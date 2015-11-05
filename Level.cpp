@@ -2,316 +2,181 @@
 
 Level::Level(Textureloader* textload , sf::RenderWindow *screen)
 {
+    m_done = false;
     m_screen = screen;
     m_textload = textload;
 
-    m_mouse = 0;
-    m_click = false;
-    m_pause_bool = false;
-    m_wave = 0;
-    m_pass_save = false;
-    m_bool_pause = false;
-    m_fichier = fopen("levels/lvl_1.txt" , "r");
-    m_frontinter = 0;
-    m_type = 0;
-    m_pass = true;
-    m_passinter = false;
-    m_play = 0;
-    m_pause = 0;
-    m_end = false;
-    m_done = false;
-    m_one_time = true;
-    m_sprite.setTexture(textload->Gettexture("grass_1.png"));
-    m_sprite.scale(1.5f , 1.5f);
+    m_map.setTexture(textload->getTexture("grass_1.png"));
+    m_map.scale(1.5f , 1.5f);
 
     m_money = 500;
 
-    m_tower = new Multitower(textload);
-    m_text_pause = new Bouton(textload->Getfont("abaddon.ttf") , "PAUSE" ,
-                               50 , sf::Color::Green , sf::Color::Green , sf::Vector2i(450 , 50));
-    m_text_loose = new Bouton(textload->Getfont("abaddon.ttf") , "YOU LOOSE" ,
-                               100  , sf::Color::Red , sf::Color::Red , sf::Vector2i(450,150));
-    m_restart = new Bouton(textload->Getfont("abaddon.ttf") , "RESTART" ,
-                               25  , sf::Color::Red , sf::Color::Black , sf::Vector2i(450,300));
-    m_resume = new Bouton(textload->Getfont("abaddon.ttf") , "RESUME" ,
-                               25  , sf::Color::Green , sf::Color::Red , sf::Vector2i(450,200));
-    m_text_exit = new Bouton(textload->Getfont("abaddon.ttf") , "EXIT" ,
-                               25  , sf::Color::Green , sf::Color::Red , sf::Vector2i(450,250));
-    m_text_win = new Bouton(textload->Getfont("abaddon.ttf") , "YOU WIN" ,
-                               100  , sf::Color::Yellow , sf::Color::Yellow , sf::Vector2i(450,150));
-    m_text_save = new Bouton(textload->Getfont("abaddon.ttf") , "SAVE" ,
-                               100  , sf::Color::Yellow , sf::Color::White , sf::Vector2i(450,350));
-    m_life.set(textload->Getfont("nb.ttf") , "" , 20 , sf::Color::Red , sf::Vector2i(750 , 550));
-    m_life.doubleBouton(textload->Getfont("nb.ttf") , -3 , -3 , sf::Color::Black);
-    m_tower_bar.setTexture(textload->Gettexture("tower_bar_1.png"));
-    m_tower_bar.setPosition(0,0);
-    m_bouton.setTexture(textload->Gettexture("play.png"));
-    m_bouton.setOrigin(25 , 25);
-    m_bouton.setPosition(25 , 330);
-    m_bp = false;
-    m_first_pass = true;
-    m_play_save = 0;
-    m_inter_vague = 0;
-    m_seek = 0;
-    m_win = false;
-    m_lives = 200;
-    m_loose.setTexture(textload->Gettexture("fond.png"));
-    m_loose.setOrigin( 402 , 300 );
-    m_loose.setPosition(400 , 300);
-    fseek(m_fichier , 0 , SEEK_END);
-    m_size = ftell(m_fichier);
-    fseek(m_fichier , 0 , SEEK_SET);
-    m_sup = false;
-    m_delete = false;
-    m_save = fopen("save/save.txt" , "w");
-    m_music.openFromFile("sons/sound_1.ogg");
-    m_music.setLoop(true);
-    m_music.play();
+    m_pause = new Menu(textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
+    m_pause->setTitle("PAUSE" , Vector2i(450 , 50));
+    m_pause->newButton(RESUME , Vector2i(0,150));
+    m_pause->newButton(EXIT , Vector2i(0,75));
+    m_pause->setBackground(Color(0,0,0,128));
+    m_pause->onMouseClick(true , RESUME);
 
+    m_loose = new Menu(textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
+    m_loose->setTitle("YOU LOOSE" , Vector2i(450 , 150));
+    m_loose->newButton(RESTART , Vector2i(0,150));
+    m_loose->newButton(EXIT , Vector2i(0,75));
+
+    m_win = new Menu(textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
+    m_win->setTitle("YOU LOOSE" , Vector2i(450 , 150));
+    m_win->newButton(RESTART , Vector2i(0,150));
+    m_win->newButton(EXIT , Vector2i(0,75));
+
+
+    m_text_life = new Button(textload , "" , "nb",
+                        Color::Red , Color::Red ,
+                        20 , Vector2i(750 , 550));
+
+    m_text_life->setShadows(Vector2i(-3 , -3));
+    /**/
+    m_interface.setTexture(textload->getTexture("tower_bar_1.png"));
+    m_interface.setPosition(0,0);
+
+    m_button_play.setTexture(textload->getTexture("play.png"));
+    m_button_play.setOrigin(25 , 25);
+    m_button_play.setPosition(25 , 330);
+
+    m_towers = new Multitower(textload);
+    /**/
     m_thread = new sf::Thread(&Level::physicsMotor , this);
     m_thread->launch();
+    //*/
+    m_interface.setTexture(textload->getTexture("tower_bar_1.png"));
+    m_interface.setPosition(0,0);
+
+    m_file.open("levels/lvl_1.txt" , ios::in);
+    if(!m_file)
+        cout << "Impossible d'ouvrir le fichier" << endl;
+    m_play_save = 1;
+    m_clic = 0;
+    m_delete = false;
 }
 
 void Level::physicsMotor()
 {
-    while(m_screen->isOpen())
+    /**/
+    Vector2f position;
+    while(!m_done)
     {
-        m_mutex.lock();
-        int inter[2];
-        inter[0] = 0;
-        for( int v(m_tower->getSize() - 1) ; v >= 0  ; --v )
+        int indice[2] , oldest = 0;
+        indice[0] = 0;
+        for(int p(0) ; p < m_play_save ; ++p)
         {
-            for( int n(m_level.size() - 1) ; n >= 0 ; --n )
+            if(m_bloons[p]->isEmpty())
             {
-                for( int g(0) ; g < m_level[n]->getSize() ; ++g )
+                m_play_save--;
+                delete m_bloons[p];
+                m_bloons.erase(m_bloons.begin() + p);
+            }
+        }
+        for( int v(m_towers->getSize() - 1) ; v >= 0  ; --v )
+        {
+            int n(m_bloons.size() - 1);
+            while(n >= 0)
+            {
+                m_mutex.lock();
+                for( int g(0) ; g < m_bloons[n]->getSize() ; ++g )
                 {
-                    if(m_level[n]->getBloon(g)->isOutOfScreen(m_screen) == false)
+                    position = m_bloons[n]->getBloonPosition(g);//->getPosition().y;
+                    //position.y = m_bloons[n]->getBloon(g)->getPosition().x;
+                    if(position.x >= 0 && position.x <= 900 &&
+                       position.y >= 0 && position.y <= 600)
                     {
-                        if(m_level[n]->getBloon(g)->isNearOf(m_tower->getTower(v) , m_tower->getTower(v)->getRange()) == true)
+                        if(m_bloons[n]->isNearOf(g , m_towers->getPosition(v) , m_towers->getRange(v)) == true)
                         {
-                            if(m_level[n]->getBloon(g)->Getincrementation() > inter[0])
+                            if(m_bloons[n]->isWentOut(g) > oldest)
                             {
-                                inter[0] = m_level[n]->getBloon(g)->Getincrementation();
-                                inter[1] = g;
-                                m_tri = n;
-                                m_first_pass = true;
+                                cout << "BLOON FIND!!!" << endl;
+                                oldest = m_bloons[n]->isWentOut(g);
+                                indice[1] = g;
+                                indice[0] = n;
                             }
                         }
                     }
                 }
+                n--;
+                m_mutex.unlock();
             }
-            if(m_first_pass && inter[0] != 0)
+            m_mutex.lock();
+            if(oldest != 0)
             {
-                m_tower->getTower(v)->rotateTowards(m_level[m_tri]->getBloon(inter[1]));
-                m_level[m_tri]->getBloon(inter[1])->Touch(m_level[m_tri]->getBloon(inter[1])->getPosition() ,
-                                                            m_tower->getTower(v)->Fire(m_level[m_tri]->getBloon(inter[1])->getPosition()) ,
-                                                            m_textload ,
-                                                            m_tower->getTower(v)->getEffect() ,
-                                                            m_tower->getTower(v)->getNbBall());
-                m_money += m_level[m_tri]->getBloon(inter[1])->Getmoney();
-                m_first_pass = false;
-                inter[0] = 0;
+                m_towers->rotateTowards(v , m_bloons[indice[0]]->getBloonPosition(indice[1]));
+                m_bloons[indice[0]]->isTouch(indice[1] ,
+                                            m_bloons[indice[0]]->getBloonPosition(indice[1]) ,
+                                            m_towers->shoot(v , m_bloons[indice[0]]->getBloonPosition(indice[1])) ,
+                                            m_textload ,
+                                            m_towers->getEffect(v) ,
+                                            m_towers->getNbBall(v));
+
+                m_money += m_bloons[indice[0]]->getMoney(indice[1]);
+                indice[0] = 0;
+                indice[1] = 0;
+                oldest = 0;
             }
+            m_mutex.unlock();
         }
-        m_mutex.unlock();
     }
+    //*/
 }
 
 Level::~Level()
 {
-    fclose(m_fichier);
-    fclose(m_save);
-    int f(0);
-    while( f < m_level.size() )
+    m_file.close();
+    while(m_bloons.size() != 0)
     {
-        delete m_level.at(f);
-        m_level.erase(m_level.begin());
-        f=0;
+        delete m_bloons[0];
+        m_bloons.pop_front();
     }
-    delete m_tower;
-    delete m_text_exit;
-    delete m_text_win;
-    delete m_text_pause;
-    delete m_text_loose;
-    delete m_restart;
-    delete m_resume;
-    delete m_text_save;
+    delete m_towers;
+    delete m_text_life;
 }
 
-void Level::Launch(sf::RenderWindow *ecran , Textureloader* textload)
+void Level::load()
 {
     m_mutex.lock();
-    if(m_pass == true)
+    if(m_file)
     {
-        m_play = 0;
-        if(m_seek == m_size)
-            m_play = 1;
-        while(m_play != 1)
+        int nb_bloons , type_of_bloon , gap , next_wave;
+        while(next_wave != -1)
         {
-            m_nbbloon.push_back(0);
-            m_inter.push_back(0);
-            fscanf( m_fichier , "%d %d %d %d %d" , &m_nbbloon.back() , &m_inter.back() , &m_type , &m_frontinter , &m_play);
-            if( m_frontinter == -1 )
-            {
-                m_end = true;
-            }
-            else
-            {
-                m_inter_vague = m_frontinter;
-            }
-            m_interlevel.push_back(m_frontinter);
-            m_level.push_back(new Vague(m_type , "virtual_grass_1.png"));
-            m_level.back()->Move(ecran , m_nbbloon.back() , m_inter.back() , textload);
+            m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
+            m_bloons.push_back(new Wave(nb_bloons , type_of_bloon , gap , next_wave , "virtual_grass_1.png"));
+            cout << nb_bloons << " , " << type_of_bloon << " , " << gap << ", " << next_wave << endl;
         }
-        m_seek = ftell(m_fichier);
-        m_wave++;
-        std::cout << "vague " << m_wave << std::endl;
         m_play_save = 1;
-        m_pass = false;
-    }
-    if(m_win == false)
-    {
-        if(m_lives > 0)
-        {
-            if(m_play == 0)
-            {
-                m_end = false;
-                int k(0);
-                if(m_level.size() == 0)
-                {
-                    m_pass = true;
-                    m_interlevel.clear();
-                }
-                while( k < m_level.size() )
-                {
-                    if(k < m_play_save)
-                    {
-                        m_lives -= m_level[k]->Move(ecran , m_nbbloon[k] , m_inter[k] , textload);
-                    }
-                    if(m_level[k]->Next(m_interlevel[k]))
-                    {
-                        m_play_save++;
-                        if(m_play_save >= m_level.size())
-                            m_play_save = m_level.size();
-                            std::cout << m_interlevel[k] << "pxls crossed" << std::endl;
-                        m_interlevel[k] = -1;
-                    }
-                    if( m_level[k]->Size() == true && m_interlevel[k] == -1)
-                    {
-                        delete m_level.at(k);
-                        m_level.erase(m_level.begin() + k);
-                        m_nbbloon.erase(m_nbbloon.begin() + k);
-                        m_inter.erase(m_inter.begin() + k);
-                        m_play_save--;
-                        if(m_seek == m_size && m_level.size() == 0)
-                            m_win = true;
-                        else
-                            m_win = false;
-                    }
-                    k++;
-                }
-            }
-            else
-            {
-                ecran->draw(m_bouton);
-                if(sf::Mouse::getPosition(*ecran).x <= m_bouton.getGlobalBounds().left + m_bouton.getGlobalBounds().width &&
-                   sf::Mouse::getPosition(*ecran).x >= m_bouton.getGlobalBounds().left &&
-                   sf::Mouse::getPosition(*ecran).y <= m_bouton.getGlobalBounds().top + m_bouton.getGlobalBounds().height &&
-                   sf::Mouse::getPosition(*ecran).y >= m_bouton.getGlobalBounds().top )
-                {
-                    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                    {
-                        if(!m_tower->getStatus())
-                            m_bp = true;
-                    }
-                }
-                if(m_bp)
-                {
-                    m_bouton.scale(0.99f , 0.99f);
-                    m_bouton.rotate(3.6);
-                    if(m_bouton.getRotation() < 1 && m_bouton.getRotation() > 0)
-                    {
-                        m_bp = false;
-                        m_bouton.scale( 1/(m_bouton.getScale().x) , 1/(m_bouton.getScale().y) );
-                        m_bouton.setRotation( -1 * m_bouton.getRotation() );
-                        m_play = 0;
-                    }
-                }
-            }
-            ecran->draw(m_tower_bar);
-            m_money = m_tower->update(textload->Getmap("virtual_grass_1.png") , ecran , textload , m_money , m_sup , m_click , m_mouse == 2);
-            std::stringstream az;
-            az << m_lives;
-            m_life.setString(az.str());
-            m_life.affiche(ecran);
-            m_sup = false;
-            if(m_mouse == 2)
-                m_mouse = 0;
-        }
-        else
-        {
-            m_text_exit->affiche(ecran);
-            m_text_loose->affiche(ecran);
-            m_restart->setColor(sf::Color::Red , sf::Color::Black);
-            m_restart->affiche(ecran);
-            if(m_restart->inside(sf::Mouse::getPosition(*ecran) , true))
-            {
-                m_wave = 0;
-                m_lives = 200;
-                m_money = 10;
-                fclose(m_fichier);
-                fopen("lvl_1.txt" , "r");
-                fseek(m_fichier , 0 , SEEK_SET);
-                m_seek = ftell(m_fichier);
-                int k(0);
-                while( k < m_level.size() )
-                {
-                    delete m_level.at(k);
-                    m_level.erase(m_level.begin());
-                    k=0;
-                }
-                delete m_tower;
-                m_tower = new Multitower(textload);
-            }
-            if(m_text_exit->inside(sf::Mouse::getPosition(*ecran) , true))
-            {
-                m_done = true;
-            }
-        }
-    }
-    else
-    {
-        m_text_win->affiche(ecran);
-        m_restart->setColor(sf::Color::Green , sf::Color::Red);
-        m_restart->affiche(ecran);
-        m_text_exit->affiche(ecran);
-        if(m_restart->inside(sf::Mouse::getPosition(*ecran) , true))
-        {
-            m_wave = 0;
-            m_lives = 200;
-            m_money = 10;
-            fseek(m_fichier , 0 , SEEK_SET);
-            m_seek = ftell(m_fichier);
-            m_win = false;
-            int o(0);
-            while( o < m_level.size() )
-            {
-                delete m_level.at(o);
-                m_level.erase(m_level.begin());
-                o=0;
-            }
-            delete m_tower;
-            m_tower = new Multitower(textload);
-        }
-        if(m_text_exit->inside(sf::Mouse::getPosition(*ecran) , true))
-        {
-            m_done = true;
-        }
     }
     m_mutex.unlock();
 }
 
-void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
+void Level::update(sf::RenderWindow *screen , Textureloader* textload)
+{
+    if(m_bloons.size() == 0)
+        load();
+    m_mutex.lock();
+    for(int i(0) ; i < m_play_save ; ++i)
+    {
+        //cout << i << " , " << m_bloons[i]->isEmpty() << endl;
+        if(!m_bloons[i]->isEmpty())
+        {
+            m_bloons[i]->update(screen , textload);
+            if(m_bloons[i]->next())
+                m_play_save++;
+        }
+    }
+    screen->draw(m_interface);
+    m_money = m_towers->update(textload->getMap("virtual_grass_1.png") , screen , textload , m_money , m_delete , m_clic==2);
+    if(m_clic == 2)
+        m_clic = 0;
+    m_mutex.unlock();
+}
+
+void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
 {
     while(m_done == false)
     {
@@ -328,7 +193,6 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                         case sf::Keyboard::Delete:
                             if(!m_delete)
                             {
-                                m_sup = true;
                                 m_delete = true;
                             }
                             break;
@@ -340,7 +204,6 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                     switch(m_event.key.code)
                     {
                         case sf::Keyboard::Delete:
-                            m_sup = false;
                             m_delete = false;
                             break;
                         default:
@@ -348,68 +211,36 @@ void Level::Event(sf::RenderWindow *screen ,  Textureloader* textload)
                     }
                     break;
                 case sf::Event::LostFocus:
-                    m_bool_pause = true;
-                    m_pause_bool = true;
+                    m_pause_avaible = true;
                     break;
                 case sf::Event::GainedFocus:
-                    m_bool_pause = false;
                     break;
-                    /*
-                case sf::Event::MouseButtonPressed:
-                    if (sf::Mouse::Left)
-                        m_click;
-                        //*/
                 default:
                     break;
             }
         }
-        m_click = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-        if(m_mouse == 0)
+        if(Mouse::isButtonPressed(Mouse::Button::Left) == true && m_clic == 0)
         {
-            m_mouse = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+            m_clic = 1;
         }
-        if(m_mouse == 1 && sf::Mouse::isButtonPressed(sf::Mouse::Left) == false)
+        if(Mouse::isButtonPressed(Mouse::Button::Left) == 0 && m_clic == 1)
         {
-            m_mouse = 2;
+            m_clic = 2;
         }
-        screen->draw(m_sprite);
-        if(m_pause_bool == false && m_bool_pause == false)
+        screen->draw(m_map);
+        if(m_pause_avaible)
         {
-            Launch(screen , textload);
-            m_pass_save = false;
-        }
-        if(m_pause_bool == true  || m_bool_pause == true)
-        {
-            screen->draw(m_shape_pause);
-
-            m_text_pause->affiche(screen);
-            m_resume->affiche(screen);
-            m_text_exit->affiche(screen);
-            if(m_resume->inside(sf::Mouse::getPosition(*screen) , true) && m_bool_pause == false)
-            {
-               m_pause_bool = false;
-            }
-            if(m_text_exit->inside(sf::Mouse::getPosition(*screen) , true) && m_bool_pause == false)
-            {
+            string a = m_pause->update(screen);
+            if(a == RESUME)
+                m_pause_avaible = false;
+            if(a == EXIT)
                 m_done = true;
-            }
-            /*
-            if(m_text_save->Inside(sf::Mouse::getPosition(*screen) , true))
-            {
-                std::stringstream an;
-                an << m_seek;
-                std::string chaine;
-                chaine = an.str();
-                if(!m_pass_save)
-                {
-                    fprintf(m_save , chaine.c_str());
-                    m_pass_save = true;
-                }
-            }
-            //*/
+        }
+        else
+        {
+            update(screen , textload);
         }
         screen->display();
         screen->clear();
     }
-
 }

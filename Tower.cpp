@@ -15,7 +15,7 @@ Tower::Tower(int type , Textureloader* textload) : Entity()
     m_damages = 0;
     m_cost = 0;
     m_color = sf::Color::Black;
-    Init(textload);
+    init(textload);
 }
 
 Tower::Tower(int type , Textureloader* textload , sf::Vector2f position) : Entity()
@@ -28,7 +28,7 @@ Tower::Tower(int type , Textureloader* textload , sf::Vector2f position) : Entit
     m_type = type;
     m_upgrade = 1;
     m_color = sf::Color::Black;
-    Init(textload);
+    init(textload);
     setPosition(position);
 }
 
@@ -83,7 +83,7 @@ void Tower::iceMove(int r)
 
 void Tower::drawBullet(sf::RenderWindow* screen)
 {
-    for(int r(0) ; r < m_bullet.size() ; ++r)
+    for(unsigned int r(0) ; r < m_bullet.size() ; ++r)
     {
         if(m_type_effect == m_effect::ice)
         {
@@ -120,7 +120,7 @@ void Tower::drawBullet(sf::RenderWindow* screen)
     }
 }
 
-int Tower::Fire(sf::Vector2f bloon)
+int Tower::shoot(sf::Vector2f bloon)
 {
     bool pass(false);
     m_tir = m_clock.getElapsedTime().asMilliseconds();
@@ -204,7 +204,7 @@ int Tower::getNumberBullet()
     return m_bullet.size();
 }
 
-int Tower::Sell()
+int Tower::sell()
 {
     m_cost *= 0.75;
     return m_cost;
@@ -219,7 +219,7 @@ void Tower::upgradeLeft(Textureloader* textload)
 {
     if(m_upgrade < 6)
         m_upgrade++;
-    Init(textload);
+    init(textload);
 }
 
 void Tower::upgradeRight(Textureloader* textload)
@@ -228,10 +228,10 @@ void Tower::upgradeRight(Textureloader* textload)
         m_upgrade++;
     if(m_upgrade == 1)
         m_upgrade = 6;
-    Init(textload);
+    init(textload);
 }
 
-void Tower::Init(Textureloader* textload)
+void Tower::init(Textureloader* textload)
 {
     m_pass_canon[0] = true;
     m_canon = 7;
@@ -242,7 +242,7 @@ void Tower::Init(Textureloader* textload)
             switch(m_upgrade)
             {
                 case 1:
-                    setTexture(textload->Gettexture("tower_1_1.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_1.png") , TOWER);
                     m_firerate = 750.0;
                     m_portee = 100;
                     m_damages = 1;
@@ -250,7 +250,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost = 10;
                     break;
                 case 2:
-                    setTexture(textload->Gettexture("tower_1_2.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_2.png") , TOWER);
                     m_firerate = 650.0;
                     m_portee = 110;
                     m_damages = 1;
@@ -259,7 +259,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 3:
-                    setTexture(textload->Gettexture("tower_1_3.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_3.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 120;
                     m_damages = 1;
@@ -268,7 +268,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 20;
                     break;
                 case 4:
-                    setTexture(textload->Gettexture("tower_1_4.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_4.png") , TOWER);
                     m_firerate = 300.0;
                     m_portee = 130;
                     m_damages = 1;
@@ -277,7 +277,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 5:
-                    setTexture(textload->Gettexture("tower_1_5.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_5.png") , TOWER);
                     m_firerate = 100.0;
                     m_portee = 150;
                     m_damages = 1;
@@ -286,7 +286,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 6:
-                    setTexture(textload->Gettexture("tower_1_6.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_6.png") , TOWER);
                     m_firerate = 900.0;
                     m_portee = 120;
                     m_damages = 1;
@@ -294,7 +294,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 7:
-                    setTexture(textload->Gettexture("tower_1_7.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_7.png") , TOWER);
                     m_firerate = 850.0;
                     m_portee = 150;
                     m_damages = 1;
@@ -302,7 +302,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 8:
-                    setTexture(textload->Gettexture("tower_1_8.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_8.png") , TOWER);
                     m_firerate = 775.0;
                     m_portee = 160;
                     m_damages = 2;
@@ -310,7 +310,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 9:
-                    setTexture(textload->Gettexture("tower_1_9.png") , TOWER);
+                    setTexture(textload->getTexture("tower_1_9.png") , TOWER);
                     m_firerate = 700.0;
                     m_portee = 200;
                     m_damages = 3;
@@ -326,7 +326,7 @@ void Tower::Init(Textureloader* textload)
             switch(m_upgrade)
             {
                 case 1:
-                    setTexture(textload->Gettexture("tower_2_1.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_1.png") , TOWER);
                     m_firerate = 666.0;
                     m_portee = 100;
                     m_damages = 1;
@@ -334,7 +334,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost = 20;
                     break;
                 case 2:
-                    setTexture(textload->Gettexture("tower_2_2.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_2.png") , TOWER);
                     m_firerate = 650.0;
                     m_portee = 150;
                     m_damages = 1;
@@ -343,7 +343,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 3:
-                    setTexture(textload->Gettexture("tower_2_3.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_3.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 200;
                     m_damages = 1;
@@ -351,7 +351,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 4:
-                    setTexture(textload->Gettexture("tower_2_4.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_4.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 250;
                     m_damages = 1;
@@ -359,7 +359,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 5:
-                    setTexture(textload->Gettexture("tower_2_5.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_5.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 300;
                     m_damages = 1;
@@ -367,7 +367,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 6:
-                    setTexture(textload->Gettexture("tower_2_6.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_6.png") , TOWER);
                     m_firerate = 625.0;
                     m_portee = 110;
                     m_damages = 1;
@@ -376,7 +376,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 7:
-                    setTexture(textload->Gettexture("tower_2_7.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_7.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 150;
                     m_damages = 2;
@@ -384,7 +384,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 8:
-                    setTexture(textload->Gettexture("tower_2_8.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_8.png") , TOWER);
                     m_firerate = 575.0;
                     m_portee = 160;
                     m_damages = 3;
@@ -392,7 +392,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 9:
-                    setTexture(textload->Gettexture("tower_2_9.png") , TOWER);
+                    setTexture(textload->getTexture("tower_2_9.png") , TOWER);
                     m_firerate = 550.0;
                     m_portee = 170;
                     m_damages = 4;
@@ -408,7 +408,7 @@ void Tower::Init(Textureloader* textload)
             switch(m_upgrade)
             {
                 case 1:
-                    setTexture(textload->Gettexture("tower_3_1.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_1.png") , TOWER);
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 2;
@@ -416,7 +416,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost = 30;
                     break;
                 case 2:
-                    setTexture(textload->Gettexture("tower_3_2.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_2.png") , TOWER);
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 3;
@@ -424,7 +424,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 3:
-                    setTexture(textload->Gettexture("tower_3_3.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_3.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 140;
                     m_damages = 3;
@@ -432,7 +432,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 4:
-                    setTexture(textload->Gettexture("tower_3_4.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_4.png") , TOWER);
                     m_firerate = 550.0;
                     m_portee = 160;
                     m_damages = 4;
@@ -440,7 +440,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 5:
-                    setTexture(textload->Gettexture("tower_3_5.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_5.png") , TOWER);
                     m_firerate = 500.0;
                     m_portee = 170;
                     m_damages = 5;
@@ -449,7 +449,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 6:
-                    setTexture(textload->Gettexture("tower_3_6.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_6.png") , TOWER);
                     m_firerate = 750.0;
                     m_portee = 125;
                     m_damages = 2;
@@ -457,7 +457,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 7:
-                    setTexture(textload->Gettexture("tower_3_7.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_7.png") , TOWER);
                     m_firerate = 700.0;
                     m_portee = 135;
                     m_damages = 2;
@@ -465,7 +465,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 8:
-                    setTexture(textload->Gettexture("tower_3_8.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_8.png") , TOWER);
                     m_firerate = 650.0;
                     m_portee = 145;
                     m_damages = 4;
@@ -474,7 +474,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 9:
-                    setTexture(textload->Gettexture("tower_3_9.png") , TOWER);
+                    setTexture(textload->getTexture("tower_3_9.png") , TOWER);
                     m_firerate = 600.0;
                     m_portee = 150;
                     m_damages = 8;
@@ -489,7 +489,7 @@ void Tower::Init(Textureloader* textload)
             switch(m_upgrade)
             {
                 case 1:
-                    setTexture(textload->Gettexture("tower_4_1.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_1.png") , TOWER);
                     m_firerate = 50;
                     m_portee = 75;
                     m_damages = 0;
@@ -499,7 +499,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost = 40;
                     break;
                 case 2:
-                    setTexture(textload->Gettexture("tower_4_2.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_2.png") , TOWER);
                     m_firerate = 40;
                     m_portee = 75;
                     m_damages = 0;
@@ -509,7 +509,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 3:
-                    setTexture(textload->Gettexture("tower_4_3.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_3.png") , TOWER);
                     m_firerate = 30;
                     m_portee = 75;
                     m_damages = 0;
@@ -519,7 +519,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 4:
-                    setTexture(textload->Gettexture("tower_4_4.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_4.png") , TOWER);
                     m_firerate = 20;
                     m_portee = 75;
                     m_damages = 1;
@@ -529,7 +529,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 5:
-                    setTexture(textload->Gettexture("tower_4_5.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_5.png") , TOWER);
                     m_firerate = 0;
                     m_portee = 75;
                     m_damages = 1;
@@ -539,7 +539,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 6:
-                    setTexture(textload->Gettexture("tower_4_6.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_6.png") , TOWER);
                     m_firerate = 30;
                     m_portee = 75;
                     m_damages = 0;
@@ -549,7 +549,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 7:
-                    setTexture(textload->Gettexture("tower_4_7.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_7.png") , TOWER);
                     m_firerate = 25;
                     m_portee = 75;
                     m_damages = 0;
@@ -559,7 +559,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 8:
-                    setTexture(textload->Gettexture("tower_4_8.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_8.png") , TOWER);
                     m_firerate = 25;
                     m_portee = 75;
                     m_damages = 1;
@@ -569,7 +569,7 @@ void Tower::Init(Textureloader* textload)
                     m_cost += 15;
                     break;
                 case 9:
-                    setTexture(textload->Gettexture("tower_4_9.png") , TOWER);
+                    setTexture(textload->getTexture("tower_4_9.png") , TOWER);
                     m_firerate = 0;
                     m_portee = 75;
                     m_damages = 1;
@@ -666,10 +666,10 @@ int Tower::getUpPrice(Textureloader* textload)
         int c = m_upgrade;
         m_upgrade = up;
         int b(m_cost);
-        Init(textload);
+        init(textload);
         int a = m_cost - b;
         m_upgrade = c;
-        Init(textload);
+        init(textload);
         if(m_upgrade != 1)
             m_cost -= a;
         return a;

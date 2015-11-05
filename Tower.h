@@ -1,26 +1,26 @@
 #ifndef TOWER_H_INCLUDED
 #define TOWER_H_INCLUDED
 
-#include "entity.h"
+#include "Entity.h"
 #include "Textureloader.h"
 
 class Tower : public Entity
 {
-  public:
-      Tower(int type , Textureloader* textload);
-      Tower(int type , Textureloader* textload , sf::Vector2f position);
-      int Fire(sf::Vector2f bloon);
+    public:
+    Tower(int type , Textureloader* textload);
+    Tower(int type , Textureloader* textload , sf::Vector2f position);
+      int shoot(Vector2f bloon);
       virtual ~Tower();
       void update();
       void drawBullet(sf::RenderWindow* screen);
       void destroyBullet();
       sf::Vector2f getBullet(int a);
       int getNumberBullet();
-      int Sell();
+      int sell();
       int getCost();
       void upgradeLeft(Textureloader* textload);
       void upgradeRight(Textureloader* textload);
-      void Init(Textureloader* textload);
+      void init(Textureloader* textload);
       int getEffect();
       int getNbBall();
       void iceMove(int r);

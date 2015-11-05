@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 
 Entity::Entity(): sf::Drawable()
 {
@@ -83,7 +83,8 @@ sf::Vector2f Entity::getPosition()
     return (m_sprite.begin()->second.getPosition());
 }
 
-bool Entity::isNearOf(Entity *entity, float radius) {
+bool Entity::isNearOf(Entity *entity, float radius)
+{
 	const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
 	const sf::Vector2f pos2 = entity->m_sprite.begin()->second.getPosition();
 	/*
@@ -92,6 +93,17 @@ bool Entity::isNearOf(Entity *entity, float radius) {
 	 * Sinon il est en dehors
 	 */
 	return (pow((pos2.x - pos1.x), 2) + pow((pos2.y - pos1.y), 2)) <= pow(radius, 2);
+}
+
+bool Entity::isInRange(Vector2f position , float radius)
+{
+    const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
+	/*
+	 * Équation d'un cercle r² = (x-a)² + (y-b)²
+	 * Si (x-a)² + (y-b)² <= r², alors le point (a,b) est dans ou sur le cercle
+	 * Sinon il est en dehors
+	 */
+	return (pow((position.x - pos1.x), 2) + pow((position.y - pos1.y), 2)) <= pow(radius, 2);
 }
 
 bool Entity::isOutOfScreen(sf::RenderWindow* screen)
@@ -137,12 +149,26 @@ void Entity::rotateTowards(Entity *entity) {
     {
         angle*=-1;
     }
-    /*
-    for(int i(0) ; i < m_sprite.size() ; ++i)
+    for(auto &ent1 : m_sprite)
     {
-        m_sprite.begin()->second.setRotation(angle);
+        ent1.second.setRotation(angle);
     }
-    //*/
+}
+
+void Entity::rotateTowards(Vector2f pos2)
+{
+    const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
+
+    float x, y, angle;
+
+    x = pos2.x - pos1.x;
+    y = pos2.y - pos1.y;
+
+    angle = acos(y/sqrt(x*x + y*y))*(180.0f / 3.1415f) + 180.0f;
+    if(x > 0)
+    {
+        angle*=-1;
+    }
     for(auto &ent1 : m_sprite)
     {
         ent1.second.setRotation(angle);
@@ -182,8 +208,8 @@ bool Entity::getGlobalBounds(sf::Vector2i a)
 
 void Entity::setRange(int range)
 {
+    m_range.setRadius(100.0);
     m_range.setFillColor(sf::Color(0,0,255,128));
-    m_range.setRadius(range);
     m_range.setOrigin(m_range.getGlobalBounds().width / 2 , m_range.getGlobalBounds().height / 2);
 }
 
@@ -200,5 +226,5 @@ void Entity::drawRange(bool range)
 
 int Entity::getRange()
 {
-    return (int)(m_range.getRadius());
+    return (float)(m_range.getRadius());
 }

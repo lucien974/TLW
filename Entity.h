@@ -1,32 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <stdio.h>
-#include <deque>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <random>
-#include <time.h>
-#include <cmath>
-#include <deque>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
+#include "Include.h"
 
-#define BLOON "bloon"
-#define SHIELD "shield"
-#define TOWER "tower"
-#define ICE "ice"
-#define GLUE "glue"
-#define ALL "all"
+using namespace std;
+using namespace sf;
 
-class Entity: public sf::Transformable, public sf::Drawable {
+class Entity: public sf::Transformable, public sf::Drawable
+{
 
 	public:
 		Entity();
@@ -40,6 +21,7 @@ class Entity: public sf::Transformable, public sf::Drawable {
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 		bool isColliding(Entity *entity);
 		bool isNearOf(Entity *entity, float radius);
+		bool isInRange(Vector2f position , float radius);
 		bool isOutOfScreen(sf::RenderWindow* screen);
 		void rotateTowards(Entity *entity);
 		bool getGlobalBounds(sf::Vector2i a);
@@ -50,6 +32,7 @@ class Entity: public sf::Transformable, public sf::Drawable {
 		sf::Vector2f getPosition();
 		int lastSprite();
 		int getRange();
+		void rotateTowards(Vector2f pos2);
 		virtual void update() = 0;
 
 	private:

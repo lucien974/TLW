@@ -1,35 +1,26 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 
-#include "Vague.h"
-#include "Tower.h"
-#include "Bouton.h"
+#include "Button.h"
 
-class Interface
+class Menu
 {
-public:
-    Interface(Textureloader* textload);
-    ~Interface();
-    void Update(sf::RenderWindow* screen , Textureloader* textload);
-    bool Boucle(sf::RenderWindow* screen , Textureloader* textload);
+    public:
+        Menu(Textureloader* textload , string font , int size , Color color , Color color_hovered);
+        ~Menu();
+        string update(sf::RenderWindow* screen);
+        void setTitle(string sentence , Vector2i position);
+        void newButton(string type , Vector2i gap);
+        void setBackground(Color color);
+        void onMouseClick(bool clic , string type);
 
-private:
-    sf::Texture m_texture , m_fond_texture;
-    Bouton *m_bouton_play , *m_bouton_exit , *m_name;
-    sf::Sprite m_fusion , m_fond;
-    int tpspred , tpssuiv , m_explo , m_alea;
-    int m_pos_x , m_posplayx , m_posexitx , m_posnamex , m_pos_left_x , m_pos_right_x;
-    int m_pos_y , m_posplayy , m_posexity , m_posnamey , m_pos_left_y , m_pos_right_y;
-    sf::Event m_event;
-    bool m_anim_1 , m_anim_2 , m_anim_3 , m_anim_4 , m_exit;
-    Vague *m_black , *m_white;
-    bool m_anim_5 , m_pass , m_end , m_click;
-    sf::RectangleShape m_left , m_right;
-    sf::CircleShape m_explosion;
-    sf::Font m_police;
-    sf::View m_view;
-    sf::Sound m_sound_xplo;
-    Tower *m_tower , *m_inter , *m_tower_2;
+    private:
+        map<string , Button*> m_buttons;
+        sf::RectangleShape m_background;
+        Textureloader *m_textload;
+        Color m_color_normal , m_color_hovered;
+        int m_size;
+        string m_font , m_last_button , m_select;
 };
 
 #endif // MENU_H_INCLUDED

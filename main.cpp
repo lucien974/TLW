@@ -26,7 +26,7 @@ int main ( int argc, char** argv )
     //menu = new Interface(textload);
 
     Level niv(textload , window);
-    sf::Thread thread(&Level::physicsMotor , &niv);
+    //sf::Thread thread(&Level::physicsMotor , &niv);
     /*
     if(menu->Boucle(window , textload))
     {
@@ -37,7 +37,7 @@ int main ( int argc, char** argv )
         niv.Event(window , textload);
     }
     //*/
-    niv.Event(window , textload);
-
+    niv.event(window , textload);
+    delete textload;
     return 0;
 }
