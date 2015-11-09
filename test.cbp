@@ -62,12 +62,12 @@
 		<Unit filename="Level.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
-		<Unit filename="Multitour.cpp" />
-		<Unit filename="Multitour.h" />
 		<Unit filename="Textureloader.cpp" />
 		<Unit filename="Textureloader.h" />
 		<Unit filename="Tower.cpp" />
 		<Unit filename="Tower.h" />
+		<Unit filename="TowerManager.cpp" />
+		<Unit filename="TowerManager.h" />
 		<Unit filename="Wave.cpp" />
 		<Unit filename="Wave.h" />
 		<Unit filename="main.cpp" />

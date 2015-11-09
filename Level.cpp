@@ -85,6 +85,8 @@ void Level::physicsMotor()
                 m_bloons.erase(m_bloons.begin() + p);
             }
         }
+        if(m_play_save == 0 && m_bloons.size() > 0)
+            m_play_save++;
         for( int v(m_towers->getSize() - 1) ; v >= 0  ; --v )
         {
             int n(m_bloons.size() - 1);
@@ -136,6 +138,7 @@ void Level::physicsMotor()
 Level::~Level()
 {
     m_file.close();
+    m_thread->terminate();
     while(m_bloons.size() != 0)
     {
         delete m_bloons[0];
@@ -159,6 +162,7 @@ void Level::load()
         {
             m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
             m_bloons.push_back(new Wave(nb_bloons , type_of_bloon , gap , next_wave , "virtual_grass_1.png"));
+            cout << nb_bloons << " , " << gap << " , " << type_of_bloon << " , " << next_wave << endl;
         }
         m_play_save = 1;
         m_status = game_status::wait;
@@ -176,6 +180,7 @@ void Level::update(sf::RenderWindow *screen , Textureloader* textload)
     m_mutex.lock();
     if(m_status < game_status::wait)
     {
+        cout << m_play_save << endl;
         for(int i(0) ; i < m_play_save ; ++i)
         {
             if(!m_bloons[i]->isEmpty())
@@ -207,8 +212,11 @@ void Level::update(sf::RenderWindow *screen , Textureloader* textload)
 
 void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
 {
+    char status=0;
     while(m_done == false)
     {
+        if(m_status != game_status::paused)
+            status = m_status;
         while(screen->pollEvent(m_event))
         {
             switch(m_event.type)
@@ -245,6 +253,7 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                 case sf::Event::GainedFocus:
                     break;
                 default:
+                    screen->setPosition(Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450 , VideoMode::getDesktopMode().height/2 - 300));
                     break;
             }
         }
@@ -271,11 +280,15 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                 if(m_button_play.getScale() != Vector2f(1,1))
                     m_button_play.scale(1/m_button_play.getScale().x , 1/m_button_play.getScale().y);
                 update(screen , textload);
+                m_delete = false;
                 break;
             case game_status::paused:
                 a = m_pause->update(screen);
                 if(a == RESUME)
-                    m_status = game_status::normal;
+                {
+                    m_status = status;
+                    m_clic = 0;
+                }
                 if(a == EXIT)
                     m_done = true;
                 break;

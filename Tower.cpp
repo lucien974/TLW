@@ -93,19 +93,11 @@ void Tower::drawBullet(sf::RenderWindow* screen)
         else
         {
             sf::Vector2f bullet_to_bloon;
-            /*
-            std::cout << "last pos , x : " << m_last_pos[r].x << " , y : " << m_last_pos[r].y << std::endl;
-            std::cout << "bullet pos , x : " << m_bullet[r].getPosition().x << " , y : " << m_bullet[r].getPosition().y << std::endl;
-            //*/
+
             bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
 
             if((bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) <= 0)
             {
-                /*
-                std::cout << "bullet to bloon , x : " << bullet_to_bloon.x << " , y : " << bullet_to_bloon.y << std::endl;
-                std::cout << "forward , x : " << m_forward[r].x << " , y : " << m_forward[r].y << std::endl;
-                std::cout << "scalaire : " << (bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) << std::endl;
-                //*/
                 m_bullet.erase( m_bullet.begin() + r );
                 m_last_pos.erase(m_last_pos.begin() + r);
                 m_forward.erase(m_forward.begin() + r);
@@ -124,7 +116,7 @@ int Tower::shoot(sf::Vector2f bloon)
 {
     bool pass(false);
     m_tir = m_clock.getElapsedTime().asMilliseconds();
-    if(m_tir >= m_firerate && bloon.x >= 0 && bloon.y >= 0)
+    if(m_tir >= m_firerate && bloon.x >= 0 && bloon.y >= 0 && m_bullet.size() < 15000)
     {
         m_last_pos.push_back(bloon);
         m_bullet.push_back(sf::RectangleShape(sf::Vector2f(5,12)));
@@ -571,7 +563,7 @@ void Tower::init(Textureloader* textload)
                     break;
                 case 9:
                     setTexture(textload->getTexture("tower_4_9.png") , TOWER);
-                    m_firerate = 0;
+                    m_firerate = 5;
                     m_portee = 75;
                     m_damages = 1;
                     m_color = sf::Color(255,255,255,200);

@@ -115,57 +115,60 @@ int TowerManager::update(sf::Image carte , sf::RenderWindow* screen , Textureloa
         }
         screen->draw(*m_tower[z]);
     }
-    if(m_tower_selected != -1)
+    if(m_tower_selected != -1 && m_tower_selected < m_tower.size())
     {
-        m_tower[m_tower_selected]->drawRange(true);
-        if(m_tower[m_tower_selected]->getLeftUpgrade() != "")
-        {
-            std::stringstream a;
-            m_up[0].setTexture(textload->getTexture(m_tower[m_tower_selected]->getLeftUpgrade()));
-            m_up[0].setOrigin(m_up[0].getLocalBounds().height/2 , m_up[0].getLocalBounds().width/2);
-
-            m_up_price[0]->onCondition(money >= m_tower[m_tower_selected]->getUpPrice(textload));
-
-            a << m_tower[m_tower_selected]->getUpPrice(textload);
-
-            m_up_price[0]->setSentence(a.str());
-            if(m_up[0].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
-               clic_up == true &&
-               money >= m_tower[m_tower_selected]->getUpPrice(textload))
-            {
-                money -= m_tower[m_tower_selected]->getUpPrice(textload);
-                m_tower[m_tower_selected]->upgradeLeft(textload);
-                clic_up = false;
-            }
-            screen->draw(m_up[0]);
-            screen->draw(*m_up_price[0]);
-        }
-        if(m_tower[m_tower_selected]->getRightUpgrade() != "")
-        {
-            std::stringstream b;
-            m_up[1].setTexture(textload->getTexture(m_tower[m_tower_selected]->getRightUpgrade()));
-            m_up[1].setOrigin(m_up[1].getLocalBounds().height/2 , m_up[1].getLocalBounds().width/2);
-
-            m_up_price[1]->onCondition(money >= m_tower[m_tower_selected]->getUpPrice(textload));
-
-            b << (m_tower[m_tower_selected]->getUpPrice(textload));
-
-            m_up_price[1]->setSentence(b.str());
-            if(m_up[1].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
-               clic_up == true &&
-               money >= m_tower[m_tower_selected]->getUpPrice(textload))
-            {
-                money -= m_tower[m_tower_selected]->getUpPrice(textload);
-                m_tower[m_tower_selected]->upgradeRight(textload);
-                clic_up = false;
-            }
-            screen->draw(m_up[1]);
-            screen->draw(*m_up_price[1]);
-        }
         if(sup)
         {
             delete m_tower[m_tower_selected];
             m_tower.erase(m_tower.begin() + m_tower_selected);
+        }
+        else
+        {
+            m_tower[m_tower_selected]->drawRange(true);
+            if(m_tower[m_tower_selected]->getLeftUpgrade() != "")
+            {
+                std::stringstream a;
+                m_up[0].setTexture(textload->getTexture(m_tower[m_tower_selected]->getLeftUpgrade()));
+                m_up[0].setOrigin(m_up[0].getLocalBounds().height/2 , m_up[0].getLocalBounds().width/2);
+
+                m_up_price[0]->onCondition(money >= m_tower[m_tower_selected]->getUpPrice(textload));
+
+                a << m_tower[m_tower_selected]->getUpPrice(textload);
+
+                m_up_price[0]->setSentence(a.str());
+                if(m_up[0].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
+                   clic_up == true &&
+                   money >= m_tower[m_tower_selected]->getUpPrice(textload))
+                {
+                    money -= m_tower[m_tower_selected]->getUpPrice(textload);
+                    m_tower[m_tower_selected]->upgradeLeft(textload);
+                    clic_up = false;
+                }
+                screen->draw(m_up[0]);
+                screen->draw(*m_up_price[0]);
+            }
+            if(m_tower[m_tower_selected]->getRightUpgrade() != "")
+            {
+                std::stringstream b;
+                m_up[1].setTexture(textload->getTexture(m_tower[m_tower_selected]->getRightUpgrade()));
+                m_up[1].setOrigin(m_up[1].getLocalBounds().height/2 , m_up[1].getLocalBounds().width/2);
+
+                m_up_price[1]->onCondition(money >= m_tower[m_tower_selected]->getUpPrice(textload));
+
+                b << (m_tower[m_tower_selected]->getUpPrice(textload));
+
+                m_up_price[1]->setSentence(b.str());
+                if(m_up[1].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) &&
+                   clic_up == true &&
+                   money >= m_tower[m_tower_selected]->getUpPrice(textload))
+                {
+                    money -= m_tower[m_tower_selected]->getUpPrice(textload);
+                    m_tower[m_tower_selected]->upgradeRight(textload);
+                    clic_up = false;
+                }
+                screen->draw(m_up[1]);
+                screen->draw(*m_up_price[1]);
+            }
         }
     }
     return money;

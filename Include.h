@@ -29,6 +29,7 @@
 #define EXIT "EXIT"
 #define RESTART "RESTART"
 #define TITLE "TITLE"
+#define PLAY "play"
 ///Type button
 #define BUTTON "button"
 
