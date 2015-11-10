@@ -4,7 +4,6 @@
 ///C++ includes
 #include <sstream>
 #include <iostream>
-#include <algorithm>
 #include <string>
 #include <stdio.h>
 #include <random>
@@ -12,11 +11,15 @@
 #include <cmath>
 #include <deque>
 #include <fstream>
+#include <thread>
+#include <algorithm>
+#include <mutex>
 ///SFML includes
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <X11/Xlib.h>
 ///Types of sprites in Entity
 #define BLOON "bloon"
 #define SHIELD "shield"

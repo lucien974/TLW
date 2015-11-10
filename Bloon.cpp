@@ -1,6 +1,6 @@
 #include "Bloon.h"
 
-Bloon::Bloon(int type , Textureloader* textload , Vector2f start_pos) : Entity()
+Bloon::Bloon(int type , Textureloader* textload , sf::Vector2f start_pos) : Entity()
 {
     m_earn_money = false;
     m_vie = type;
@@ -128,7 +128,7 @@ void Bloon::findWay(int x, int y , int postab , Textureloader* textload)
         if((unsigned int)x < textload->getMap(m_carte).getSize().x && (unsigned int)y < textload->getMap(m_carte).getSize().y)
         {
             m_color = textload->getMap(m_carte).getPixel(x,y);
-            if( m_color != Color(0,153,0))
+            if( m_color != sf::Color(0,153,0))
             {
                 setPosition(sf::Vector2f(x,y));
                 for( int v(0) ; v < 8 ; v++ )

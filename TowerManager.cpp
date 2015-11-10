@@ -9,19 +9,17 @@ TowerManager::TowerManager(Textureloader* textload)
         m_cost_sprite.push_back(Button(textload , m_selection[n]->getPrice() , "nb",
                                 sf::Color::Black , sf::Color::Yellow ,
                                 12 ,  sf::Vector2i(825 , 75*n + 100)));
-        //m_cost_sprite.back().set(textload->Getfont("nb.ttf") , m_selection[n]->getPrice() ,
-        //                         12 , sf::Color::Black , sf::Color::Yellow , sf::Vector2i(825 , 75*n + 100));
     }
     m_select = -1;
     m_tower_selected = -1;
     m_up[0].setPosition(50 , 555);
     m_up[1].setPosition(380 , 555);
 
-    m_up_price[0] = new Button(textload , "" , "nb" , Color::Black , Color::Yellow , 12 , Vector2i(80 , 555));
-    m_up_price[1] = new Button(textload , "" , "nb" , Color::Black , Color::Yellow , 12 , Vector2i(440 , 555));
+    m_up_price[0] = new Button(textload , "" , "nb" , sf::Color::Black , sf::Color::Yellow , 12 , sf::Vector2i(80 , 555));
+    m_up_price[1] = new Button(textload , "" , "nb" , sf::Color::Black , sf::Color::Yellow , 12 , sf::Vector2i(440 , 555));
 
-    m_money = new Button(textload , "" , "nb" , Color::Yellow , Color::Yellow , 20 ,  Vector2i(750 , 520));
-    m_money->setShadows(Vector2i(-3,-3));
+    m_money = new Button(textload , "" , "nb" , sf::Color::Yellow , sf::Color::Yellow , 20 ,  sf::Vector2i(750 , 520));
+    m_money->setShadows(sf::Vector2i(-3,-3));
 }
 
 TowerManager::~TowerManager()
@@ -115,7 +113,7 @@ int TowerManager::update(sf::Image carte , sf::RenderWindow* screen , Textureloa
         }
         screen->draw(*m_tower[z]);
     }
-    if(m_tower_selected != -1 && m_tower_selected < m_tower.size())
+    if(m_tower_selected != -1 && m_tower_selected < (int)m_tower.size())
     {
         if(sup)
         {
@@ -174,7 +172,7 @@ int TowerManager::update(sf::Image carte , sf::RenderWindow* screen , Textureloa
     return money;
 }
 
-Vector2f TowerManager::getPosition(int num)
+sf::Vector2f TowerManager::getPosition(int num)
 {
     return m_tower[num]->getPosition();
 }
@@ -189,12 +187,12 @@ float TowerManager::getRange(int n)
     return m_tower[n]->getRange();
 }
 
-void TowerManager::rotateTowards(int n , Vector2f bloon)
+void TowerManager::rotateTowards(int n , sf::Vector2f bloon)
 {
     m_tower[n]->rotateTowards(bloon);
 }
 
-int TowerManager::shoot(int n , Vector2f bloon)
+int TowerManager::shoot(int n , sf::Vector2f bloon)
 {
     return m_tower[n]->shoot(bloon);
 }

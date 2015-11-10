@@ -97,7 +97,7 @@ sf::Image& Textureloader::getMap(std::string filename)
     }
 }
 
-sf::Vector2f Textureloader::getPxlPos(std::string filename , Color color_search , string type)
+sf::Vector2f Textureloader::getPxlPos(std::string filename , sf::Color color_search , string type)
 {
     m_map_pos_it = m_map_pos.find(type);
     if(m_map_pos_it != m_map_pos.end())
@@ -107,7 +107,7 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename , Color color_search 
     else
     {
         sf::Color color;
-        Vector2f vect;
+        sf::Vector2f vect;
         for(unsigned int za(0) ; za < getMap(filename).getSize().x ; za++ )
         {
             for(unsigned int j(0) ; j < getMap(filename).getSize().y ; j++ )
@@ -123,6 +123,6 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename , Color color_search 
             }
         }
         cout << "Error pxl of reference not found" << endl;
-        return Vector2f(0,0);
+        return sf::Vector2f(0,0);
     }
 }

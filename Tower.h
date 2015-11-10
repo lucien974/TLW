@@ -9,7 +9,7 @@ class Tower : public Entity
     public:
     Tower(int type , Textureloader* textload);
     Tower(int type , Textureloader* textload , sf::Vector2f position);
-      int shoot(Vector2f bloon);
+      int shoot(sf::Vector2f bloon);
       virtual ~Tower();
       void update();
       void drawBullet(sf::RenderWindow* screen);

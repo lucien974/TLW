@@ -3,8 +3,8 @@
 Button::Button()
 {
     m_textload = NULL;
-    m_color_hovered = Color(0,0,0);
-    m_color_normal = Color(0,0,0);
+    m_color_hovered = sf::Color(0,0,0);
+    m_color_normal = sf::Color(0,0,0);
     m_shadows = false;
     m_clic = true;
 }
@@ -12,13 +12,13 @@ Button::Button()
 Button::Button(Textureloader *textload)
 {
     m_textload = textload;
-    m_color_hovered = Color(0,0,0);
-    m_color_normal = Color(0,0,0);
+    m_color_hovered = sf::Color(0,0,0);
+    m_color_normal = sf::Color(0,0,0);
     m_shadows = false;
     m_clic = true;
 }
 
-Button::Button(Textureloader *textload , string sentence , string font , Color color , Color hovered_color , int char_size , Vector2i position)
+Button::Button(Textureloader *textload , string sentence , string font , sf::Color color , sf::Color hovered_color , int char_size , sf::Vector2i position)
 {
     m_textload = textload;
 
@@ -34,7 +34,7 @@ Button::Button(Textureloader *textload , string sentence , string font , Color c
     m_button_shadows.setCharacterSize(char_size);
     m_button_shadows.setOrigin(m_button_shadows.getGlobalBounds().width/2 , m_button_shadows.getGlobalBounds().height/2);
     m_button_shadows.setPosition(position.x , position.y);
-    m_button_shadows.setColor(Color::Black);
+    m_button_shadows.setColor(sf::Color::Black);
 
     m_color_normal = color;
     m_color_hovered = hovered_color;
@@ -46,7 +46,7 @@ Button::~Button()
 {
 }
 
-void Button::draw(RenderTarget &target, RenderStates states) const
+void Button::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     if(m_shadows)
@@ -54,7 +54,7 @@ void Button::draw(RenderTarget &target, RenderStates states) const
     target.draw(m_button_normal);
 }
 
-bool Button::isInside(Vector2i pos_ext)
+bool Button::isInside(sf::Vector2i pos_ext)
 {
     if(m_button_normal.getGlobalBounds().contains(pos_ext.x , pos_ext.y))
     {
@@ -62,7 +62,7 @@ bool Button::isInside(Vector2i pos_ext)
             m_button_normal.setColor(m_color_hovered);
         if(m_clic)
         {
-            if(Mouse::isButtonPressed(Mouse::Left))
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
                 return true;
             }
@@ -85,7 +85,7 @@ void Button::onMouseClick(bool clic)
     m_clic = m_clic;
 }
 
-void Button::setShadows(Vector2i gap)
+void Button::setShadows(sf::Vector2i gap)
 {
     m_shadows = true;
     m_button_shadows.move(gap.x , gap.y);
@@ -102,12 +102,12 @@ void Button::setTextureloader(Textureloader* textload)
     m_textload = textload;
 }
 
-void Button::setHoveredColor(Color color)
+void Button::setHoveredColor(sf::Color color)
 {
     m_color_hovered = color;
 }
 
-void Button::setColor(Color color)
+void Button::setColor(sf::Color color)
 {
     m_button_normal.setColor(color);
 }
@@ -124,7 +124,7 @@ void Button::setCharacterSize(int char_size)
     m_button_shadows.setCharacterSize(char_size);
 }
 
-void Button::setPosition(Vector2f position)
+void Button::setPosition(sf::Vector2f position)
 {
     m_button_shadows.move(position - m_button_normal.getPosition());
     m_button_normal.move(position - m_button_normal.getPosition());
@@ -144,12 +144,12 @@ void Button::onCondition(bool condition)
     }
 }
 
-Vector2i Button::getPosition()
+sf::Vector2i Button::getPosition()
 {
-    return Vector2i(m_button_normal.getPosition().x , m_button_normal.getPosition().y);
+    return sf::Vector2i(m_button_normal.getPosition().x , m_button_normal.getPosition().y);
 }
 
-FloatRect Button::getGlobalBounds()
+sf::FloatRect Button::getGlobalBounds()
 {
     return m_button_normal.getGlobalBounds();
 }

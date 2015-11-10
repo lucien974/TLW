@@ -95,7 +95,7 @@ bool Entity::isNearOf(Entity *entity, float radius)
 	return (pow((pos2.x - pos1.x), 2) + pow((pos2.y - pos1.y), 2)) <= pow(radius, 2);
 }
 
-bool Entity::isInRange(Vector2f position , float radius)
+bool Entity::isInRange(sf::Vector2f position , float radius)
 {
     const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
 	/*
@@ -155,7 +155,7 @@ void Entity::rotateTowards(Entity *entity) {
     }
 }
 
-void Entity::rotateTowards(Vector2f pos2)
+void Entity::rotateTowards(sf::Vector2f pos2)
 {
     const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
 

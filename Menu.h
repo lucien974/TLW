@@ -6,19 +6,20 @@
 class Menu
 {
     public:
-        Menu(Textureloader* textload , string font , int size , Color color , Color color_hovered);
+        Menu(Textureloader* textload , string font , int size , sf::Color color , sf::Color color_hovered);
         ~Menu();
         string update(sf::RenderWindow* screen);
-        void setTitle(string sentence , Vector2i position);
-        void newButton(string type , Vector2i gap);
-        void setBackground(Color color);
+        void setTitle(string sentence , sf::Vector2i position);
+        void newButton(string type , sf::Vector2i gap);
+        void setBackground(sf::Color color);
         void onMouseClick(bool clic , string type);
+        void setShadows();
 
     private:
         map<string , Button*> m_buttons;
         sf::RectangleShape m_background;
         Textureloader *m_textload;
-        Color m_color_normal , m_color_hovered;
+        sf::Color m_color_normal , m_color_hovered;
         int m_size;
         string m_font , m_last_button , m_select;
 };

@@ -17,29 +17,29 @@ void Level::initialize()
 
     m_money = 500;
 
-    m_pause = new Menu(m_textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
-    m_pause->setTitle("PAUSE" , Vector2i(450 , 50));
-    m_pause->newButton(RESUME , Vector2i(0,150));
-    m_pause->newButton(EXIT , Vector2i(0,75));
-    m_pause->setBackground(Color(0,0,0,128));
+    m_pause = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
+    m_pause->setTitle("PAUSE" , sf::Vector2i(450 , 50));
+    m_pause->newButton(RESUME , sf::Vector2i(0,150));
+    m_pause->newButton(EXIT , sf::Vector2i(0,75));
+    m_pause->setBackground(sf::Color(0,0,0,128));
     m_pause->onMouseClick(true , RESUME);
 
-    m_loose = new Menu(m_textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
-    m_loose->setTitle("YOU LOOSE" , Vector2i(450 , 150));
-    m_loose->newButton(RESTART , Vector2i(0,150));
-    m_loose->newButton(EXIT , Vector2i(0,75));
+    m_loose = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
+    m_loose->setTitle("YOU LOOSE" , sf::Vector2i(450 , 150));
+    m_loose->newButton(RESTART , sf::Vector2i(0,150));
+    m_loose->newButton(EXIT , sf::Vector2i(0,75));
 
-    m_win = new Menu(m_textload , "abaddon" , 50 , Color::Green , Color(0,128,0));
-    m_win->setTitle("YOU LOOSE" , Vector2i(450 , 150));
-    m_win->newButton(RESTART , Vector2i(0,150));
-    m_win->newButton(EXIT , Vector2i(0,75));
+    m_win = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
+    m_win->setTitle("YOU LOOSE" , sf::Vector2i(450 , 150));
+    m_win->newButton(RESTART , sf::Vector2i(0,150));
+    m_win->newButton(EXIT , sf::Vector2i(0,75));
 
 
     m_text_life = new Button(m_textload , "" , "nb",
-                        Color::Red , Color::Red ,
-                        20 , Vector2i(750 , 550));
+                        sf::Color::Red , sf::Color::Red ,
+                        20 , sf::Vector2i(750 , 550));
 
-    m_text_life->setShadows(Vector2i(-3 , -3));
+    m_text_life->setShadows(sf::Vector2i(-3 , -3));
     /**/
     m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
     m_interface.setPosition(0,0);
@@ -50,8 +50,8 @@ void Level::initialize()
 
     m_towers = new TowerManager(m_textload);
     /**/
-    m_thread = new sf::Thread(&Level::physicsMotor , this);
-    m_thread->launch();
+    m_thread = new thread(&Level::physicsMotor , this);
+    m_thread->detach();
     //*/
     m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
     m_interface.setPosition(0,0);
@@ -65,15 +65,16 @@ void Level::initialize()
     m_status = game_status::wait;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png" , Color(255 , 0 , 128) , BUTTON));
+    m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png" , sf::Color(255 , 0 , 128) , BUTTON));
 }
 
 void Level::physicsMotor()
 {
     /**/
-    Vector2f position;
+    sf::Vector2f position;
     while(!m_done)
     {
+        //cout << m_done << endl;
         int indice[2] , oldest = 0;
         indice[0] = 0;
         for(int p(0) ; p < m_play_save ; ++p)
@@ -89,6 +90,7 @@ void Level::physicsMotor()
             m_play_save++;
         for( int v(m_towers->getSize() - 1) ; v >= 0  ; --v )
         {
+            //cout << v << endl;
             int n(m_bloons.size() - 1);
             while(n >= 0)
             {
@@ -137,8 +139,9 @@ void Level::physicsMotor()
 
 Level::~Level()
 {
+    m_done = true;
     m_file.close();
-    m_thread->terminate();
+    m_thread->join();
     while(m_bloons.size() != 0)
     {
         delete m_bloons[0];
@@ -154,7 +157,6 @@ Level::~Level()
 
 void Level::load()
 {
-    m_mutex.lock();
     if(m_file)
     {
         int nb_bloons , type_of_bloon , gap , next_wave=0;
@@ -162,7 +164,7 @@ void Level::load()
         {
             m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
             m_bloons.push_back(new Wave(nb_bloons , type_of_bloon , gap , next_wave , "virtual_grass_1.png"));
-            cout << nb_bloons << " , " << gap << " , " << type_of_bloon << " , " << next_wave << endl;
+            //cout << nb_bloons << " , " << gap << " , " << type_of_bloon << " , " << next_wave << endl;
         }
         m_play_save = 1;
         m_status = game_status::wait;
@@ -170,17 +172,16 @@ void Level::load()
     }
     else
         cout << "unable to load level (please contact the developpers)" << endl;
-    m_mutex.unlock();
 }
 
 void Level::update(sf::RenderWindow *screen , Textureloader* textload)
 {
+    m_mutex.lock();
     if(m_bloons.size() == 0)
         load();
-    m_mutex.lock();
     if(m_status < game_status::wait)
     {
-        cout << m_play_save << endl;
+        //cout << m_play_save << endl;
         for(int i(0) ; i < m_play_save ; ++i)
         {
             if(!m_bloons[i]->isEmpty())
@@ -193,9 +194,9 @@ void Level::update(sf::RenderWindow *screen , Textureloader* textload)
     }
     else
     {
-        if(m_button_play.getGlobalBounds().contains(Mouse::getPosition(*screen).x , Mouse::getPosition(*screen).y))
+        if(m_button_play.getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y))
         {
-            if(Mouse::isButtonPressed(Mouse::Button::Left))
+            if(m_clic)
             {
                 m_status = game_status::play_animation;
             }
@@ -221,12 +222,19 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
         {
             switch(m_event.type)
             {
+                /**/
+                case sf::Event::Closed:
+                    m_done = true;
+                    break;
+                    //*/
                 case sf::Event::KeyPressed:
                     switch(m_event.key.code)
                     {
+                        /*
                         case sf::Keyboard::Escape:
                             m_done = true;
                             break;
+                            //*/
                         case sf::Keyboard::Delete:
                             if(!m_delete)
                             {
@@ -253,17 +261,17 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                 case sf::Event::GainedFocus:
                     break;
                 default:
-                    screen->setPosition(Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450 , VideoMode::getDesktopMode().height/2 - 300));
+                    screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450 , sf::VideoMode::getDesktopMode().height/2 - 300));
                     break;
             }
         }
         if(m_done == true)
             cout << "End of game" << endl;
-        if(Mouse::isButtonPressed(Mouse::Button::Left) == true && m_clic == 0)
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
         {
             m_clic = 1;
         }
-        if(Mouse::isButtonPressed(Mouse::Button::Left) == 0 && m_clic == 1)
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == 0 && m_clic == 1)
         {
             m_clic = 2;
         }
@@ -277,7 +285,7 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                 break;
             case game_status::wait:
             case game_status::normal:
-                if(m_button_play.getScale() != Vector2f(1,1))
+                if(m_button_play.getScale() != sf::Vector2f(1,1))
                     m_button_play.scale(1/m_button_play.getScale().x , 1/m_button_play.getScale().y);
                 update(screen , textload);
                 m_delete = false;

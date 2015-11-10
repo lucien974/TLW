@@ -4,33 +4,31 @@
 #include "Textureloader.h"
 
 
-class Button : public Transformable, public Drawable
+class Button : public sf::Transformable, public sf::Drawable
 {
     public:
         Button();
         Button(Textureloader* textload);
-        Button(Textureloader *textload , string sentence , string font , Color color , Color hovered_color , int char_size , Vector2i position);
-        //virtual ~Button();
+        Button(Textureloader *textload , string sentence , string font , sf::Color color , sf::Color hovered_color , int char_size , sf::Vector2i position);
         ~Button();
-        void draw(RenderTarget &target, RenderStates states) const;
-        bool isInside(Vector2i pos_ext);
+        void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+        bool isInside(sf::Vector2i pos_ext);
         void onMouseClick(bool clic); /// in default m_clic = true;
-        void setShadows(Vector2i gap);
+        void setShadows(sf::Vector2i gap);
         void setSentence(string sentence);
         void setTextureloader(Textureloader* textload);
-        void setHoveredColor(Color color);
-        void setColor(Color color);
+        void setHoveredColor(sf::Color color);
+        void setColor(sf::Color color);
         void setFont(string font);
         void setCharacterSize(int char_size);
-        void setPosition(Vector2f position);
+        void setPosition(sf::Vector2f position);
         void onCondition(bool condition);
-        Vector2i getPosition();
-        FloatRect getGlobalBounds();
-		//virtual void update() = 0;
+        sf::Vector2i getPosition();
+        sf::FloatRect getGlobalBounds();
     private:
         Textureloader *m_textload;
-        Text m_button_normal , m_button_shadows;
-        Color m_color_normal , m_color_hovered;
+        sf::Text m_button_normal , m_button_shadows;
+        sf::Color m_color_normal , m_color_hovered;
         bool m_shadows , m_clic;
 };
 

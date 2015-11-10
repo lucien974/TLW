@@ -18,11 +18,10 @@ int Wave::update(sf::RenderWindow* ecran , Textureloader* textload)
     m_damages = 0;
     if(m_nb_bloons > 0 && m_gap >= m_cursor)
     {
-        m_bloon.push_back(new Bloon(m_type , textload , textload->getPxlPos(m_carte , Color(255,0,0) , BLOON)));
+        m_bloon.push_back(new Bloon(m_type , textload , textload->getPxlPos(m_carte , sf::Color(255,0,0) , BLOON)));
         m_bloon.back()->setMap(m_carte);
         m_gap = 0;
         m_nb_bloons--;
-        //m_gap = m_cursor;
     }
     if(m_way > 0)
         m_way--;
@@ -77,12 +76,12 @@ Wave::~Wave()
     }
 }
 
-Vector2f Wave::getBloonPosition(int num)
+sf::Vector2f Wave::getBloonPosition(int num)
 {
     return m_bloon[num]->getPosition();
 }
 
-bool Wave::isNearOf(int bloon_num , Vector2f tower_pos , float radius)
+bool Wave::isNearOf(int bloon_num , sf::Vector2f tower_pos , float radius)
 {
     return m_bloon[bloon_num]->isInRange(tower_pos , radius);
 }

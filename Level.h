@@ -26,16 +26,16 @@ private:
     char m_clic , m_animation;
     bool m_done , m_delete;
     ifstream m_file;
-    Event m_event;
-    Sprite m_map , m_button_play , m_interface;
+    sf::Event m_event;
+    sf::Sprite m_map , m_button_play , m_interface;
     Menu *m_pause , *m_win , *m_loose;
     Button *m_text_life;
-    Music m_music;
+    sf::Music m_music;
 
-    Thread *m_thread;
-    RenderWindow *m_screen;
+    thread *m_thread;
+    sf::RenderWindow *m_screen;
     Textureloader *m_textload;
-    Mutex m_mutex;
+    mutex m_mutex;
 
     enum game_status{normal = 0 , paused = 1 , win = 2 , loose = 3 , wait = 4 , play_animation = 5};
 };
