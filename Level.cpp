@@ -6,16 +6,38 @@ Level::Level(Textureloader* textload , sf::RenderWindow *screen)
     m_screen = screen;
     m_textload = textload;
 
-    initialize();
-}
-
-void Level::initialize()
-{
-    m_animation = 0;
     m_map.setTexture(m_textload->getTexture("grass_1.png"));
     m_map.scale(1.5f , 1.5f);
 
-    m_money = 500;
+    if(!m_file)
+        cout << "Impossible d'ouvrir le fichier" << endl;
+    m_clic = 0;
+    m_delete = false;
+
+    m_button_play.setTexture(m_textload->getTexture("play.png"));
+    m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png" , sf::Color(255 , 0 , 128) , BUTTON));
+
+    m_sprite_life.setTexture(m_textload->getTexture("heart.png"));
+    m_sprite_life.setPosition(820 , 552);
+    m_sprite_life.scale(0.4,0.4);
+
+    m_win = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
+    m_win->setTitle("YOU LOOSE" , sf::Vector2i(450 , 150));
+    m_win->newButton(RESTART , sf::Vector2i(0,150));
+    m_win->newButton(EXIT , sf::Vector2i(0,75));
+
+
+    m_text_life = new Button(m_textload , "" , "nb",
+                        sf::Color::Red , sf::Color::Red ,
+                        20 , sf::Vector2i(750 , 550));
+    m_text_life->setShadows(sf::Vector2i(-3 , -3));
+
+    m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
+    m_interface.setPosition(0,0);
+
+    m_button_play.setTexture(m_textload->getTexture("play.png"));
+    m_button_play.setOrigin(25 , 25);
+    m_button_play.setPosition(25 , 330);
 
     m_pause = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
     m_pause->setTitle("PAUSE" , sf::Vector2i(450 , 50));
@@ -29,68 +51,47 @@ void Level::initialize()
     m_loose->newButton(RESTART , sf::Vector2i(0,150));
     m_loose->newButton(EXIT , sf::Vector2i(0,75));
 
-    m_win = new Menu(m_textload , "abaddon" , 50 , sf::Color::Green , sf::Color(0,128,0));
-    m_win->setTitle("YOU LOOSE" , sf::Vector2i(450 , 150));
-    m_win->newButton(RESTART , sf::Vector2i(0,150));
-    m_win->newButton(EXIT , sf::Vector2i(0,75));
+    initialize();
+}
 
+void Level::initialize()
+{
+    m_file.open("levels/lvl_1.txt" , ios::in);
+    m_animation = 0;
 
-    m_text_life = new Button(m_textload , "" , "nb",
-                        sf::Color::Red , sf::Color::Red ,
-                        20 , sf::Vector2i(750 , 550));
-
-    m_text_life->setShadows(sf::Vector2i(-3 , -3));
-    /**/
-    m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
-    m_interface.setPosition(0,0);
-
-    m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setOrigin(25 , 25);
-    m_button_play.setPosition(25 , 330);
-
+    m_money = 500;
+    m_lives = 200;
     m_towers = new TowerManager(m_textload);
-    /**/
+    m_status = game_status::wait;
+    m_play_save = 0;
     m_thread = new thread(&Level::physicsMotor , this);
     m_thread->detach();
-    //*/
-    m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
-    m_interface.setPosition(0,0);
-
-    m_file.open("levels/lvl_1.txt" , ios::in);
-    if(!m_file)
-        cout << "Impossible d'ouvrir le fichier" << endl;
-    m_play_save = 1;
-    m_clic = 0;
-    m_delete = false;
-    m_status = game_status::wait;
-
-    m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png" , sf::Color(255 , 0 , 128) , BUTTON));
 }
 
 void Level::physicsMotor()
 {
-    /**/
     sf::Vector2f position;
-    while(!m_done)
+    cout << "!!!!! thread launch !!!!!" << endl;
+    while(m_status != game_status::loose && m_status != game_status::win)
     {
-        //cout << m_done << endl;
         int indice[2] , oldest = 0;
         indice[0] = 0;
+        m_mutex.lock();
         for(int p(0) ; p < m_play_save ; ++p)
         {
-            if(m_bloons[p]->isEmpty())
+            if(m_bloons[p] != NULL)
             {
-                m_play_save--;
-                delete m_bloons[p];
-                m_bloons.erase(m_bloons.begin() + p);
+                if(m_bloons[p]->isEmpty())
+                {
+                    m_play_save--;
+                    delete m_bloons[p];
+                    m_bloons.erase(m_bloons.begin() + p);
+                }
             }
         }
-        if(m_play_save == 0 && m_bloons.size() > 0)
-            m_play_save++;
+        m_mutex.unlock();
         for( int v(m_towers->getSize() - 1) ; v >= 0  ; --v )
         {
-            //cout << v << endl;
             int n(m_bloons.size() - 1);
             while(n >= 0)
             {
@@ -99,7 +100,8 @@ void Level::physicsMotor()
                 {
                     position = m_bloons[n]->getBloonPosition(g);
                     if(position.x >= 0 && position.x <= 900 &&
-                       position.y >= 0 && position.y <= 600)
+                       position.y >= 0 && position.y <= 600 &&
+                       v < m_towers->getSize())
                     {
                         if(m_bloons[n]->isNearOf(g , m_towers->getPosition(v) , m_towers->getRange(v)) == true)
                         {
@@ -133,26 +135,36 @@ void Level::physicsMotor()
             }
             m_mutex.unlock();
         }
+        this_thread::sleep_for(chrono::milliseconds(60));
     }
+    cout << "!!!!! thread exit !!!!!" << endl;
     //*/
 }
 
 Level::~Level()
 {
     m_done = true;
+    delete m_pause;
+    delete m_win;
+    delete m_loose;
+    delete m_text_life;
+    destroy();
+}
+
+void Level::destroy()
+{
     m_file.close();
-    m_thread->join();
-    while(m_bloons.size() != 0)
+    m_play_save = 0;
+    m_mutex.lock();
+    while(m_bloons.size() > 0)
     {
         delete m_bloons[0];
         m_bloons.pop_front();
     }
-    delete m_towers;
-    delete m_text_life;
-    delete m_pause;
-    delete m_win;
-    delete m_loose;
+    m_mutex.unlock();
     delete m_thread;
+    delete m_towers;
+    m_thread = NULL;
 }
 
 void Level::load()
@@ -164,6 +176,7 @@ void Level::load()
         {
             m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
             m_bloons.push_back(new Wave(nb_bloons , type_of_bloon , gap , next_wave , "virtual_grass_1.png"));
+            //wcout << L"\u2654";// << endl;
             //cout << nb_bloons << " , " << gap << " , " << type_of_bloon << " , " << next_wave << endl;
         }
         m_play_save = 1;
@@ -186,7 +199,7 @@ void Level::update(sf::RenderWindow *screen , Textureloader* textload)
         {
             if(!m_bloons[i]->isEmpty())
             {
-                m_bloons[i]->update(screen , textload);
+                m_lives -= m_bloons[i]->update(screen , textload);
                 if(m_bloons[i]->next())
                     m_play_save++;
             }
@@ -202,7 +215,14 @@ void Level::update(sf::RenderWindow *screen , Textureloader* textload)
             }
         }
     }
+    if(m_lives < 0)
+        m_status = game_status::loose;
     screen->draw(m_interface);
+    stringstream a;
+    a << m_lives;
+    m_text_life->setSentence(a.str());
+    screen->draw(*m_text_life);
+    screen->draw(m_sprite_life);
     if(m_status >= game_status::wait)
         screen->draw(m_button_play);
     m_money = m_towers->update(textload->getMap("virtual_grass_1.png") , screen , textload , m_money , m_delete , m_clic==2);
@@ -267,13 +287,14 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
         }
         if(m_done == true)
             cout << "End of game" << endl;
+
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
+        {
+            m_clic = 2;
+        }
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
         {
             m_clic = 1;
-        }
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == 0 && m_clic == 1)
-        {
-            m_clic = 2;
         }
         screen->draw(m_map);
         string a;
@@ -291,28 +312,41 @@ void Level::event(sf::RenderWindow *screen ,  Textureloader* textload)
                 m_delete = false;
                 break;
             case game_status::paused:
-                a = m_pause->update(screen);
+                a = m_pause->update(screen , m_clic);
                 if(a == RESUME)
                 {
                     m_status = status;
                     m_clic = 0;
                 }
-                if(a == EXIT)
+                else if(a == EXIT)
                     m_done = true;
+                else if(m_clic == 2)
+                    m_clic = 0;
                 break;
             case game_status::loose:
-                a = m_loose->update(screen);
+                a = m_loose->update(screen , m_clic);
                 if(a == RESTART)
+                {
+                    destroy();
                     initialize();
-                if(a == EXIT)
+                    cout << "game restarted" << endl;
+                }
+                else if(a == EXIT)
                     m_done = true;
+                else if(m_clic == 2)
+                    m_clic = 0;
                 break;
             case game_status::win:
-                a = m_win->update(screen);
+                a = m_win->update(screen , m_clic);
                 if(a == RESTART)
+                {
+                    destroy();
                     initialize();
-                if(a == EXIT)
+                }
+                else if(a == EXIT)
                     m_done = true;
+                else if(m_clic == 2)
+                    m_clic = 0;
                 break;
             default:
                 cout << "Error game status undeclared" << endl;

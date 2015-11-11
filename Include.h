@@ -14,6 +14,7 @@
 #include <thread>
 #include <algorithm>
 #include <mutex>
+#include <chrono>
 ///SFML includes
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>

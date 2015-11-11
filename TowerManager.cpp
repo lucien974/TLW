@@ -58,26 +58,30 @@ int TowerManager::update(sf::Image carte , sf::RenderWindow* screen , Textureloa
     {
         sf::Vector2f a;
         a = sf::Vector2f(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-        m_selection[m_select]->setPosition(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
-        if(carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) != sf::Color(0,153,0) &&
-           clic_up == true)
+        m_selection[m_select]->setPosition(a);
+        if(a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
         {
-            m_tower.push_back(new Tower(m_select+1 , textload , a));
-            m_selection[m_select]->drawRange(false);
-            m_selection[m_select]->setPosition(785 , 75*(m_select+1) + 50);
-            money -= m_selection[m_select]->getCost();
-            m_select = -1;
+            if(carte.getPixel(a.x , a.y) != sf::Color(0,153,0) &&
+               carte.getPixel(a.x , a.y) != sf::Color(0,0,255) &&
+               clic_up == true)
+            {
+                m_tower.push_back(new Tower(m_select+1 , textload , a));
+                m_selection[m_select]->drawRange(false);
+                m_selection[m_select]->setPosition(785 , 75*(m_select+1) + 50);
+                money -= m_selection[m_select]->getCost();
+                m_select = -1;
+            }
+            else
+            {
+                m_selection[m_select]->drawRange(true);
+                screen->draw(*m_selection[m_select]);
+            }
         }
         else
-        {
-            m_selection[m_select]->drawRange(true);
-            screen->draw(*m_selection[m_select]);
-        }
+            m_selection[m_select]->drawRange(false);
     }
     for(int y(0) ; y < 4 ; ++y)
     {
-        if(y != m_select)
-            screen->draw(*m_selection[y]);
         m_cost_sprite[y].onCondition(money >= m_selection[y]->getCost());
         screen->draw(m_cost_sprite[y]);
         screen->draw(*m_selection[y]);
@@ -85,12 +89,10 @@ int TowerManager::update(sf::Image carte , sf::RenderWindow* screen , Textureloa
     bool found = false , click = clic_up;
     for(unsigned int z(0) ; z < m_tower.size() ; ++z)
     {
+        sf::Vector2f a;
         m_tower[z]->drawBullet(screen);
-        if(m_tower_selected != -1 &&
-           sf::Mouse::getPosition(*screen).x > 0 &&
-           sf::Mouse::getPosition(*screen).y > 0 &&
-           sf::Mouse::getPosition(*screen).x < 900 &&
-           sf::Mouse::getPosition(*screen).y < 600)
+        a = sf::Vector2f(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y);
+        if(m_tower_selected != -1 && a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
         {
             if(m_tower[m_tower_selected]->getGlobalBounds(sf::Mouse::getPosition(*screen)) == false &&
                carte.getPixel(sf::Mouse::getPosition(*screen).x , sf::Mouse::getPosition(*screen).y) != sf::Color(0,0,255) &&

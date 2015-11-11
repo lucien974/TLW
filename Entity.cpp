@@ -209,7 +209,7 @@ bool Entity::getGlobalBounds(sf::Vector2i a)
 void Entity::setRange(int range)
 {
     m_range.setRadius(range);
-    m_range.setFillColor(sf::Color(0,0,255,128));
+    m_range.setFillColor(sf::Color(255,0,0,128));
     m_range.setOrigin(m_range.getGlobalBounds().width / 2 , m_range.getGlobalBounds().height / 2);
 }
 

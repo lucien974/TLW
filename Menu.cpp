@@ -19,14 +19,14 @@ Menu::~Menu()
     m_buttons.clear();
 }
 
-string Menu::update(sf::RenderWindow* screen)
+string Menu::update(sf::RenderWindow* screen , char clic)
 {
     m_select = "";
     if(m_background.getFillColor() != sf::Color(0,0,0))
         screen->draw(m_background);
     for(auto &key : m_buttons)
     {
-        if(key.second->isInside(sf::Mouse::getPosition(*screen)))
+        if(key.second->isInside(sf::Mouse::getPosition(*screen) , clic))
             m_select = key.first;
         screen->draw(*key.second);
     }
@@ -69,4 +69,6 @@ void Menu::onMouseClick(bool clic , string type)
     it = m_buttons.find(type);
     if(it != m_buttons.end())
         m_buttons[type]->onMouseClick(clic);
+    else
+        cout << "Button " << type << " didn't find" << endl;
 }

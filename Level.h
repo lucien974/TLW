@@ -17,6 +17,7 @@ public:
     void buttonAnimation();
     void load();
     void initialize();
+    void destroy();
 
 private:
 
@@ -27,7 +28,7 @@ private:
     bool m_done , m_delete;
     ifstream m_file;
     sf::Event m_event;
-    sf::Sprite m_map , m_button_play , m_interface;
+    sf::Sprite m_map , m_button_play , m_interface , m_sprite_life;
     Menu *m_pause , *m_win , *m_loose;
     Button *m_text_life;
     sf::Music m_music;

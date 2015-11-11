@@ -22,7 +22,7 @@ class Wave// : public Bloon
         int getAdvance(int n);
         void isTouch(int n , sf::Vector2f pos_ball , int damages , Textureloader* textload , int effect , int ice_limit);
     private:
-        int m_gap , m_nb_bloons , m_cursor , m_type , m_way , m_damages;
+        int m_gap , m_nb_bloons , m_cursor , m_type , m_way;
         deque<Bloon*> m_bloon;
         string m_carte;
 };

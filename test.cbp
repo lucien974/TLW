@@ -48,6 +48,8 @@
 			<Add option="-lsfml-graphics" />
 			<Add option="-lsfml-system" />
 			<Add option="-lsfml-window" />
+			<Add option="-lpthread" />
+			<Add option="-lX11" />
 		</Linker>
 		<Unit filename="Bloon.cpp" />
 		<Unit filename="Bloon.h" />

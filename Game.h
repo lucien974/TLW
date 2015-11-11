@@ -16,7 +16,7 @@ class Game
         sf::RenderWindow *m_screen;
         sf::Sprite m_background;
         bool m_menu;
-        //Thread *m_thread;
+        char m_clic;
 };
 
 #endif // GAME_INCLUDED

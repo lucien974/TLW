@@ -3,7 +3,7 @@
 Bloon::Bloon(int type , Textureloader* textload , sf::Vector2f start_pos) : Entity()
 {
     m_earn_money = false;
-    m_vie = type;
+    m_health = type;
     m_speed = 0;
     m_find = false;
     m_touch = false;
@@ -24,30 +24,26 @@ Bloon::~Bloon()
 {
 }
 
-////////////////////////////////////////
-// INITIALISATION
-////////////////////////////////////////
-
 void Bloon::initialize(Textureloader* textload)
 {
     std::string ndefich = "";
-    int inter = m_vie;
+    int inter = m_health;
     spriteStatus(false , SHIELD);
 
     if(inter > 9 && inter < 100)
-        m_vie /= 10;
+        m_health /= 10;
     if(inter > 100 && inter < 200)
     {
-        m_vie -= 90;
-        m_vie /= 10;
-        if(m_vie > 9)
-            m_vie = 9;
+        m_health -= 90;
+        m_health /= 10;
+        if(m_health > 9)
+            m_health = 9;
     }
-    switch(m_vie)
+    switch(m_health)
     {
         case 1:
             ndefich = "bloon_1.png";
-            m_speed = 2;
+            m_speed = 1;
             m_earn = 1;
             break;
         case 2:
@@ -102,35 +98,40 @@ void Bloon::initialize(Textureloader* textload)
             break;
     }
 
-    if(m_vie < 10 || m_vie == 100 || m_vie == 200)
+    if(m_health < 10 || m_health == 100 || m_health == 200)
         setTexture(textload->getTexture(ndefich) , BLOON);
 
-    m_vie = inter;
+    m_health = inter;
 
-    if(m_vie > 9 && m_vie < 100)
+    if(m_health > 9 && m_health < 100)
     {
         m_earn = 15;
         setTexture(textload->getTexture("bloon_shield.png") , SHIELD);
         spriteStatus(true , SHIELD);
     }
-    if(m_vie > 100 && m_vie < 200)
+    if(m_health > 100 && m_health < 200)
     {
         m_earn = 15;
         setTexture(textload->getTexture("bloon_shield_1.png") , SHIELD);
         spriteStatus(true , SHIELD);
     }
+    cout << m_speed << endl;
 }
 
 void Bloon::findWay(int x, int y , int postab , Textureloader* textload)
 {
+    /// If the mao exist
     if(m_carte != "")
     {
+        /// If the coord exist
         if((unsigned int)x < textload->getMap(m_carte).getSize().x && (unsigned int)y < textload->getMap(m_carte).getSize().y)
         {
             m_color = textload->getMap(m_carte).getPixel(x,y);
+            /// If the color isn't green
             if( m_color != sf::Color(0,153,0))
             {
                 setPosition(sf::Vector2f(x,y));
+                /// All except the current boolean is set as false because the next position is found
                 for( int v(0) ; v < 8 ; v++ )
                 {
                     if( v == postab )
@@ -144,6 +145,7 @@ void Bloon::findWay(int x, int y , int postab , Textureloader* textload)
                 }
                 m_find = true;
             }
+            /// If the color is blue the bloon passed through the map so we can destroy the bloon
             if( m_color == sf::Color::Blue)
             {
                 setPosition(sf::Vector2f(x,y));
@@ -155,9 +157,10 @@ void Bloon::findWay(int x, int y , int postab , Textureloader* textload)
 
 int Bloon::getDamages()
 {
-    if(m_exit == true && m_touch == false && m_vie > 0)
+    /// If the bloon passed through the map and don't been hit : return the health
+    if(m_exit == true && m_touch == false)
     {
-        return m_vie;
+        return m_health;
     }
     return 0;
 }
@@ -166,15 +169,16 @@ int Bloon::isTouch(sf::Vector2f pos_ball , int damages , Textureloader* textload
 {
     if(damages >= 0)
     {
+        /// If the ball is in the bloon
         if( (pos_ball.x >= getPosition().x - 22 && pos_ball.x <= getPosition().x + 23) &&
             (pos_ball.y >= getPosition().y - 22 && pos_ball.y <= getPosition().y + 23) )
         {
-            if(m_vie > 0)
+            if(m_health > 0)
             {
                 switch(effect)
                 {
                     case -1:
-                        m_vie -= damages;
+                        m_health -= damages;
                         m_touch = true;
                         initialize(textload);
                         spriteStatus(false , ALL);
@@ -187,7 +191,7 @@ int Bloon::isTouch(sf::Vector2f pos_ball , int damages , Textureloader* textload
                         if(m_ice == m_ice_limit)
                         {
                             m_life_lost = damages;
-                            m_vie -= damages;
+                            m_health -= damages;
                             m_touch = true;
                             initialize(textload);
                             m_clock.restart();
@@ -213,7 +217,7 @@ int Bloon::isTouch(sf::Vector2f pos_ball , int damages , Textureloader* textload
 
 int Bloon::getHealth()
 {
-    return m_vie;
+    return m_health;
 }
 
 ////////////////////////////////////////
@@ -222,12 +226,12 @@ int Bloon::getHealth()
 
 void Bloon::update(Textureloader* textload)
 {
-    if(m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_vie > 0)
+    if(m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_health > 0)
     {
         m_ice = 0;
         spriteStatus(false , ICE);
     }
-    if((m_ice < m_ice_limit || m_status == m_effect::none) && m_vie > 0)
+    if((m_ice < m_ice_limit || m_status == m_effect::none) && m_health > 0)
     {
         for(int n(0) ; n < m_speed ; ++n)
         {
@@ -262,14 +266,11 @@ void Bloon::update(Textureloader* textload)
         }
     }
 }
-/**/
+
 void Bloon::update()
 {
 }
-//*/
-////////////////////////////////////////
-// ORDONNE LA DESTRUCTION DU BALLON
-////////////////////////////////////////
+
 bool Bloon::isWentOut()
 {
     return m_exit;

@@ -8,7 +8,7 @@ class Menu
     public:
         Menu(Textureloader* textload , string font , int size , sf::Color color , sf::Color color_hovered);
         ~Menu();
-        string update(sf::RenderWindow* screen);
+        string update(sf::RenderWindow* screen , char clic);
         void setTitle(string sentence , sf::Vector2i position);
         void newButton(string type , sf::Vector2i gap);
         void setBackground(sf::Color color);

@@ -54,7 +54,7 @@ void Button::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_button_normal);
 }
 
-bool Button::isInside(sf::Vector2i pos_ext)
+bool Button::isInside(sf::Vector2i pos_ext , char clic)
 {
     if(m_button_normal.getGlobalBounds().contains(pos_ext.x , pos_ext.y))
     {
@@ -62,7 +62,7 @@ bool Button::isInside(sf::Vector2i pos_ext)
             m_button_normal.setColor(m_color_hovered);
         if(m_clic)
         {
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if(clic == 2)
             {
                 return true;
             }
@@ -82,7 +82,7 @@ bool Button::isInside(sf::Vector2i pos_ext)
 
 void Button::onMouseClick(bool clic)
 {
-    m_clic = m_clic;
+    m_clic = clic;
 }
 
 void Button::setShadows(sf::Vector2i gap)
