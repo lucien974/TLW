@@ -115,7 +115,6 @@ void Bloon::initialize(Textureloader* textload)
         setTexture(textload->getTexture("bloon_shield_1.png") , SHIELD);
         spriteStatus(true , SHIELD);
     }
-    cout << m_speed << endl;
 }
 
 void Bloon::findWay(int x, int y , int postab , Textureloader* textload)

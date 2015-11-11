@@ -72,7 +72,7 @@ void Level::physicsMotor()
 {
     sf::Vector2f position;
     cout << "!!!!! thread launch !!!!!" << endl;
-    while(m_status != game_status::loose && m_status != game_status::win)
+    while(m_status != game_status::loose && m_status != game_status::win && m_done == false)
     {
         int indice[2] , oldest = 0;
         indice[0] = 0;
@@ -143,12 +143,13 @@ void Level::physicsMotor()
 
 Level::~Level()
 {
+    m_status = game_status::loose;
+    destroy();
     m_done = true;
     delete m_pause;
     delete m_win;
     delete m_loose;
     delete m_text_life;
-    destroy();
 }
 
 void Level::destroy()
