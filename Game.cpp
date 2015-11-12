@@ -19,6 +19,9 @@ Game::Game()
     m_start->newButton(EXIT , sf::Vector2i(0,100));
     m_start->onMouseClick(true , PLAY);
 
+    m_mouse = new Particle(10 , 100 , sf::Vector2f(0.0,-0.2));
+    m_mouse->setForce("P" , sf::Vector2f(0.0,9.81));
+
     m_menu = true;
 }
 
@@ -28,12 +31,20 @@ Game::~Game()
     delete m_level;
     delete m_textload;
     delete m_screen;
+    delete m_mouse;
 }
 
 void Game::update()
 {
+    sf::Event event;
+    int gen = 1;
     while(m_screen->isOpen())
     {
+        while(m_screen->pollEvent(event))
+        {
+            if(event.type == sf::Event::MouseMoved)
+                gen = 1;
+        }
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
         {
             m_clic = 2;
@@ -48,6 +59,8 @@ void Game::update()
             string a;
             m_screen->draw(m_background);
             a = m_start->update(m_screen , m_clic);
+            m_mouse->update(gen , *m_screen);
+            m_screen->draw(*m_mouse);
             if(a == PLAY)
                 m_menu = false;
             if(a == EXIT)
@@ -56,6 +69,8 @@ void Game::update()
             m_screen->clear();
             sf::sleep(sf::milliseconds(30));
             m_screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450 , sf::VideoMode::getDesktopMode().height/2 - 300));
+
+            gen = 0;
         }
         else
         {

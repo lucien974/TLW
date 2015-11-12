@@ -64,6 +64,8 @@
 		<Unit filename="Level.h" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
+		<Unit filename="Particle.cpp" />
+		<Unit filename="Particle.h" />
 		<Unit filename="Textureloader.cpp" />
 		<Unit filename="Textureloader.h" />
 		<Unit filename="Tower.cpp" />

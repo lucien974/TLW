@@ -2,6 +2,7 @@
 #define GAME_INCLUDED
 
 #include "Level.h"
+#include "Particle.h"
 
 class Game
 {
@@ -15,6 +16,7 @@ class Game
         Textureloader *m_textload;
         sf::RenderWindow *m_screen;
         sf::Sprite m_background;
+        Particle *m_mouse;
         bool m_menu;
         char m_clic;
 };

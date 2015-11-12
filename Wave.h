@@ -4,7 +4,7 @@
 #include "Bloon.h"
 #include "Tower.h"
 
-class Wave// : public Bloon
+class Wave
 {
     public:
         Wave(int nb_bloons , int type , int gap , int next_wave , string carte);

@@ -1,7 +1,5 @@
 #include "Wave.h"
 
-using namespace std;
-
 Wave::Wave(int nb_bloons , int type , int gap , int next_wave , string carte)
 {
     m_gap = gap;
