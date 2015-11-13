@@ -61,8 +61,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
         m_selection[m_select]->setPosition(a);
         if (a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
         {
-            if (carte.getPixel(a.x, a.y) != sf::Color(0, 153, 0) &&
-               carte.getPixel(a.x, a.y) != sf::Color(0, 0, 255) &&
+            if (carte.getPixel(a.x, a.y) == sf::Color(0, 0, 0) &&
                clic_up == true)
             {
                 m_tower.push_back(new Tower(m_select+1, textload, a));
