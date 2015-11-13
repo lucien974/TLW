@@ -1,6 +1,6 @@
 #include "Wave.h"
 
-Wave::Wave(int nb_bloons , int type , int gap , int next_wave , string carte)
+Wave::Wave(int nb_bloons, int type, int gap, int next_wave, string carte)
 {
     m_gap = gap;
     m_nb_bloons = nb_bloons;
@@ -10,30 +10,30 @@ Wave::Wave(int nb_bloons , int type , int gap , int next_wave , string carte)
     m_carte = carte;
 }
 
-int Wave::update(sf::RenderWindow* ecran , Textureloader* textload)
+int Wave::update(sf::RenderWindow* ecran, Textureloader* textload)
 {
     int damages = 0;
-    if(m_nb_bloons > 0 && m_gap >= m_cursor)
+    if (m_nb_bloons > 0 && m_gap >= m_cursor)
     {
-        m_bloon.push_back(new Bloon(m_type , textload , textload->getPxlPos(m_carte , sf::Color(255,0,0) , BLOON)));
+        m_bloon.push_back(new Bloon(m_type, textload, textload->getPxlPos(m_carte, sf::Color(255, 0, 0), BLOON)));
         m_bloon.back()->setMap(m_carte);
         m_gap = 0;
         m_nb_bloons--;
     }
-    if(m_way > 0)
+    if (m_way > 0)
         m_way--;
     m_gap++;
     unsigned int k(0);
-    while( k < m_bloon.size() )
+    while (k < m_bloon.size())
     {
-        if( m_bloon[k]->isWentOut() == true )
+        if (m_bloon[k]->isWentOut() == true)
         {
             delete m_bloon.at(k);
             m_bloon.erase(m_bloon.begin() + k);
         }
         else
         {
-            if(m_bloon[k]->getHealth() > 0)
+            if (m_bloon[k]->getHealth() > 0)
             {
                 m_bloon[k]->update(textload);
                     ecran->draw(*m_bloon[k]);
@@ -47,7 +47,7 @@ int Wave::update(sf::RenderWindow* ecran , Textureloader* textload)
 
 bool Wave::next()
 {
-    if(m_way == 0)
+    if (m_way == 0)
     {
         m_way = -1;
         return true;
@@ -58,7 +58,7 @@ bool Wave::next()
 
 bool Wave::isEmpty()
 {
-    if(m_bloon.size() == 0 && m_nb_bloons <= 0)
+    if (m_bloon.size() == 0 && m_nb_bloons <= 0)
         return true;
     else
         return false;
@@ -66,7 +66,7 @@ bool Wave::isEmpty()
 
 Wave::~Wave()
 {
-    for(unsigned int n(0) ; n < m_bloon.size() ; ++n )
+    for (unsigned int n(0); n < m_bloon.size(); ++n)
     {
         delete m_bloon.front();
         m_bloon.pop_front();
@@ -78,9 +78,9 @@ sf::Vector2f Wave::getBloonPosition(int num)
     return m_bloon[num]->getPosition();
 }
 
-bool Wave::isNearOf(int bloon_num , sf::Vector2f tower_pos , float radius)
+bool Wave::isNearOf(int bloon_num, sf::Vector2f tower_pos, float radius)
 {
-    return m_bloon[bloon_num]->isInRange(tower_pos , radius);
+    return m_bloon[bloon_num]->isInRange(tower_pos, radius);
 }
 
 int Wave::isWentOut(int n)
@@ -88,9 +88,9 @@ int Wave::isWentOut(int n)
     return m_bloon[n]->isWentOut();
 }
 
-void Wave::isTouch(int n , sf::Vector2f pos_ball , int damages , Textureloader* textload , int effect , int ice_limit)
+void Wave::isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
 {
-    m_bloon[n]->isTouch(pos_ball , damages , textload , effect , ice_limit);
+    m_bloon[n]->isTouch(pos_ball, damages, textload, effect, ice_limit);
 }
 
 int Wave::getMoney(int n)
@@ -115,7 +115,7 @@ int Wave::getBloonSpeed(int num_bloon)
 
 void Wave::destroyBloon(int num)
 {
-    if((unsigned int)num < m_bloon.size())
+    if ((unsigned int)num < m_bloon.size())
     {
         delete m_bloon[num];
         m_bloon.erase(m_bloon.begin() + num);

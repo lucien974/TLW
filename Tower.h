@@ -7,8 +7,8 @@
 class Tower : public Entity
 {
     public:
-    Tower(int type , Textureloader* textload);
-    Tower(int type , Textureloader* textload , sf::Vector2f position);
+    Tower(int type, Textureloader* textload);
+    Tower(int type, Textureloader* textload, sf::Vector2f position);
       int shoot(sf::Vector2f bloon);
       virtual ~Tower();
       void update();
@@ -34,13 +34,13 @@ class Tower : public Entity
       sf::CircleShape m_range;
       std::deque<sf::Vector2f> m_forward;
       std::deque<sf::RectangleShape> m_bullet;
-      bool m_shoot , m_up_price , m_pass_canon[3];
-      float m_angle , m_tir, m_firerate , m_radian , m_rand_x , m_rand_y;
-      int m_portee , m_cost , m_type , m_damages, m_turrets , m_nb_ball , m_type_effect , m_upgrade , m_canon;
+      bool m_shoot, m_up_price, m_pass_canon[3];
+      float m_angle, m_tir, m_firerate, m_radian, m_rand_x, m_rand_y;
+      int m_portee, m_cost, m_type, m_damages, m_turrets, m_nb_ball, m_type_effect, m_upgrade, m_canon;
       std::deque<sf::Vector2f> m_last_pos;
       std::deque<int> m_incrementation;
       sf::Color m_color;
-      enum m_effect{none = -1 , ice = 0 , burn = 1 , glue = 2 , reverse = 3};
+      enum m_effect{none = -1, ice = 0, burn = 1, glue = 2, reverse = 3};
 };
 
 #endif // TOWER_H_INCLUDED

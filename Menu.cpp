@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-Menu::Menu(Textureloader* textload , string font , int size , sf::Color color , sf::Color color_hovered)
+Menu::Menu(Textureloader* textload, string font, int size, sf::Color color, sf::Color color_hovered)
 {
     m_textload = textload;
     m_font = font;
@@ -12,62 +12,62 @@ Menu::Menu(Textureloader* textload , string font , int size , sf::Color color , 
 
 Menu::~Menu()
 {
-    for(auto &key : m_buttons)
+    for (auto &key : m_buttons)
     {
         delete key.second;
     }
     m_buttons.clear();
 }
 
-string Menu::update(sf::RenderWindow* screen , char clic)
+string Menu::update(sf::RenderWindow* screen, char clic)
 {
     m_select = "";
-    if(m_background.getFillColor() != sf::Color(0,0,0))
+    if (m_background.getFillColor() != sf::Color(0, 0, 0))
         screen->draw(m_background);
-    for(auto &key : m_buttons)
+    for (auto &key : m_buttons)
     {
-        if(key.second->isInside(sf::Mouse::getPosition(*screen) , clic))
+        if (key.second->isInside(sf::Mouse::getPosition(*screen), clic))
             m_select = key.first;
         screen->draw(*key.second);
     }
     return m_select;
 }
 
-void Menu::setTitle(string sentence , sf::Vector2i position)
+void Menu::setTitle(string sentence, sf::Vector2i position)
 {
-    m_buttons[TITLE] = new Button(m_textload , sentence , m_font , m_color_normal , m_color_normal , 2*m_size , position);
+    m_buttons[TITLE] = new Button(m_textload, sentence, m_font, m_color_normal, m_color_normal, 2*m_size, position);
     m_last_button = TITLE;
 }
 
-void Menu::newButton(string type , sf::Vector2i gap)
+void Menu::newButton(string type, sf::Vector2i gap)
 {
     sf::Vector2i inter;
     inter.x = m_buttons[m_last_button]->getPosition().x;
     inter.y = m_buttons[m_last_button]->getPosition().y;
-    m_buttons[type] = new Button(m_textload , type , m_font , m_color_normal , m_color_hovered , m_size , inter + gap);
+    m_buttons[type] = new Button(m_textload, type, m_font, m_color_normal, m_color_hovered, m_size, inter + gap);
     m_last_button = type;
 }
 
 void Menu::setShadows()
 {
-    for(auto &key : m_buttons)
+    for (auto &key : m_buttons)
     {
-        if(key.first != TITLE)
-            key.second->setShadows(sf::Vector2i(-3,-3));
+        if (key.first != TITLE)
+            key.second->setShadows(sf::Vector2i(-3, -3));
     }
 }
 
 void Menu::setBackground(sf::Color color)
 {
-    m_background.setSize(sf::Vector2f(900,800));
+    m_background.setSize(sf::Vector2f(900, 800));
     m_background.setFillColor(color);
 }
 
-void Menu::onMouseClick(bool clic , string type)
+void Menu::onMouseClick(bool clic, string type)
 {
-    map<string , Button*>::iterator it;
+    map<string, Button*>::iterator it;
     it = m_buttons.find(type);
-    if(it != m_buttons.end())
+    if (it != m_buttons.end())
         m_buttons[type]->onMouseClick(clic);
     else
         cout << "Button " << type << " didn't find" << endl;

@@ -1,11 +1,11 @@
 #include "Game.h"
 
-/// Fait : class Game
-/// à Faire : Animation du main_menu
+// Fait : Animation
+// à Faire : ???
 
-int main ( int argc, char** argv )
+int main (int argc, char** argv)
 {
-    XInitThreads(); /// Initialization of multi-threading client
+    XInitThreads(); // Initialization of multi-threading client
 
     Game *game;
     game = new Game();

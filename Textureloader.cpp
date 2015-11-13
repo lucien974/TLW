@@ -1,6 +1,6 @@
 #include "Textureloader.h"
 
-Textureloader::Textureloader(std::string image_folder , std::string buffer_folder , std::string font_folder)
+Textureloader::Textureloader(std::string image_folder, std::string buffer_folder, std::string font_folder)
 {
     m_texture_folder = image_folder;
     m_buffer_folder = buffer_folder;
@@ -38,7 +38,7 @@ sf::Texture& Textureloader::getTexture(std::string filename)
     std::string a;
     a = m_texture_folder + filename;
     m_texture_it = m_texture.find(filename);
-    if(m_texture_it != m_texture.end())
+    if (m_texture_it != m_texture.end())
     {
         return m_texture_it->second;
     }
@@ -54,7 +54,7 @@ sf::SoundBuffer& Textureloader::getBuffer(std::string filename)
     std::string b;
     b = m_buffer_folder + filename;
     m_buffer_it = m_buffer.find(filename);
-    if(m_buffer_it != m_buffer.end())
+    if (m_buffer_it != m_buffer.end())
     {
         return m_buffer_it->second;
     }
@@ -70,7 +70,7 @@ sf::Font& Textureloader::getFont(std::string filename)
     std::string c;
     c = m_font_folder + filename;
     m_font_it = m_font.find(filename);
-    if(m_font_it != m_font.end())
+    if (m_font_it != m_font.end())
     {
         return m_font_it->second;
     }
@@ -86,7 +86,7 @@ sf::Image& Textureloader::getMap(std::string filename)
     std::string r;
     r = m_texture_folder + filename;
     m_map_it = m_map.find(filename);
-    if(m_map_it != m_map.end())
+    if (m_map_it != m_map.end())
     {
         return m_map_it->second;
     }
@@ -97,10 +97,10 @@ sf::Image& Textureloader::getMap(std::string filename)
     }
 }
 
-sf::Vector2f Textureloader::getPxlPos(std::string filename , sf::Color color_search , string type)
+sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color color_search, string type)
 {
     m_map_pos_it = m_map_pos.find(type);
-    if(m_map_pos_it != m_map_pos.end())
+    if (m_map_pos_it != m_map_pos.end())
     {
         return m_map_pos_it->second;
     }
@@ -108,12 +108,12 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename , sf::Color color_sea
     {
         sf::Color color;
         sf::Vector2f vect;
-        for(unsigned int za(0) ; za < getMap(filename).getSize().x ; za++ )
+        for (unsigned int za(0); za < getMap(filename).getSize().x; za++)
         {
-            for(unsigned int j(0) ; j < getMap(filename).getSize().y ; j++ )
+            for (unsigned int j(0); j < getMap(filename).getSize().y; j++)
             {
-                color = getMap(filename).getPixel(za,j);
-                if(color == color_search)
+                color = getMap(filename).getPixel(za, j);
+                if (color == color_search)
                 {
                     vect.x = za;
                     vect.y = j;
@@ -123,6 +123,6 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename , sf::Color color_sea
             }
         }
         cout << "Error pxl of reference not found" << endl;
-        return sf::Vector2f(0,0);
+        return sf::Vector2f(0, 0);
     }
 }

@@ -9,21 +9,21 @@ class TowerManager
     public:
         TowerManager(Textureloader* textload);
         ~TowerManager();
-        int update(sf::Image carte , sf::RenderWindow* screen , Textureloader* textload , int money , bool sup , bool clic_up);
+        int update(sf::Image carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up);
         int getSize();
         bool getStatus();
         sf::Vector2f getPosition(int num);
         float getRange(int n);
-        void rotateTowards(int n , sf::Vector2f bloon);
-        int shoot(int n , sf::Vector2f bloon);
+        void rotateTowards(int n, sf::Vector2f bloon);
+        int shoot(int n, sf::Vector2f bloon);
         int getEffect(int n);
         int getNbBall(int n);
     private:
-        deque<Tower*> m_tower , m_selection;
+        deque<Tower*> m_tower, m_selection;
         deque<Button> m_cost_sprite;
-        int m_select , m_tower_selected;
+        int m_select, m_tower_selected;
         sf::Sprite m_up[2];
-        Button *m_up_price[2] , *m_money;
+        Button *m_up_price[2], *m_money;
 };
 
 
