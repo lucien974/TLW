@@ -16,8 +16,9 @@ Game::Game()
     m_start->newButton(EXIT, sf::Vector2i(0, 100));
     m_start->onMouseClick(true, PLAY);
 
-    m_mouse = new Particle(10, 100, sf::Vector2f(0.0, -0.2));
-    m_mouse->setForce("P", sf::Vector2f(0.0, 9.81));
+    m_mouse = new Particle(10.0, 100, sf::Vector2f(0.0, -3.0));
+    m_mouse->setForce("P", sf::Vector2f(0.0, 1.01));
+    m_mouse->setRandomForce("Fireworks", sf::Vector2f(1.0, -20.0), 30);
 
     m_menu = true;
 }
@@ -34,13 +35,13 @@ Game::~Game()
 void Game::update()
 {
     sf::Event event;
-    int gen = 1;
+    int gen = 3;
     while (m_screen->isOpen())
     {
         while (m_screen->pollEvent(event))
         {
             if (event.type == sf::Event::MouseMoved)
-                gen = 1;
+                gen = 3;
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
         {
@@ -67,7 +68,7 @@ void Game::update()
             sf::sleep(sf::milliseconds(30));
             m_screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450, sf::VideoMode::getDesktopMode().height/2 - 300));
 
-            gen = 0;
+            gen = 3;
         }
         else
         {

@@ -127,12 +127,34 @@ void Particle::update(int number_of_generation, sf::RenderWindow &screen)
             if (m_follow_color <= 255)
                 m_particles.back().first.setFillColor(sf::Color(0, 0, m_follow_color));
             else if (m_follow_color <= 2*255)
-                m_particles.back().first.setFillColor(sf::Color(0, m_follow_color, 255-m_follow_color));
+                m_particles.back().first.setFillColor(sf::Color(0, m_follow_color-255, 255));
             else if (m_follow_color <= 3*255)
-                m_particles.back().first.setFillColor(sf::Color(m_follow_color, 0, 255-m_follow_color));
+                m_particles.back().first.setFillColor(sf::Color(0, 255, 3*255 - m_follow_color));
+            else if (m_follow_color <= 4*255)
+                m_particles.back().first.setFillColor(sf::Color(m_follow_color - 3*255, 255, 0));
+            else if (m_follow_color <= 5*255)
+                m_particles.back().first.setFillColor(sf::Color(255, 5*255 - m_follow_color, 0));
+            else if (m_follow_color <= 6*255)
+                m_particles.back().first.setFillColor(sf::Color(255, 0, m_follow_color - 5*255));
+            else if (m_follow_color <= 7*255)
+                m_particles.back().first.setFillColor(sf::Color(255, m_follow_color - 6*255, 255));
+            else if (m_follow_color <= 8*255)
+                m_particles.back().first.setFillColor(sf::Color(255, 8*255 - m_follow_color, 255));
+            else if (m_follow_color <= 9*255)
+                m_particles.back().first.setFillColor(sf::Color(255, 0, 9*255 - m_follow_color));
+            else if (m_follow_color <= 10*255)
+                m_particles.back().first.setFillColor(sf::Color(255, m_follow_color - 9*255, 0));
+            else if (m_follow_color <= 11*255)
+                m_particles.back().first.setFillColor(sf::Color(11*255 - m_follow_color, 255, 0));
+            else if (m_follow_color <= 12*255)
+                m_particles.back().first.setFillColor(sf::Color(0, 255, m_follow_color - 11*255));
+            else if (m_follow_color <= 13*255)
+                m_particles.back().first.setFillColor(sf::Color(0, 13*255 - m_follow_color, 255));
+            else if (m_follow_color <= 14*255 - 128)
+                m_particles.back().first.setFillColor(sf::Color(0, 0, 14*255 - m_follow_color));
             else
             {
-                m_follow_color=100;
+                m_follow_color=128;
                 m_particles.back().first.setFillColor(sf::Color(0, 0, m_follow_color));
             }
             m_follow_color++;
