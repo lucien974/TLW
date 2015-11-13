@@ -138,7 +138,6 @@ void Level::physicsMotor()
         this_thread::sleep_for (chrono::milliseconds(60));
     }
     cout << "!!!!! thread exit !!!!!" << endl;
-    //*/
 }
 
 Level::~Level()
@@ -163,6 +162,7 @@ void Level::destroy()
         m_bloons.pop_front();
     }
     m_mutex.unlock();
+    sf::sleep(sf::milliseconds(50));
     delete m_thread;
     delete m_towers;
     m_thread = NULL;
@@ -177,8 +177,6 @@ void Level::load()
         {
             m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
             m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_grass_1.png"));
-            //wcout << L"\u2654";// << endl;
-            //cout << nb_bloons << ", " << gap << ", " << type_of_bloon << ", " << next_wave << endl;
         }
         m_play_save = 1;
         m_status = game_status::wait;
