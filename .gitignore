@@ -73,3 +73,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+bin/
+obj/
+*.cbp
+*.depend
+*.layout
+*.cbTemp
+*test*
+a.out
