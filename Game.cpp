@@ -2,9 +2,6 @@
 
 Game::Game()
 {
-    std::locale::global(std::locale("en_US.utf8"));
-	std::wcout.imbue(std::locale());
-
     m_textload = new Textureloader("images/" , "sons/" , "polices/");
 
     m_background.setTexture(m_textload->getTexture("fond.png"));
