@@ -22,7 +22,7 @@ Level::Level(Textureloader* textload, sf::RenderWindow *screen)
     m_sprite_life.scale(0.4, 0.4);
 
     m_win = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color(0, 128, 0));
-    m_win->setTitle("YOU LOOSE", sf::Vector2i(450, 150));
+    m_win->setTitle("YOU WIN", sf::Vector2i(450, 150));
     m_win->newButton(RESTART, sf::Vector2i(0, 150));
     m_win->newButton(EXIT, sf::Vector2i(0, 75));
 
@@ -172,15 +172,22 @@ void Level::load()
 {
     if (m_file)
     {
-        int nb_bloons, type_of_bloon, gap, next_wave=0;
-        while (next_wave != -1)
+        if(m_file.eof() != true)
         {
-            m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
-            m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_grass_1.png"));
+            int nb_bloons, type_of_bloon, gap, next_wave=0;
+            while (next_wave != -1)
+            {
+                m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
+                m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_grass_1.png"));
+            }
+            m_play_save = 1;
+            m_status = game_status::wait;
+            m_animation = 0;
         }
-        m_play_save = 1;
-        m_status = game_status::wait;
-        m_animation = 0;
+        else
+        {
+            m_status = game_status::win;
+        }
     }
     else
         cout << "unable to load level (please contact the developpers)" << endl;
