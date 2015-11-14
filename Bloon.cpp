@@ -27,19 +27,23 @@ Bloon::~Bloon()
 void Bloon::initialize(Textureloader* textload)
 {
     std::string ndefich = "";
-    int inter = m_health;
+    int bloon_type = m_health;
     spriteStatus(false, SHIELD);
 
-    if (inter > 9 && inter < 100)
-        m_health /= 10;
-    if (inter > 100 && inter < 200)
+    if (m_health > 9 && m_health < 100)
     {
-        m_health -= 90;
-        m_health /= 10;
-        if (m_health > 9)
-            m_health = 9;
+        bloon_type /= 10;
     }
-    switch (m_health)
+    else if (m_health > 100 && m_health < 200)
+    {
+        bloon_type -= 90;
+        bloon_type /= 10;
+        if (bloon_type > 9)
+        {
+            bloon_type = 9;
+        }
+    }
+    switch (bloon_type)
     {
         case 1:
             ndefich = "bloon_1.png";
@@ -90,18 +94,20 @@ void Bloon::initialize(Textureloader* textload)
             ndefich = "bloon_10.png";
             m_speed = 21;
             m_earn = 100;
+            break;
         case 200:
             ndefich = "bloon_11.png";
             m_speed = 21;
             m_earn = 100;
+            break;
         default:
             break;
     }
 
-    if (m_health < 10 || m_health == 100 || m_health == 200)
+    if (bloon_type < 10 || bloon_type == 100 || bloon_type == 200)
+    {
         setTexture(textload->getTexture(ndefich), BLOON);
-
-    m_health = inter;
+    }
 
     if (m_health > 9 && m_health < 100)
     {
@@ -109,7 +115,7 @@ void Bloon::initialize(Textureloader* textload)
         setTexture(textload->getTexture("bloon_shield.png"), SHIELD);
         spriteStatus(true, SHIELD);
     }
-    if (m_health > 100 && m_health < 200)
+    else if (m_health > 100 && m_health < 200)
     {
         m_earn = 15;
         setTexture(textload->getTexture("bloon_shield_1.png"), SHIELD);
