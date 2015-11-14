@@ -1,6 +1,8 @@
 #include "TowerManager.h"
 
-TowerManager::TowerManager(Textureloader* textload)
+TowerManager::TowerManager(Textureloader* textload) :
+m_select(-1),
+m_tower_selected(-1)
 {
     for (int a(1); a < 5; ++a)
         m_selection.push_back(new Tower(a, textload, sf::Vector2f(785, 75*a + 50)));
@@ -10,8 +12,6 @@ TowerManager::TowerManager(Textureloader* textload)
                                 sf::Color::Black, sf::Color::Yellow,
                                 12, sf::Vector2i(825, 75*n + 100)));
     }
-    m_select = -1;
-    m_tower_selected = -1;
     m_up[0].setPosition(50, 555);
     m_up[1].setPosition(380, 555);
 

@@ -1,6 +1,8 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() :
+m_menu(true),
+m_clic(0)
 {
     m_textload = new Textureloader("images/", "sons/", "polices/");
 
@@ -19,8 +21,6 @@ Game::Game()
     m_mouse = new Particle(10.0, 100, sf::Vector2f(0.0, -3.0));
     m_mouse->setForce("P", sf::Vector2f(0.0, 1.01));
     m_mouse->setRandomForce("Fireworks", sf::Vector2f(1.0, -20.0), 30);
-
-    m_menu = true;
 }
 
 Game::~Game()

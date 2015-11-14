@@ -1,23 +1,28 @@
 #include "Bloon.h"
 
-Bloon::Bloon(int type, Textureloader* textload, sf::Vector2f start_pos) : Entity()
+Bloon::Bloon(int type, Textureloader* textload, sf::Vector2f start_pos) :
+Entity(),
+m_speed(0),
+m_health(type),
+m_earn(0),
+m_way(0),
+m_ice(0),
+m_ice_limit(0),
+m_status(m_effect::none),
+m_life_lost(0),
+m_color(0, 0, 0),
+m_exit(false),
+m_find(false),
+m_touch(false),
+m_earn_money(false),
+m_carte("")
 {
-    m_earn_money = false;
-    m_health = type;
-    m_speed = 0;
-    m_find = false;
-    m_touch = false;
-    m_ice = 0;
     for (int m(0); m < 8; m++)
     {
         m_direction[m] = true;
     }
-    m_earn = 0;
-    m_way = 0;
     initialize(textload);
-    m_exit = false;
     setPosition(start_pos);
-    m_status = m_effect::none;
 }
 
 Bloon::~Bloon()

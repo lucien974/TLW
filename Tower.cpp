@@ -1,33 +1,49 @@
 #include "Tower.h"
 
-Tower::Tower(int type, Textureloader* textload) : Entity()
+Tower::Tower(int type, Textureloader* textload) :
+Entity(),
+m_shoot(true),
+m_up_price(false),
+m_tir(0.0f),
+m_firerate(0.0f),
+m_radian(0.0f),
+m_portee(0),
+m_cost(0),
+m_type(type),
+m_damages(0),
+m_turrets(0),
+m_nb_ball(0),
+m_type_effect(0),
+m_upgrade(1),
+m_canon(0),
+m_color(sf::Color::Black)
 {
     for (int r(0); r < 3; ++r)
         m_pass_canon[r] = false;
-    m_up_price = false;
-    m_upgrade = 1;
-    m_nb_ball = 0;
-    m_firerate = 0.0;
-    m_type = type;
     m_clock.restart();
-    m_shoot = true;
     setOrigin(40, 60);
-    m_damages = 0;
-    m_cost = 0;
-    m_color = sf::Color::Black;
     init(textload);
 }
 
-Tower::Tower(int type, Textureloader* textload, sf::Vector2f position) : Entity()
+Tower::Tower(int type, Textureloader* textload, sf::Vector2f position) :
+Entity(),
+m_shoot(true),
+m_up_price(false),
+m_tir(0.0f),
+m_firerate(0.0f),
+m_radian(0.0f),
+m_portee(0),
+m_cost(0),
+m_type(type),
+m_damages(0),
+m_turrets(0),
+m_nb_ball(0),
+m_type_effect(0),
+m_upgrade(1),
+m_canon(0),
+m_color(sf::Color::Black)
 {
-    m_damages = 0;
-    m_nb_ball = 0;
-    m_firerate = 0.0;
     m_clock.restart();
-    m_shoot = true;
-    m_type = type;
-    m_upgrade = 1;
-    m_color = sf::Color::Black;
     init(textload);
     setPosition(position);
 }

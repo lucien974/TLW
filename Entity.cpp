@@ -1,8 +1,9 @@
 #include "Entity.h"
 
-Entity::Entity(): sf::Drawable()
+Entity::Entity() :
+sf::Drawable(),
+m_range_aviable(false)
 {
-    m_range_aviable = false;
 }
 
 Entity::~Entity()
@@ -86,8 +87,8 @@ bool Entity::isNearOf(Entity *entity, float radius)
     const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
     const sf::Vector2f pos2 = entity->m_sprite.begin()->second.getPosition();
     /*
-     * Équation d'un cercle r² = (x-a)² + (y-b)²
-     * Si (x-a)² + (y-b)² <= r², alors le point (a, b) est dans ou sur le cercle
+     * ï¿½quation d'un cercle rï¿½ = (x-a)ï¿½ + (y-b)ï¿½
+     * Si (x-a)ï¿½ + (y-b)ï¿½ <= rï¿½, alors le point (a, b) est dans ou sur le cercle
      * Sinon il est en dehors
      */
     return (pow((pos2.x - pos1.x), 2) + pow((pos2.y - pos1.y), 2)) <= pow(radius, 2);
@@ -97,8 +98,8 @@ bool Entity::isInRange(sf::Vector2f position, float radius)
 {
     const sf::Vector2f pos1 = m_sprite.begin()->second.getPosition();
     /*
-     * Équation d'un cercle r² = (x-a)² + (y-b)²
-     * Si (x-a)² + (y-b)² <= r², alors le point (a, b) est dans ou sur le cercle
+     * ï¿½quation d'un cercle rï¿½ = (x-a)ï¿½ + (y-b)ï¿½
+     * Si (x-a)ï¿½ + (y-b)ï¿½ <= rï¿½, alors le point (a, b) est dans ou sur le cercle
      * Sinon il est en dehors
      */
     return (pow((position.x - pos1.x), 2) + pow((position.y - pos1.y), 2)) <= pow(radius, 2);

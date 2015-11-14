@@ -35,7 +35,7 @@ class Tower : public Entity
       std::deque<sf::Vector2f> m_forward;
       std::deque<sf::RectangleShape> m_bullet;
       bool m_shoot, m_up_price, m_pass_canon[3];
-      float m_angle, m_tir, m_firerate, m_radian, m_rand_x, m_rand_y;
+      float m_tir, m_firerate, m_radian;
       int m_portee, m_cost, m_type, m_damages, m_turrets, m_nb_ball, m_type_effect, m_upgrade, m_canon;
       std::deque<sf::Vector2f> m_last_pos;
       std::deque<int> m_incrementation;

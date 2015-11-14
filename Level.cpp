@@ -1,18 +1,24 @@
 #include "Level.h"
 
-Level::Level(Textureloader* textload, sf::RenderWindow *screen)
+Level::Level(Textureloader* textload, sf::RenderWindow *screen) :
+m_money(0),
+m_lives(0),
+m_play_save(0),
+m_status(game_status::wait),
+m_clic(0),
+m_animation(0),
+m_done(false),
+m_delete(false),
+m_thread(nullptr),
+m_screen(screen),
+m_textload(textload)
 {
-    m_done = false;
-    m_screen = screen;
-    m_textload = textload;
 
     m_map.setTexture(m_textload->getTexture("grass_1.png"));
     m_map.scale(1.5f, 1.5f);
 
     if (!m_file)
         cout << "Impossible d'ouvrir le fichier" << endl;
-    m_clic = 0;
-    m_delete = false;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
     m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png", sf::Color(255, 0, 128), BUTTON));
@@ -25,7 +31,6 @@ Level::Level(Textureloader* textload, sf::RenderWindow *screen)
     m_win->setTitle("YOU WIN", sf::Vector2i(450, 150));
     m_win->newButton(RESTART, sf::Vector2i(0, 150));
     m_win->newButton(EXIT, sf::Vector2i(0, 75));
-
 
     m_text_life = new Button(m_textload, "", "nb",
                         sf::Color::Red, sf::Color::Red,

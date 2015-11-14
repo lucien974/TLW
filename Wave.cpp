@@ -1,13 +1,13 @@
 #include "Wave.h"
 
-Wave::Wave(int nb_bloons, int type, int gap, int next_wave, string carte)
+Wave::Wave(int nb_bloons, int type, int gap, int next_wave, string carte) :
+m_gap(gap),
+m_nb_bloons(nb_bloons),
+m_cursor(gap),
+m_type(type),
+m_way(next_wave),
+m_carte(carte)
 {
-    m_gap = gap;
-    m_nb_bloons = nb_bloons;
-    m_cursor = gap;
-    m_type = type;
-    m_way = next_wave;
-    m_carte = carte;
 }
 
 int Wave::update(sf::RenderWindow* ecran, Textureloader* textload)

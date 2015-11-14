@@ -1,17 +1,17 @@
 #include "Textureloader.h"
 
-Textureloader::Textureloader(std::string image_folder, std::string buffer_folder, std::string font_folder)
+Textureloader::Textureloader(std::string image_folder, std::string buffer_folder, std::string font_folder) :
+m_texture_folder(image_folder),
+m_buffer_folder(buffer_folder),
+m_font_folder(font_folder)
 {
-    m_texture_folder = image_folder;
-    m_buffer_folder = buffer_folder;
-    m_font_folder = font_folder;
 }
 
-Textureloader::Textureloader(std::string image_folder)
+Textureloader::Textureloader(std::string image_folder) :
+m_texture_folder(image_folder),
+m_buffer_folder(""),
+m_font_folder("")
 {
-    m_texture_folder = image_folder;
-    m_buffer_folder = "";
-    m_font_folder = "";
 }
 
 Textureloader::~Textureloader()

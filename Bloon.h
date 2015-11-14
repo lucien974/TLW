@@ -26,7 +26,7 @@ public:
 private:
     int m_speed, m_health, m_earn, m_way, m_ice, m_ice_limit, m_status, m_life_lost;
     sf::Color m_color;
-    bool m_exit, m_direction[8], m_find, m_first, m_touch, m_earn_money;
+    bool m_exit, m_direction[8], m_find, m_touch, m_earn_money;
     string m_carte;
     sf::Clock m_clock;
     enum m_shield{none = 0, ice = 0, burn = 1, glue = 2, reverse = 3};

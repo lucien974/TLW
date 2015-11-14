@@ -1,13 +1,14 @@
 #include "Menu.h"
 
-Menu::Menu(Textureloader* textload, string font, int size, sf::Color color, sf::Color color_hovered)
+Menu::Menu(Textureloader* textload, string font, int size, sf::Color color, sf::Color color_hovered) :
+m_textload(textload),
+m_color_normal(color),
+m_color_hovered(color_hovered),
+m_size(size),
+m_font(font),
+m_last_button(""),
+m_select("")
 {
-    m_textload = textload;
-    m_font = font;
-    m_size = size;
-    m_color_normal = color;
-    m_color_hovered = color_hovered;
-    m_select = m_last_button = "";
 }
 
 Menu::~Menu()

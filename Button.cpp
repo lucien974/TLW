@@ -1,27 +1,30 @@
 #include "Button.h"
 
-Button::Button()
+Button::Button() :
+m_textload(nullptr),
+m_color_normal(0, 0, 0),
+m_color_hovered(0, 0, 0),
+m_shadows(false),
+m_clic(true)
 {
-    m_textload = NULL;
-    m_color_hovered = sf::Color(0, 0, 0);
-    m_color_normal = sf::Color(0, 0, 0);
-    m_shadows = false;
-    m_clic = true;
 }
 
-Button::Button(Textureloader *textload)
+Button::Button(Textureloader *textload) :
+m_textload(textload),
+m_color_normal(0, 0, 0),
+m_color_hovered(0, 0, 0),
+m_shadows(false),
+m_clic(true)
 {
-    m_textload = textload;
-    m_color_hovered = sf::Color(0, 0, 0);
-    m_color_normal = sf::Color(0, 0, 0);
-    m_shadows = false;
-    m_clic = true;
 }
 
-Button::Button(Textureloader *textload, string sentence, string font, sf::Color color, sf::Color hovered_color, int char_size, sf::Vector2i position)
+Button::Button(Textureloader *textload, string sentence, string font, sf::Color color, sf::Color hovered_color, int char_size, sf::Vector2i position) :
+m_textload(textload),
+m_color_normal(color),
+m_color_hovered(hovered_color),
+m_shadows(false),
+m_clic(true)
 {
-    m_textload = textload;
-
     m_button_normal.setString(sentence);
     m_button_normal.setFont(m_textload->getFont(font + ".ttf"));
     m_button_normal.setCharacterSize(char_size);
@@ -35,11 +38,6 @@ Button::Button(Textureloader *textload, string sentence, string font, sf::Color 
     m_button_shadows.setOrigin(m_button_shadows.getGlobalBounds().width/2, m_button_shadows.getGlobalBounds().height/2);
     m_button_shadows.setPosition(position.x, position.y);
     m_button_shadows.setColor(sf::Color::Black);
-
-    m_color_normal = color;
-    m_color_hovered = hovered_color;
-    m_shadows = false;
-    m_clic = true;
 }
 
 Button::~Button()

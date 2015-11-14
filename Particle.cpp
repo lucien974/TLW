@@ -1,21 +1,21 @@
 #include "Particle.h"
 
-Particle::Particle()
+Particle::Particle() :
+m_v0(0.0f, 0.0f),
+m_mass(1),
+m_limit(1),
+m_advance(0),
+m_follow_color(100)
 {
-    m_mass = 1;
-    m_limit = 1;
-    m_v0 = sf::Vector2f(0.0, 0.0);
-    m_advance = 0;
-    m_follow_color = 100;
 }
 
-Particle::Particle(float mass, unsigned int limit, sf::Vector2f v0)
+Particle::Particle(float mass, unsigned int limit, sf::Vector2f v0) :
+m_v0(v0),
+m_mass(mass),
+m_limit(limit),
+m_advance(0),
+m_follow_color(100)
 {
-    m_mass = mass;
-    m_limit = limit;
-    m_v0 = v0;
-    m_advance = 0;
-    m_follow_color = 100;
 }
 
 Particle::~Particle()
