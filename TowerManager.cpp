@@ -86,10 +86,10 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
         screen->draw(*m_selection[y]);
     }
     bool found = false, click = clic_up;
-    for (unsigned int z(0); z < m_tower.size(); ++z)
+    for (unsigned int i(0); i < m_tower.size(); ++i)
     {
         sf::Vector2f a;
-        m_tower[z]->drawBullet(screen);
+        m_tower[i]->drawBullet(screen);
         a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
         if (m_tower_selected != -1 && a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
         {
@@ -102,17 +102,17 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
                 m_tower_selected = -1;
             }
         }
-        if (m_tower[z]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
+        if (m_tower[i]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
            click == true &&
            found == false)
         {
             found = true;
             if (m_tower_selected != -1)
                 m_tower[m_tower_selected]->drawRange(false);
-            m_tower_selected = z;
+            m_tower_selected = i;
             click = false;
         }
-        screen->draw(*m_tower[z]);
+        screen->draw(*m_tower[i]);
     }
     if (m_tower_selected != -1 && m_tower_selected < static_cast<int>(m_tower.size()))
     {
