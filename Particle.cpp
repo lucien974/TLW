@@ -88,7 +88,7 @@ void Particle::update(int number_of_generation, sf::RenderWindow &screen)
            m_particles[j].first.getPosition().y > 0 &&
            m_particles[j].first.getPosition().y < 600)
         {
-            vect = (m_particles[j].second.first/(float)m_mass)*(float)m_particles[j].second.second + m_v0;
+            vect = (m_particles[j].second.first/m_mass) * static_cast<float>(m_particles[j].second.second) + m_v0;
             m_particles[j].first.move(vect);
             m_particles[j].second.second++;
             j++;

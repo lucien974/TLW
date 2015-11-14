@@ -114,7 +114,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
         }
         screen->draw(*m_tower[z]);
     }
-    if (m_tower_selected != -1 && m_tower_selected < (int)m_tower.size())
+    if (m_tower_selected != -1 && m_tower_selected < static_cast<int>(m_tower.size()))
     {
         if (sup)
         {

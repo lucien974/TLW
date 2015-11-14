@@ -12,7 +12,7 @@ public:
     void initialize(Textureloader* textload); // Initialization of all variables of bloon
     void update(Textureloader* textload); // move the bloon
     void update();
-    void findWay(int x, int y, int postab, Textureloader* textload); // Research of the next position of the bloon
+    void findWay(unsigned int x, unsigned int y, int postab, Textureloader* textload); // Research of the next position of the bloon
     bool isWentOut(); // If the bloon pass through th map
     int getSpeed(); // Get bloon speed
     int getAdvance(); // Return the number pixels crossed

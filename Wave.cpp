@@ -108,14 +108,14 @@ int Wave::getAdvance(int n)
     return m_bloon[n]->getAdvance();
 }
 
-int Wave::getBloonSpeed(int num_bloon)
+int Wave::getBloonSpeed(unsigned int num_bloon)
 {
     return m_bloon[num_bloon]->getSpeed();
 }
 
-void Wave::destroyBloon(int num)
+void Wave::destroyBloon(unsigned int num)
 {
-    if ((unsigned int)num < m_bloon.size())
+    if (num < m_bloon.size())
     {
         delete m_bloon[num];
         m_bloon.erase(m_bloon.begin() + num);

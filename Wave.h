@@ -13,8 +13,8 @@ class Wave
         bool next();
         bool isEmpty();
         int size();
-        int getBloonSpeed(int num_bloon);
-        void destroyBloon(int num);
+        int getBloonSpeed(unsigned int num_bloon);
+        void destroyBloon(unsigned int num);
         sf::Vector2f getBloonPosition(int num);
         bool isNearOf(int bloon_num, sf::Vector2f tower_pos, float radius);
         int isWentOut(int n);
