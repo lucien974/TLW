@@ -1,9 +1,9 @@
 #include "Game.h"
 
 // Fait : Animation
-// à Faire : ???
+// ï¿½ Faire : ???
 
-int main (int argc, char** argv)
+int main ()
 {
     XInitThreads(); // Initialization of multi-threading client
 

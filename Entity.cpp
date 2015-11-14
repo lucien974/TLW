@@ -106,11 +106,12 @@ bool Entity::isInRange(sf::Vector2f position, float radius)
 
 bool Entity::isOutOfScreen(sf::RenderWindow* screen)
 {
+    sf::Vector2u winSize = screen->getSize();
     if (m_sprite.begin()->second.getPosition().x > 0 &&
-    m_sprite.begin()->second.getPosition().x < 900 &&
+    m_sprite.begin()->second.getPosition().x < winSize.x &&
 
     m_sprite.begin()->second.getPosition().y > 0 &&
-    m_sprite.begin()->second.getPosition().y < 600)
+    m_sprite.begin()->second.getPosition().y < winSize.y)
     {
         return false;
     }
