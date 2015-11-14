@@ -8,7 +8,7 @@ TowerManager::TowerManager(Textureloader* textload)
     {
         m_cost_sprite.push_back(Button(textload, m_selection[n]->getPrice(), "nb",
                                 sf::Color::Black, sf::Color::Yellow,
-                                12,  sf::Vector2i(825, 75*n + 100)));
+                                12, sf::Vector2i(825, 75*n + 100)));
     }
     m_select = -1;
     m_tower_selected = -1;
@@ -18,7 +18,7 @@ TowerManager::TowerManager(Textureloader* textload)
     m_up_price[0] = new Button(textload, "", "nb", sf::Color::Black, sf::Color::Yellow, 12, sf::Vector2i(80, 555));
     m_up_price[1] = new Button(textload, "", "nb", sf::Color::Black, sf::Color::Yellow, 12, sf::Vector2i(440, 555));
 
-    m_money = new Button(textload, "", "nb", sf::Color::Yellow, sf::Color::Yellow, 20,  sf::Vector2i(750, 520));
+    m_money = new Button(textload, "", "nb", sf::Color::Yellow, sf::Color::Yellow, 20, sf::Vector2i(750, 520));
     m_money->setShadows(sf::Vector2i(-3, -3));
 }
 

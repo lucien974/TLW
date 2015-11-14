@@ -172,7 +172,7 @@ void Level::load()
 {
     if (m_file)
     {
-        if(m_file.eof() != true)
+        if (m_file.eof() != true)
         {
             int nb_bloons, type_of_bloon, gap, next_wave=0;
             while (next_wave != -1)
@@ -237,7 +237,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     m_mutex.unlock();
 }
 
-void Level::event(sf::RenderWindow *screen,  Textureloader* textload)
+void Level::event(sf::RenderWindow *screen, Textureloader* textload)
 {
     char status=0;
     while (m_done == false)
