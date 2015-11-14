@@ -29,8 +29,17 @@ TowerManager::~TowerManager()
         if (m_selection[a] != NULL)
             delete m_selection[a];
     }
+
     for (unsigned int b(0); b < m_tower.size(); ++b)
         delete m_tower[b];
+
+    for (unsigned int i(0); i < 2; ++i)
+    {
+      delete m_up_price[i];
+    }
+
+    delete m_money;
+
     m_selection.clear();
     m_tower.clear();
 }

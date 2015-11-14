@@ -43,6 +43,8 @@ m_upgrade(1),
 m_canon(0),
 m_color(sf::Color::Black)
 {
+    for (int r(0); r < 3; ++r)
+        m_pass_canon[r] = false;
     m_clock.restart();
     init(textload);
     setPosition(position);
