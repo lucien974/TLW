@@ -365,13 +365,13 @@ void Level::event(sf::RenderWindow *screen, Textureloader* textload)
 
 void Level::buttonAnimation()
 {
-    if (m_button_play.getScale().x >= 1.33 ||
+    if (m_button_play.getScale().x >= 1.33f ||
        m_animation == 1)
     {
          m_animation = 1;
          m_button_play.scale(0.95, 0.95);
     }
-    if (m_button_play.getScale().x <= 0.33)
+    if (m_button_play.getScale().x <= 0.33f)
     {
         m_status = game_status::normal;
     }

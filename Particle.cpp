@@ -58,7 +58,7 @@ void Particle::setRandomForce(string name, sf::Vector2f f, float angle)
     float length = (sqrt(f.x*f.x + f.y*f.y));
     f.x /= length;
     f.y /= length;
-    angle *= PI/180.0;
+    angle *= PI/180.0f;
     float a=acos(f.x)-angle, b=acos(f.x)+angle;
     while (a > 2*PI)
         a-=PI;
