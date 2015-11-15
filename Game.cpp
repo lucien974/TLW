@@ -1,16 +1,39 @@
 #include "Game.h"
 
 Game::Game() :
+m_level_name(""),
+m_level_num(1),
 m_menu(true),
 m_clic(0)
 {
+    m_file.open("levels/game.txt", ios::in);
+    m_file >> m_level_name;
+
     m_textload = new Textureloader("images/", "sons/", "polices/");
+    m_textload->getTexture("heart.png");
+    m_textload->getTexture("ice_bloon.png");
+    for (int i = 1; i < 12; ++i)
+    {
+        stringstream a;
+        a << i;
+        m_textload->getTexture("bloon_" + a.str() + ".png");
+    }
+    for (int i(1); i < 6; ++i)
+    {
+        stringstream a;
+        a << i;
+        m_textload->getTexture("bloon_shield_" + a.str() + ".png");
+    }
 
     m_background.setTexture(m_textload->getTexture("fond.png"));
 
+    m_textload->setTextureFolder("images/" + m_level_name + "/");
+
     m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE");
 
-    m_level = new Level(m_textload, m_screen);
+    stringstream a;
+    a << m_level_num;
+    m_level = new Level(m_textload, m_screen, "levels/" + m_level_name + "/lvl_" + a.str() + ".txt");
 
     m_start = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color::Black);
     m_start->setTitle("BALLONS\n  WAR", sf::Vector2i(450, 150));
@@ -25,6 +48,7 @@ m_clic(0)
 
 Game::~Game()
 {
+    m_file.close();
     delete m_start;
     delete m_level;
     delete m_textload;
@@ -36,6 +60,11 @@ void Game::update()
 {
     sf::Event event;
     int gen = 3;
+    if (!m_file)
+    {
+        m_screen->close();
+        cout << "Game file don't found" << endl;
+    }
     while (m_screen->isOpen())
     {
         while (m_screen->pollEvent(event))
@@ -43,11 +72,12 @@ void Game::update()
             if (event.type == sf::Event::MouseMoved)
                 gen = 3;
         }
+
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
         {
             m_clic = 2;
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
+        else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
         {
             m_clic = 1;
         }
@@ -72,8 +102,41 @@ void Game::update()
         }
         else
         {
-            m_level->event(m_screen, m_textload);
-            m_screen->close();
+            m_level->run(m_screen, m_textload);
+            if (m_level_num < NB_LEVELS && m_level->isDone() == false)
+            {
+                ++m_level_num;
+                if (m_file.eof() == false)
+                {
+                    stringstream a;
+                    string b;
+                    m_file >> b;
+                    if (b != m_level_name)
+                    {
+                        m_level_name = b;
+                        m_level_num = 1;
+                    }
+                    a << m_level_num;
+                    m_level->changeLevel("levels/" + m_level_name + "/lvl_" + a.str() + ".txt");
+                }
+                else
+                {
+                    cout << "File error not enough levels" << endl;
+                    m_screen->close();
+                }
+            }
+            else
+            {
+                if (m_level->isDone() == false)
+                {
+                    m_level->forceRunning(m_screen, m_textload);
+                }
+                else
+                {
+                    m_level->close();
+                    m_screen->close();
+                }
+            }
         }
     }
 }

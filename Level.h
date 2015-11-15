@@ -9,12 +9,16 @@
 class Level
 {
 public:
-    Level(Textureloader* textload, sf::RenderWindow *screen);
+    Level(Textureloader* textload, sf::RenderWindow *screen, string file);
     ~Level();
     void update(sf::RenderWindow *ecran, Textureloader* textload);
-    void event(sf::RenderWindow *ecran, Textureloader* textload);
+    void run(sf::RenderWindow *ecran, Textureloader* textload);
+    bool isDone();
+    void close();
     void physicsMotor();
     void buttonAnimation();
+    void changeLevel(string file);
+    void forceRunning(sf::RenderWindow *screen, Textureloader* textload);
     void load();
     void initialize();
     void destroy();
@@ -25,8 +29,9 @@ private:
     TowerManager *m_towers;
     int m_money, m_lives, m_play_save, m_status;
     char m_clic, m_animation;
-    bool m_done, m_delete;
+    bool m_done, m_delete, m_end;
     ifstream m_file;
+    string m_file_name;
     sf::Event m_event;
     sf::Sprite m_map, m_button_play, m_interface, m_sprite_life;
     Menu *m_pause, *m_win, *m_loose;
@@ -38,7 +43,7 @@ private:
     Textureloader *m_textload;
     mutex m_mutex;
 
-    enum game_status{normal = 0, paused = 1, win = 2, loose = 3, wait = 4, play_animation = 5};
+    enum game_status{normal = 0, paused = 1, win = 2, loose = 3, wait = 4, play_animation = 5, end = 6};
 };
 
 #endif // LEVEL_H_INCLUDED

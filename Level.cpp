@@ -1,6 +1,6 @@
 #include "Level.h"
 
-Level::Level(Textureloader* textload, sf::RenderWindow *screen) :
+Level::Level(Textureloader* textload, sf::RenderWindow *screen, string file) :
 m_money(0),
 m_lives(0),
 m_play_save(0),
@@ -9,19 +9,20 @@ m_clic(0),
 m_animation(0),
 m_done(false),
 m_delete(false),
+m_end(false),
+m_file_name(file),
 m_thread(nullptr),
 m_screen(screen),
 m_textload(textload)
 {
-
-    m_map.setTexture(m_textload->getTexture("grass_1.png"));
+    m_map.setTexture(m_textload->getTexture("map.png"));
     m_map.scale(1.5f, 1.5f);
 
     if (!m_file)
         cout << "Impossible d'ouvrir le fichier" << endl;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setPosition(m_textload->getPxlPos("virtual_grass_1.png", sf::Color(255, 0, 128), BUTTON));
+    m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON));
 
     m_sprite_life.setTexture(m_textload->getTexture("heart.png"));
     m_sprite_life.setPosition(820, 552);
@@ -37,7 +38,7 @@ m_textload(textload)
                         20, sf::Vector2i(750, 550));
     m_text_life->setShadows(sf::Vector2i(-3, -3));
 
-    m_interface.setTexture(m_textload->getTexture("tower_bar_1.png"));
+    m_interface.setTexture(m_textload->getTexture("tower_manager.png"));
     m_interface.setPosition(0, 0);
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
@@ -61,7 +62,7 @@ m_textload(textload)
 
 void Level::initialize()
 {
-    m_file.open("levels/lvl_1.txt", ios::in);
+    m_file.open(m_file_name, ios::in);
     m_animation = 0;
 
     m_money = 500;
@@ -167,8 +168,10 @@ void Level::destroy()
         m_bloons.pop_front();
     }
     m_mutex.unlock();
-    sf::sleep(sf::milliseconds(50));
+    m_done = true;
+    sf::sleep(sf::milliseconds(100));
     delete m_thread;
+    m_done = false;
     delete m_towers;
     m_thread = NULL;
 }
@@ -183,7 +186,7 @@ void Level::load()
             while (next_wave != -1)
             {
                 m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
-                m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_grass_1.png"));
+                m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_map.png"));
             }
             m_play_save = 1;
             m_status = game_status::wait;
@@ -195,7 +198,27 @@ void Level::load()
         }
     }
     else
-        cout << "unable to load level (please contact the developpers)" << endl;
+        cout << "unable to load level ! " << m_file_name << " ! (please contact the developpers)" << endl;
+}
+
+void Level::changeLevel(string file)
+{
+    m_file_name = file;
+    m_file.close();
+    m_file.open(m_file_name, ios::in);
+    m_end = false;
+    m_status = game_status::wait;
+    m_animation = 0;
+}
+
+bool Level::isDone()
+{
+    return m_done;
+}
+
+void Level::close()
+{
+    m_done = true;
 }
 
 void Level::update(sf::RenderWindow *screen, Textureloader* textload)
@@ -236,16 +259,23 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     screen->draw(m_sprite_life);
     if (m_status >= game_status::wait)
         screen->draw(m_button_play);
-    m_money = m_towers->update(textload->getMap("virtual_grass_1.png"), screen, textload, m_money, m_delete, m_clic==2);
+    m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, textload, m_money, m_delete, m_clic==2);
     if (m_clic == 2)
         m_clic = 0;
     m_mutex.unlock();
 }
 
-void Level::event(sf::RenderWindow *screen, Textureloader* textload)
+void Level::forceRunning(sf::RenderWindow *screen, Textureloader* textload)
+{
+    m_end = false;
+    m_status = game_status::end;
+    run(screen, textload);
+}
+
+void Level::run(sf::RenderWindow *screen, Textureloader* textload)
 {
     char status=0;
-    while (m_done == false)
+    while (m_done == false && m_end == false)
     {
         if (m_status != game_status::paused)
             status = m_status;
@@ -303,7 +333,7 @@ void Level::event(sf::RenderWindow *screen, Textureloader* textload)
         {
             m_clic = 2;
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
+        else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == true && m_clic == 0)
         {
             m_clic = 1;
         }
@@ -348,6 +378,9 @@ void Level::event(sf::RenderWindow *screen, Textureloader* textload)
                     m_clic = 0;
                 break;
             case game_status::win:
+                m_end = true;
+                break;
+            case game_status::end:
                 a = m_win->update(screen, m_clic);
                 if (a == RESTART)
                 {

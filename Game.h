@@ -17,6 +17,9 @@ class Game
         sf::RenderWindow *m_screen;
         sf::Sprite m_background;
         Particle *m_mouse;
+        fstream m_file;
+        string m_level_name;
+        unsigned int m_level_num;
         bool m_menu;
         char m_clic;
 };

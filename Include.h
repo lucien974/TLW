@@ -37,5 +37,7 @@
 #define PLAY "play"
 //Type button
 #define BUTTON "button"
+//Number levels limit
+#define NB_LEVELS 2
 
 #endif // INCLUDE_H_INCLUDED
