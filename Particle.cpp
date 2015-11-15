@@ -22,19 +22,19 @@ Particle::~Particle()
 {
 }
 
-void Particle::setForce(string name, sf::Vector2f f)
+void Particle::setForce(std::string name, sf::Vector2f f)
 {
     m_forces[name] = f;
 }
 
-void Particle::normalise(string a)
+void Particle::normalise(std::string a)
 {
-    string b = "";
+    std::string b = "";
     for (auto &key : m_forces)
     {
         if (key.first == a)
         {
-            key.second /= sqrt(key.second.x*key.second.x + key.second.y*key.second.y);
+            key.second /= static_cast<float>(sqrt(key.second.x*key.second.x + key.second.y*key.second.y));
             b = a;
         }
     }
@@ -50,10 +50,10 @@ void Particle::normalise(string a)
         }
     }
     if (b == "")
-        cout << "error force " << a << " don't found" << endl;
+        std::cout << "error force " << a << " don't found" << std::endl;
 }
 
-void Particle::setRandomForce(string name, sf::Vector2f f, float angle)
+void Particle::setRandomForce(std::string name, sf::Vector2f f, float angle)
 {
     float length = (sqrt(f.x*f.x + f.y*f.y));
     f.x /= length;
@@ -68,7 +68,7 @@ void Particle::setRandomForce(string name, sf::Vector2f f, float angle)
         b-=PI;
     while (b < 0)
         b+=2*PI;
-    m_random_forces[name] = make_pair(length, make_pair(a, b));
+    m_random_forces[name] = std::make_pair(length, std::make_pair(a, b));
 }
 
 void Particle::setInitialSpeed(sf::Vector2f v0)
@@ -122,7 +122,7 @@ void Particle::update(int number_of_generation, sf::RenderWindow &screen)
                 rand_vect.y = sin(angle)*key.second.first;
                 vect += rand_vect;
             }
-            m_particles.push_back(make_pair(sf::RectangleShape(sf::Vector2f(3, 3)), make_pair(vect, 0)));
+            m_particles.push_back(std::make_pair(sf::RectangleShape(sf::Vector2f(3, 3)), std::make_pair(vect, 0)));
             m_particles.back().first.setPosition(sf::Mouse::getPosition(screen).x, sf::Mouse::getPosition(screen).y);
             if (m_follow_color <= 255)
                 m_particles.back().first.setFillColor(sf::Color(0, 0, m_follow_color));

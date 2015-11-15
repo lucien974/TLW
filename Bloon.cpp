@@ -313,7 +313,7 @@ void Bloon::setSpeed(int speed)
     m_speed = speed;
 }
 
-void Bloon::setMap(string bloon_map)
+void Bloon::setMap(std::string bloon_map)
 {
     m_carte = bloon_map;
 }

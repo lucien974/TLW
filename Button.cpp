@@ -18,7 +18,7 @@ m_clic(true)
 {
 }
 
-Button::Button(Textureloader *textload, string sentence, string font, sf::Color color, sf::Color hovered_color, int char_size, sf::Vector2i position) :
+Button::Button(Textureloader *textload, std::string sentence, std::string font, sf::Color color, sf::Color hovered_color, int char_size, sf::Vector2i position) :
 m_textload(textload),
 m_color_normal(color),
 m_color_hovered(hovered_color),
@@ -89,7 +89,7 @@ void Button::setShadows(sf::Vector2i gap)
     m_button_shadows.move(gap.x, gap.y);
 }
 
-void Button::setSentence(string sentence)
+void Button::setSentence(std::string sentence)
 {
     m_button_normal.setString(sentence);
     m_button_shadows.setString(sentence);
@@ -110,7 +110,7 @@ void Button::setColor(sf::Color color)
     m_button_normal.setColor(color);
 }
 
-void Button::setFont(string font)
+void Button::setFont(std::string font)
 {
     m_button_normal.setFont(m_textload->getFont(font));
     m_button_shadows.setFont(m_textload->getFont(font));

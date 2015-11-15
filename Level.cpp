@@ -1,6 +1,6 @@
 #include "Level.h"
 
-Level::Level(Textureloader* textload, sf::RenderWindow *screen, string file) :
+Level::Level(Textureloader* textload, sf::RenderWindow *screen, std::string file) :
 m_money(0),
 m_lives(0),
 m_play_save(0),
@@ -19,7 +19,7 @@ m_textload(textload)
     m_map.scale(1.5f, 1.5f);
 
     if (!m_file)
-        cout << "Impossible d'ouvrir le fichier" << endl;
+        std::cout << "Impossible d'ouvrir le fichier" << std::endl;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON));
@@ -62,7 +62,7 @@ m_textload(textload)
 
 void Level::initialize()
 {
-    m_file.open(m_file_name, ios::in);
+    m_file.open(m_file_name, std::ios::in);
     m_animation = 0;
 
     m_money = 500;
@@ -70,14 +70,14 @@ void Level::initialize()
     m_towers = new TowerManager(m_textload);
     m_status = game_status::wait;
     m_play_save = 0;
-    m_thread = new thread(&Level::physicsMotor, this);
+    m_thread = new std::thread(&Level::physicsMotor, this);
     m_thread->detach();
 }
 
 void Level::physicsMotor()
 {
     sf::Vector2f position;
-    cout << "!!!!! thread launch !!!!!" << endl;
+    std::cout << "!!!!! thread launch !!!!!" << std::endl;
     while (m_status != game_status::loose && m_status != game_status::win && m_done == false)
     {
         int indice[2], oldest = 0;
@@ -141,9 +141,9 @@ void Level::physicsMotor()
             }
             m_mutex.unlock();
         }
-        this_thread::sleep_for (chrono::milliseconds(60));
+        std::this_thread::sleep_for (std::chrono::milliseconds(60));
     }
-    cout << "!!!!! thread exit !!!!!" << endl;
+    std::cout << "!!!!! thread exit !!!!!" << std::endl;
 }
 
 Level::~Level()
@@ -198,14 +198,14 @@ void Level::load()
         }
     }
     else
-        cout << "unable to load level ! " << m_file_name << " ! (please contact the developpers)" << endl;
+        std::cout << "unable to load level ! " << m_file_name << " ! (please contact the developpers)" << std::endl;
 }
 
-void Level::changeLevel(string file)
+void Level::changeLevel(std::string file)
 {
     m_file_name = file;
     m_file.close();
-    m_file.open(m_file_name, ios::in);
+    m_file.open(m_file_name, std::ios::in);
     m_end = false;
     m_status = game_status::wait;
     m_animation = 0;
@@ -228,7 +228,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
         load();
     if (m_status < game_status::wait)
     {
-        //cout << m_play_save << endl;
+        //std::cout << m_play_save << endl;
         for (int i(0); i < m_play_save; ++i)
         {
             if (!m_bloons[i]->isEmpty())
@@ -252,7 +252,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     if (m_lives < 0)
         m_status = game_status::loose;
     screen->draw(m_interface);
-    stringstream a;
+    std::stringstream a;
     a << m_lives;
     m_text_life->setSentence(a.str());
     screen->draw(*m_text_life);
@@ -327,7 +327,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
             }
         }
         if (m_done == true)
-            cout << "End of game" << endl;
+            std::cout << "End of game" << std::endl;
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
         {
@@ -338,7 +338,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
             m_clic = 1;
         }
         screen->draw(m_map);
-        string a;
+        std::string a;
         switch (m_status)
         {
             case game_status::play_animation:
@@ -370,7 +370,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 {
                     destroy();
                     initialize();
-                    cout << "game restarted" << endl;
+                    std::cout << "game restarted" << std::endl;
                 }
                 else if (a == EXIT)
                     m_done = true;
@@ -393,7 +393,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                     m_clic = 0;
                 break;
             default:
-                cout << "Error game status undeclared" << endl;
+                std::cout << "Error game status undeclared" << std::endl;
                 break;
         }
         screen->display();

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <X11/Xlib.h>
 
 // Fait : Animation
 // � Faire : ???

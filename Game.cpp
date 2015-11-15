@@ -6,7 +6,7 @@ m_level_num(1),
 m_menu(true),
 m_clic(0)
 {
-    m_file.open("levels/game.txt", ios::in);
+    m_file.open("levels/game.txt", std::ios::in);
     m_file >> m_level_name;
 
     m_textload = new Textureloader("images/", "sons/", "polices/");
@@ -14,13 +14,13 @@ m_clic(0)
     m_textload->getTexture("ice_bloon.png");
     for (int i = 1; i < 12; ++i)
     {
-        stringstream a;
+        std::stringstream a;
         a << i;
         m_textload->getTexture("bloon_" + a.str() + ".png");
     }
     for (int i(1); i < 6; ++i)
     {
-        stringstream a;
+        std::stringstream a;
         a << i;
         m_textload->getTexture("bloon_shield_" + a.str() + ".png");
     }
@@ -31,7 +31,7 @@ m_clic(0)
 
     m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE");
 
-    stringstream a;
+    std::stringstream a;
     a << m_level_num;
     m_level = new Level(m_textload, m_screen, "levels/" + m_level_name + "/lvl_" + a.str() + ".txt");
 
@@ -63,7 +63,7 @@ void Game::update()
     if (!m_file)
     {
         m_screen->close();
-        cout << "Game file don't found" << endl;
+        std::cout << "Game file don't found" << std::endl;
     }
     while (m_screen->isOpen())
     {
@@ -84,7 +84,7 @@ void Game::update()
 
         if (m_menu)
         {
-            string a;
+            std::string a;
             m_screen->draw(m_background);
             a = m_start->update(m_screen, m_clic);
             m_mouse->update(gen, *m_screen);
@@ -108,8 +108,8 @@ void Game::update()
                 ++m_level_num;
                 if (m_file.eof() == false)
                 {
-                    stringstream a;
-                    string b;
+                    std::stringstream a;
+                    std::string b;
                     m_file >> b;
                     if (b != m_level_name)
                     {
@@ -121,7 +121,7 @@ void Game::update()
                 }
                 else
                 {
-                    cout << "File error not enough levels" << endl;
+                    std::cout << "File error not enough levels" << std::endl;
                     m_screen->close();
                 }
             }

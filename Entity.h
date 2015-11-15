@@ -1,13 +1,15 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef ENTITY_H_INCLUDED
+#define ENTITY_H_INCLUDED
+
+#include <string>
+#include <map>
+
+#include <SFML/Graphics.hpp>
 
 #include "Include.h"
 
-using namespace std;
-
 class Entity: public sf::Transformable, public sf::Drawable
 {
-
     public:
         Entity();
         virtual ~Entity();
@@ -34,6 +36,9 @@ class Entity: public sf::Transformable, public sf::Drawable
         void rotateTowards(sf::Vector2f pos2);
         virtual void update() = 0;
 
+    protected:
+        enum m_effect{none = -1, ice = 0, burn = 1, glue = 2, reverse = 3};
+
     private:
         std::map<std::string, sf::Sprite> m_sprite;
         std::map<std::string, sf::Sprite>::iterator m_sprite_it;
@@ -41,8 +46,6 @@ class Entity: public sf::Transformable, public sf::Drawable
         std::map<std::string, bool>::iterator m_draw_status_it;
         bool m_range_aviable;
         sf::CircleShape m_range;
-    protected:
-        enum m_effect{none = -1, ice = 0, burn = 1, glue = 2, reverse = 3};
 };
 
-#endif //ENTITY_H
+#endif //ENTITY_H_INCLUDED
