@@ -74,14 +74,14 @@ void Tower::iceMove(int r)
     }
     if (m_incrementation[r] < 20)
     {
-        m_forward[r].x = a*sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-        m_forward[r].y = -a*cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].x = a*std::sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
+        m_forward[r].y = -a*std::cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
     }
     if (m_incrementation[r] >= 20 && m_incrementation[r] < 90)
     {
         m_radian = rand()*0.5f;
-        m_forward[r].x = a*sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-        m_forward[r].y = -a*cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].x = a*std::sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
+        m_forward[r].y = -a*std::cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
     }
     if (m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
     {
@@ -191,8 +191,8 @@ int Tower::shoot(sf::Vector2f bloon)
                 m_pass_canon[2] = true;
             }
         }
-        m_forward.push_back(sf::Vector2f(30 * sin(m_bullet.back().getRotation()*(3.1415f / 180.0f)),
-                                         -30 * cos(m_bullet.back().getRotation()*(3.1415f / 180.0f))));
+        m_forward.push_back(sf::Vector2f(30 * std::sin(m_bullet.back().getRotation()*(3.1415f / 180.0f)),
+                                         -30 * std::cos(m_bullet.back().getRotation()*(3.1415f / 180.0f))));
         m_clock.restart();
         return m_damages;
     }

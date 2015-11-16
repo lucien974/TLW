@@ -59,7 +59,7 @@ void Particle::setRandomForce(std::string name, sf::Vector2f f, float angle)
     f.x /= length;
     f.y /= length;
     angle *= PI/180.0f;
-    float a=acos(f.x)-angle, b=acos(f.x)+angle;
+    float a=std::acos(f.x)-angle, b=std::acos(f.x)+angle;
     while (a > 2*PI)
         a-=PI;
     while (a < 0)
@@ -118,8 +118,8 @@ void Particle::update(int number_of_generation, sf::RenderWindow &screen)
                     angle = (rand()/RAND_MAX)*(key.second.second.first - key.second.second.second) + key.second.second.second;
                 while (angle >= 2*PI)
                     angle-=2*PI;
-                rand_vect.x = cos(angle)*key.second.first;
-                rand_vect.y = sin(angle)*key.second.first;
+                rand_vect.x = std::cos(angle)*key.second.first;
+                rand_vect.y = std::sin(angle)*key.second.first;
                 vect += rand_vect;
             }
             m_particles.push_back(std::make_pair(sf::RectangleShape(sf::Vector2f(3, 3)), std::make_pair(vect, 0)));
