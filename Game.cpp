@@ -14,15 +14,11 @@ m_clic(0)
     m_textload->getTexture("ice_bloon.png");
     for (int i = 1; i < 12; ++i)
     {
-        std::stringstream a;
-        a << i;
-        m_textload->getTexture("bloon_" + a.str() + ".png");
+        m_textload->getTexture("bloon_" + std::to_string(i) + ".png");
     }
     for (int i(1); i < 6; ++i)
     {
-        std::stringstream a;
-        a << i;
-        m_textload->getTexture("bloon_shield_" + a.str() + ".png");
+        m_textload->getTexture("bloon_shield_" + std::to_string(i) + ".png");
     }
 
     m_background.setTexture(m_textload->getTexture("fond.png"));
@@ -31,9 +27,7 @@ m_clic(0)
 
     m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE");
 
-    std::stringstream a;
-    a << m_level_num;
-    m_level = new Level(m_textload, m_screen, "levels/" + m_level_name + "/lvl_" + a.str() + ".txt");
+    m_level = new Level(m_textload, m_screen, "levels/" + m_level_name + "/lvl_" + std::to_string(m_level_num) + ".txt");
 
     m_start = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color::Black);
     m_start->setTitle("BALLONS\n  WAR", sf::Vector2i(450, 150));
@@ -108,7 +102,6 @@ void Game::update()
                 ++m_level_num;
                 if (m_file.eof() == false)
                 {
-                    std::stringstream a;
                     std::string b;
                     m_file >> b;
                     if (b != m_level_name)
@@ -116,8 +109,7 @@ void Game::update()
                         m_level_name = b;
                         m_level_num = 1;
                     }
-                    a << m_level_num;
-                    m_level->changeLevel("levels/" + m_level_name + "/lvl_" + a.str() + ".txt");
+                    m_level->changeLevel("levels/" + m_level_name + "/lvl_" + std::to_string(m_level_num) + ".txt");
                 }
                 else
                 {

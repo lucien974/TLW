@@ -252,9 +252,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     if (m_lives < 0)
         m_status = game_status::loose;
     screen->draw(m_interface);
-    std::stringstream a;
-    a << m_lives;
-    m_text_life->setSentence(a.str());
+    m_text_life->setSentence(std::to_string(m_lives));
     screen->draw(*m_text_life);
     screen->draw(m_sprite_life);
     if (m_status >= game_status::wait)

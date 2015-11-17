@@ -5,7 +5,6 @@
 #include <fstream>
 #include <thread>
 #include <mutex>
-#include <sstream>
 
 #include "Wave.h"
 #include "TowerManager.h"

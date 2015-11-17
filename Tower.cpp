@@ -613,23 +613,14 @@ int Tower::getNbBall()
 
 std::string Tower::getPrice()
 {
-    std::stringstream chaine;
-    chaine << m_cost;
-    std::string a;
-    a = chaine.str();
-    return a;
+    return std::to_string(m_cost);
 }
 
 std::string Tower::getLeftUpgrade()
 {
     if (m_upgrade == 1 || m_upgrade < 5)
     {
-        std::string a;
-        std::stringstream b, c;
-        b << m_type;
-        c << (m_upgrade + 1);
-        a = "tower_" + b.str() + "_" + c.str() + ".png";
-        return a;
+        return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
     }
     return "";
 }
@@ -640,18 +631,11 @@ std::string Tower::getRightUpgrade()
     {
         if (m_upgrade != 1)
         {
-            std::string a;
-            std::stringstream b, c;
-            b << m_type;
-            c << (m_upgrade + 1);
-            a = "tower_" + b.str() + "_" + c.str() + ".png";
-            return a;
+            return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
         }
         else
         {
-            std::stringstream b;
-            b << m_type;
-            return "tower_" + b.str() + "_6.png";
+            return "tower_" + std::to_string(m_type) + "_6.png";
         }
     }
     return "";

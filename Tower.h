@@ -3,7 +3,6 @@
 
 #include <string>
 #include <deque>
-#include <sstream>
 
 #include "Entity.h"
 #include "Textureloader.h"
