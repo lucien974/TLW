@@ -30,11 +30,12 @@ class Bloon : public Entity
         void setMap(std::string bloon_map); // Change the map name
 
     private:
-        int m_speed, m_health, m_earn, m_way, m_ice, m_ice_limit, m_status, m_life_lost;
+        int m_speed, m_health, m_earn, m_way, m_effect_status, m_effect_limit, m_status, m_life_lost;
         sf::Color m_color;
         bool m_exit, m_direction[8], m_find, m_touch, m_earn_money;
         std::string m_carte;
-        sf::Clock m_clock;
+        sf::Clock m_clock, m_time_update;
+
         enum m_shield{none = 0, ice = 0, burn = 1, glue = 2, reverse = 3};
 };
 

@@ -6,8 +6,8 @@ m_speed(0),
 m_health(type),
 m_earn(0),
 m_way(0),
-m_ice(0),
-m_ice_limit(0),
+m_effect_status(0),
+m_effect_limit(0),
 m_status(m_effect::none),
 m_life_lost(0),
 m_color(0, 0, 0),
@@ -23,6 +23,7 @@ m_carte("")
     }
     initialize(textload);
     setPosition(start_pos);
+    m_time_update.restart();
 }
 
 Bloon::~Bloon()
@@ -195,17 +196,17 @@ int Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, 
                         m_life_lost = damages;
                         break;
                     case 0:
-                        m_ice++;
-                        if (m_ice_limit != ice_limit)
-                            m_ice_limit = ice_limit;
-                        if (m_ice == m_ice_limit)
+                        m_effect_status++;
+                        if (m_effect_limit != ice_limit)
+                            m_effect_limit = ice_limit;
+                        if (m_effect_status == m_effect_limit)
                         {
                             m_life_lost = damages;
                             m_health -= damages;
                             m_touch = true;
                             initialize(textload);
                             m_clock.restart();
-                            m_ice++;
+                            m_effect_status++;
                             m_status = m_effect::ice;
                             setTexture(textload->getTexture("ice_bloon.png"), ICE);
                             spriteStatus(true, ICE);
@@ -232,44 +233,48 @@ int Bloon::getHealth()
 
 void Bloon::update(Textureloader* textload)
 {
-    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_ice > m_ice_limit && m_health > 0)
+    if(m_time_update.getElapsedTime().asMilliseconds() >= 5)
     {
-        m_ice = 0;
-        spriteStatus(false, ICE);
-    }
-    if ((m_ice < m_ice_limit || m_status == m_effect::none) && m_health > 0)
-    {
-        for (int n(0); n < m_speed; ++n)
+        if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status > m_effect_limit && m_health > 0)
         {
-            m_way++;
-            if (m_direction[0] == true && m_find == false)
-                findWay(getPosition().x + 1, getPosition().y, 1, textload);
-
-            if (m_direction[2] == true && m_find == false)
-                findWay(getPosition().x, getPosition().y + 1, 3, textload);
-
-            if (m_direction[1] == true && m_find == false)
-                findWay(getPosition().x - 1, getPosition().y, 0, textload);
-
-            if (m_direction[3] == true && m_find == false)
-                findWay(getPosition().x, getPosition().y - 1, 2, textload);
-
-            if (m_find == false)
-            {
-                if (m_direction[4] == true && m_find == false)
-                    findWay(getPosition().x + 1, getPosition().y - 1, 6, textload);
-
-                if (m_direction[5] == true && m_find == false)
-                    findWay(getPosition().x + 1, getPosition().y + 1, 7, textload);
-
-                if (m_direction[6] == true && m_find == false)
-                    findWay(getPosition().x - 1, getPosition().y + 1, 4, textload);
-
-                if (m_direction[7] == true && m_find == false)
-                    findWay(getPosition().x - 1, getPosition().y - 1, 5, textload);
-            }
-            m_find = false;
+            m_effect_status = 0;
+            spriteStatus(false, ICE);
         }
+        if ((m_effect_status < m_effect_limit || m_status == m_effect::none) && m_health > 0)
+        {
+            for (int n(0); n < m_speed; ++n)
+            {
+                m_way++;
+                if (m_direction[0] == true && m_find == false)
+                    findWay(getPosition().x + 1, getPosition().y, 1, textload);
+
+                if (m_direction[2] == true && m_find == false)
+                    findWay(getPosition().x, getPosition().y + 1, 3, textload);
+
+                if (m_direction[1] == true && m_find == false)
+                    findWay(getPosition().x - 1, getPosition().y, 0, textload);
+
+                if (m_direction[3] == true && m_find == false)
+                    findWay(getPosition().x, getPosition().y - 1, 2, textload);
+
+                if (m_find == false)
+                {
+                    if (m_direction[4] == true && m_find == false)
+                        findWay(getPosition().x + 1, getPosition().y - 1, 6, textload);
+
+                    if (m_direction[5] == true && m_find == false)
+                        findWay(getPosition().x + 1, getPosition().y + 1, 7, textload);
+
+                    if (m_direction[6] == true && m_find == false)
+                        findWay(getPosition().x - 1, getPosition().y + 1, 4, textload);
+
+                    if (m_direction[7] == true && m_find == false)
+                        findWay(getPosition().x - 1, getPosition().y - 1, 5, textload);
+                }
+                m_find = false;
+            }
+        }
+        m_time_update.restart();
     }
 }
 
