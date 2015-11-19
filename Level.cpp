@@ -58,6 +58,11 @@ m_textload(textload)
     m_loose->newButton(EXIT, sf::Vector2i(0, 75));
 
     initialize();
+
+    m_music.setVolume(50.0);
+    m_music.openFromFile("sons/sound_1.ogg");
+    m_music.setLoop(1);
+    m_music.play();
 }
 
 void Level::initialize()
@@ -149,6 +154,7 @@ void Level::physicsMotor()
 Level::~Level()
 {
     m_status = game_status::loose;
+    m_music.stop();
     destroy();
     m_done = true;
     delete m_pause;
