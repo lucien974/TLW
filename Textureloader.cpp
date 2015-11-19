@@ -126,3 +126,14 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color color_sear
         return sf::Vector2f(0, 0);
     }
 }
+
+void Textureloader::setForbidPosition(sf::FloatRect rect, std::string file_name, sf::Color color)
+{
+    for (int i(rect.top); i < rect.top + rect.height; ++i)
+    {
+        for (int j(rect.left); j < rect.left + rect.width; ++j)
+        {
+            m_map[file_name].setPixel(j, i, color);
+        }
+    }
+}

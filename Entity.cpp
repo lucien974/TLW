@@ -197,14 +197,10 @@ void Entity::spriteStatus(bool a, std::string name)
     }
 }
 
-bool Entity::getGlobalBounds(sf::Vector2i a)
+sf::FloatRect Entity::getGlobalBounds()
 {
     sf::FloatRect size = m_sprite.begin()->second.getGlobalBounds();
-    if ((a.x >= size.left /*+ position.x - origin.x*/ && a.x <= size.left + size.width /*+ position.x - origin.x*/) &&
-        (a.y >= size.top /*+ position.y - origin.y*/ && a.y <= size.top + size.height /*+ position.y - origin.y*/))
-        return true;
-    else
-        return false;
+    return size;
 }
 
 void Entity::setRange(int range)

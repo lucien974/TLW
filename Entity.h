@@ -25,7 +25,7 @@ class Entity: public sf::Transformable, public sf::Drawable
         bool isInRange(sf::Vector2f position, float radius);
         bool isOutOfScreen(sf::RenderWindow* screen);
         void rotateTowards(Entity *entity);
-        bool getGlobalBounds(sf::Vector2i a);
+        sf::FloatRect getGlobalBounds();
         void setRange(int range);
         void drawRange(bool range);
         void setOrigin(int a, int b);

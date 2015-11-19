@@ -11,7 +11,7 @@ class TowerManager
     public:
         TowerManager(Textureloader* textload);
         ~TowerManager();
-        int update(sf::Image carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up);
+        int update(sf::Image &carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up);
         int getSize();
         bool getStatus();
         sf::Vector2f getPosition(int num);

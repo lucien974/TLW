@@ -44,7 +44,7 @@ TowerManager::~TowerManager()
     m_tower.clear();
 }
 
-int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up)
+int TowerManager::update(sf::Image &carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up)
 {
     m_money->setSentence(std::to_string(money) + " '");
     screen->draw(*m_money);
@@ -52,7 +52,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
     {
         for (int a(0); a < 4; ++a)
         {
-            if (m_selection[a]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
+            if (m_selection[a]->getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) &&
                clic_up == true &&
                money >= m_selection[a]->getCost())
             {
@@ -71,6 +71,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
                clic_up == true)
             {
                 m_tower.push_back(new Tower(m_select+1, textload, a));
+                textload->setForbidPosition(m_tower.back()->getGlobalBounds(), "virtual_map.png", sf::Color(0, 255, 0));
                 m_selection[m_select]->drawRange(false);
                 m_selection[m_select]->setPosition(785, 75*(m_select+1) + 50);
                 money -= m_selection[m_select]->getCost();
@@ -99,7 +100,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
         a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
         if (m_tower_selected != -1 && a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
         {
-            if (m_tower[m_tower_selected]->getGlobalBounds(sf::Mouse::getPosition(*screen)) == false &&
+            if (m_tower[m_tower_selected]->getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) == false &&
                carte.getPixel(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) != sf::Color(0, 0, 255) &&
                click == true)
             {
@@ -108,7 +109,7 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
                 m_tower_selected = -1;
             }
         }
-        if (m_tower[i]->getGlobalBounds(sf::Mouse::getPosition(*screen)) &&
+        if (m_tower[i]->getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) &&
            click == true &&
            found == false)
         {
@@ -124,8 +125,10 @@ int TowerManager::update(sf::Image carte, sf::RenderWindow* screen, Textureloade
     {
         if (sup)
         {
+            textload->setForbidPosition(m_tower[m_tower_selected]->getGlobalBounds(), "virtual_map.png", sf::Color(0, 0, 0));
             delete m_tower[m_tower_selected];
             m_tower.erase(m_tower.begin() + m_tower_selected);
+            m_tower_selected = -1;
         }
         else
         {

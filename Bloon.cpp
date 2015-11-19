@@ -233,7 +233,7 @@ int Bloon::getHealth()
 
 void Bloon::update(Textureloader* textload)
 {
-    if(m_time_update.getElapsedTime().asMilliseconds() >= 5)
+    if (m_time_update.getElapsedTime().asMilliseconds() >= 5)
     {
         if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status > m_effect_limit && m_health > 0)
         {
