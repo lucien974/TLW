@@ -26,6 +26,7 @@ m_clic(0)
     m_textload->setTextureFolder("images/" + m_level_name + "/");
 
     m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE");
+    m_screen->setFramerateLimit(60);
 
     m_level = new Level(m_textload, m_screen, "levels/" + m_level_name + "/lvl_" + std::to_string(m_level_num) + ".txt");
 
@@ -89,7 +90,6 @@ void Game::update()
                 m_screen->close();
             m_screen->display();
             m_screen->clear();
-            sf::sleep(sf::milliseconds(30));
             m_screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450, sf::VideoMode::getDesktopMode().height/2 - 300));
 
             gen = 3;

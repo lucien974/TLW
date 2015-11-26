@@ -71,7 +71,7 @@ int TowerManager::update(sf::Image &carte, sf::RenderWindow* screen, Textureload
                clic_up == true)
             {
                 m_tower.push_back(new Tower(m_select+1, textload, a));
-                textload->setForbidPosition(m_tower.back()->getGlobalBounds(), "virtual_map.png", sf::Color(0, 255, 0));
+                textload->setForbidPosition(m_tower.back()->getGlobalBounds(), "virtual_map.png", sf::Color(0, 153, 0));
                 m_selection[m_select]->drawRange(false);
                 m_selection[m_select]->setPosition(785, 75*(m_select+1) + 50);
                 money -= m_selection[m_select]->getCost();

@@ -76,14 +76,14 @@ void Level::initialize()
     m_status = game_status::wait;
     m_play_save = 0;
     m_thread = new std::thread(&Level::physicsMotor, this);
-    m_thread->detach();
+    //m_thread->detach();
 }
 
 void Level::physicsMotor()
 {
     sf::Vector2f position;
     std::cout << "!!!!! thread launch !!!!!" << std::endl;
-    while (m_status != game_status::loose && m_status != game_status::win && m_done == false)
+    while (m_status != game_status::loose && m_status != game_status::end && m_done == false)
     {
         int indice[2], oldest = 0;
         indice[0] = 0;
@@ -146,7 +146,7 @@ void Level::physicsMotor()
             }
             m_mutex.unlock();
         }
-        std::this_thread::sleep_for (std::chrono::milliseconds(60));
+        std::this_thread::sleep_for (std::chrono::milliseconds(5));
     }
     std::cout << "!!!!! thread exit !!!!!" << std::endl;
 }
@@ -175,7 +175,7 @@ void Level::destroy()
     }
     m_mutex.unlock();
     m_done = true;
-    sf::sleep(sf::milliseconds(100));
+    m_thread->join();
     delete m_thread;
     m_done = false;
     delete m_towers;
