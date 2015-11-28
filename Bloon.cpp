@@ -53,57 +53,57 @@ void Bloon::initialize(Textureloader* textload)
     {
         case 1:
             ndefich = "bloon_1.png";
-            m_speed = 1;
+            m_speed = 5;
             m_earn = 1;
             break;
         case 2:
             ndefich = "bloon_2.png";
-            m_speed = 2;
+            m_speed = 6;
             m_earn = 2;
             break;
         case 3:
             ndefich = "bloon_3.png";
-            m_speed = 2;
+            m_speed = 7;
             m_earn = 3;
             break;
         case 4:
             ndefich = "bloon_4.png";
-            m_speed = 2;
+            m_speed = 8;
             m_earn = 4;
             break;
         case 5:
             ndefich = "bloon_5.png";
-            m_speed = 7;
+            m_speed = 15;
             m_earn = 5;
             break;
         case 6:
             ndefich = "bloon_6.png";
-            m_speed = 7;
+            m_speed = 15;
             m_earn = 6;
             break;
         case 7:
             ndefich = "bloon_7.png";
-            m_speed = 2;
+            m_speed = 8;
             m_earn = 7;
             break;
         case 8:
             ndefich = "bloon_8.png";
-            m_speed = 2;
+            m_speed = 8;
             m_earn = 8;
             break;
         case 9:
             ndefich = "bloon_9.png";
-            m_speed = 1;
+            m_speed = 5;
             m_earn = 9;
             break;
         case 100:
             ndefich = "bloon_10.png";
-            m_speed = 21;
+            m_speed = 30;
             m_earn = 100;
             break;
         case 200:
             ndefich = "bloon_11.png";
-            m_speed = 21;
+            m_speed = 30;
             m_earn = 100;
             break;
         default:
@@ -233,49 +233,46 @@ int Bloon::getHealth()
 
 void Bloon::update(Textureloader* textload)
 {
-    if (m_time_update.getElapsedTime().asMilliseconds() >= 5)
+    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status > m_effect_limit && m_health > 0)
     {
-        if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status > m_effect_limit && m_health > 0)
-        {
-            m_effect_status = 0;
-            spriteStatus(false, ICE);
-        }
-        if ((m_effect_status < m_effect_limit || m_status == m_effect::none) && m_health > 0)
-        {
-            for (int n(0); n < m_speed; ++n)
-            {
-                m_way++;
-                if (m_direction[0] == true && m_find == false)
-                    findWay(getPosition().x + 1, getPosition().y, 1, textload);
-
-                if (m_direction[2] == true && m_find == false)
-                    findWay(getPosition().x, getPosition().y + 1, 3, textload);
-
-                if (m_direction[1] == true && m_find == false)
-                    findWay(getPosition().x - 1, getPosition().y, 0, textload);
-
-                if (m_direction[3] == true && m_find == false)
-                    findWay(getPosition().x, getPosition().y - 1, 2, textload);
-
-                if (m_find == false)
-                {
-                    if (m_direction[4] == true && m_find == false)
-                        findWay(getPosition().x + 1, getPosition().y - 1, 6, textload);
-
-                    if (m_direction[5] == true && m_find == false)
-                        findWay(getPosition().x + 1, getPosition().y + 1, 7, textload);
-
-                    if (m_direction[6] == true && m_find == false)
-                        findWay(getPosition().x - 1, getPosition().y + 1, 4, textload);
-
-                    if (m_direction[7] == true && m_find == false)
-                        findWay(getPosition().x - 1, getPosition().y - 1, 5, textload);
-                }
-                m_find = false;
-            }
-        }
-        m_time_update.restart();
+        m_effect_status = 0;
+        spriteStatus(false, ICE);
     }
+    if ((m_effect_status < m_effect_limit || m_status == m_effect::none) && m_health > 0)
+    {
+        for (int n(0); n < m_speed; ++n)
+        {
+            m_way++;
+            if (m_direction[0] == true && m_find == false)
+                findWay(getPosition().x + 1, getPosition().y, 1, textload);
+
+            if (m_direction[2] == true && m_find == false)
+                findWay(getPosition().x, getPosition().y + 1, 3, textload);
+
+            if (m_direction[1] == true && m_find == false)
+                findWay(getPosition().x - 1, getPosition().y, 0, textload);
+
+            if (m_direction[3] == true && m_find == false)
+                findWay(getPosition().x, getPosition().y - 1, 2, textload);
+
+            if (m_find == false)
+            {
+                if (m_direction[4] == true && m_find == false)
+                    findWay(getPosition().x + 1, getPosition().y - 1, 6, textload);
+
+                if (m_direction[5] == true && m_find == false)
+                    findWay(getPosition().x + 1, getPosition().y + 1, 7, textload);
+
+                if (m_direction[6] == true && m_find == false)
+                    findWay(getPosition().x - 1, getPosition().y + 1, 4, textload);
+
+                if (m_direction[7] == true && m_find == false)
+                    findWay(getPosition().x - 1, getPosition().y - 1, 5, textload);
+            }
+            m_find = false;
+        }
+    }
+    m_time_update.restart();
 }
 
 void Bloon::update()
