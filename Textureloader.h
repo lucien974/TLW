@@ -23,6 +23,7 @@ class Textureloader
         void setBufferFolder(std::string folder);
         void setFontFolder(std::string folder);
         void setForbidPosition(sf::FloatRect rect, std::string file_name, sf::Color color);
+        void clearLevel();
 
     private:
         std::map<std::string, sf::Texture> m_texture;

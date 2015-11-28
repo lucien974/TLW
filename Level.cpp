@@ -16,7 +16,6 @@ m_screen(screen),
 m_textload(textload)
 {
     m_map.setTexture(m_textload->getTexture("map.png"));
-    m_map.scale(1.5f, 1.5f);
 
     if (!m_file)
         std::cout << "Impossible d'ouvrir le fichier" << std::endl;
@@ -146,7 +145,7 @@ void Level::physicsMotor()
             }
             m_mutex.unlock();
         }
-        std::this_thread::sleep_for (std::chrono::milliseconds(5));
+        std::this_thread::sleep_for (std::chrono::milliseconds(1));
     }
     std::cout << "!!!!! thread exit !!!!!" << std::endl;
 }

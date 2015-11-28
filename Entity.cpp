@@ -15,7 +15,7 @@ Entity::~Entity()
 void Entity::setTexture(sf::Texture& texture, std::string name)
 {
     m_sprite[name].setTexture(texture);
-    m_sprite[name].setOrigin(m_sprite[name].getGlobalBounds().height/2, m_sprite[name].getGlobalBounds().width/2);
+    m_sprite[name].setOrigin(m_sprite[name].getGlobalBounds().width/2, m_sprite[name].getGlobalBounds().height/2);
     m_draw_status[name] = true;
     if (m_sprite.size() > 1)
     {
@@ -49,11 +49,6 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
         target.draw(m_range);
     for (auto &ent1 : m_sprite)
     {
-        std::string a;
-        if (ent1.first == ICE)
-        {
-            a = ent1.first;
-        }
         if (m_draw_status.at(ent1.first) == true)
         {
             target.draw(ent1.second);

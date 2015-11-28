@@ -3,6 +3,7 @@
 Game::Game() :
 m_level_name(""),
 m_level_num(1),
+m_number_levels(1),
 m_menu(true),
 m_clic(0)
 {
@@ -97,9 +98,10 @@ void Game::update()
         else
         {
             m_level->run(m_screen, m_textload);
-            if (m_level_num < NB_LEVELS && m_level->isDone() == false)
+            if (m_number_levels < NB_LEVELS && m_level->isDone() == false)
             {
                 ++m_level_num;
+                ++m_number_levels;
                 if (m_file.eof() == false)
                 {
                     std::string b;
@@ -108,6 +110,8 @@ void Game::update()
                     {
                         m_level_name = b;
                         m_level_num = 1;
+                        m_textload->setTextureFolder("images/" + m_level_name);
+                        m_textload->clearLevel();
                     }
                     m_level->changeLevel("levels/" + m_level_name + "/lvl_" + std::to_string(m_level_num) + ".txt");
                 }

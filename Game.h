@@ -22,7 +22,7 @@ class Game
         Particle *m_mouse;
         std::fstream m_file;
         std::string m_level_name;
-        unsigned int m_level_num;
+        unsigned int m_level_num, m_number_levels;
         bool m_menu;
         char m_clic;
 };

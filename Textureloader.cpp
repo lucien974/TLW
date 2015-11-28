@@ -137,3 +137,27 @@ void Textureloader::setForbidPosition(sf::FloatRect rect, std::string file_name,
         }
     }
 }
+
+void Textureloader::clearLevel()
+{
+    for (auto &key : m_texture)
+    {
+        switch (key.first[0])
+        {
+            case 't':
+                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
+                break;
+            case 'm':
+                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
+                break;
+            case 'p':
+                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
+                break;
+            case 'v':
+                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
+                break;
+            default:
+                break;
+        }
+    }
+}
