@@ -89,7 +89,7 @@ void Level::physicsMotor()
         m_mutex.lock();
         for (int p(0); p < m_play_save; ++p)
         {
-            if (m_bloons[p] != NULL)
+            if (m_bloons[p] != nullptr)
             {
                 if (m_bloons[p]->isEmpty())
                 {
@@ -131,12 +131,16 @@ void Level::physicsMotor()
             if (oldest != 0)
             {
                 m_towers->rotateTowards(v, m_bloons[indice[0]]->getBloonPosition(indice[1]));
-                m_bloons[indice[0]]->isTouch(indice[1],
+                if (m_bloons[indice[0]]->isTouch(indice[1],
                                             m_bloons[indice[0]]->getBloonPosition(indice[1]),
                                             m_towers->shoot(v, m_bloons[indice[0]]->getBloonPosition(indice[1])),
                                             m_textload,
                                             m_towers->getEffect(v),
-                                            m_towers->getNbBall(v));
+                                            m_towers->getNbBall(v)) == true)
+                {
+                    m_sound.push_back(sf::Sound(m_textload->getBuffer("pop.ogg")));
+                    m_sound.back().play();
+                }
 
                 m_money += m_bloons[indice[0]]->getMoney(indice[1]);
                 indice[0] = 0;
@@ -160,6 +164,13 @@ Level::~Level()
     delete m_win;
     delete m_loose;
     delete m_text_life;
+    for (unsigned int i(0); i < m_sound.size(); ++i)
+    {
+        while (m_sound[i].getStatus() == sf::Sound::Playing)
+        {
+        }
+        m_sound.erase(m_sound.begin() + i);
+    }
 }
 
 void Level::destroy()
@@ -178,7 +189,7 @@ void Level::destroy()
     delete m_thread;
     m_done = false;
     delete m_towers;
-    m_thread = NULL;
+    m_thread = nullptr;
 }
 
 void Level::load()
@@ -229,8 +240,17 @@ void Level::close()
 void Level::update(sf::RenderWindow *screen, Textureloader* textload)
 {
     m_mutex.lock();
+    int dmg(0);
+    unsigned int snd(0);
     if (m_bloons.size() == 0)
         load();
+    while (snd < m_sound.size())
+    {
+        if (m_sound[snd].getStatus() == sf::Sound::Stopped)
+            m_sound.erase(m_sound.begin() + snd);
+        else
+            ++snd;
+    }
     if (m_status < game_status::wait)
     {
         //std::cout << m_play_save << endl;
@@ -238,7 +258,13 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
         {
             if (!m_bloons[i]->isEmpty())
             {
-                m_lives -= m_bloons[i]->update(screen, textload);
+                dmg = m_bloons[i]->update(screen, textload);
+                if (dmg > 0)
+                {
+                    m_sound.push_back(sf::Sound(textload->getBuffer("pop.ogg")));
+                    m_sound.back().play();
+                }
+                m_lives -= dmg;
                 if (m_bloons[i]->next())
                     m_play_save++;
             }

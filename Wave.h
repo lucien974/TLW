@@ -3,6 +3,7 @@
 
 #include <string>
 #include <deque>
+#include <SFML/Audio.hpp>
 
 #include "Bloon.h"
 #include "Tower.h"
@@ -23,7 +24,7 @@ class Wave
         int isWentOut(int n);
         int getMoney(int n);
         int getAdvance(int n);
-        void isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit);
+        bool isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit);
 
     private:
         int m_gap, m_nb_bloons, m_cursor, m_type, m_way;

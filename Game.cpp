@@ -65,8 +65,14 @@ void Game::update()
     {
         while (m_screen->pollEvent(event))
         {
-            if (event.type == sf::Event::MouseMoved)
-                gen = 3;
+            switch (event.type)
+            {
+                case sf::Event::LostFocus:
+                    m_clic = 0;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && m_clic == 1)
@@ -83,6 +89,8 @@ void Game::update()
             std::string a;
             m_screen->draw(m_background);
             a = m_start->update(m_screen, m_clic);
+            if (m_clic == 2)
+                m_clic = 0;
             m_mouse->update(gen, *m_screen);
             m_screen->draw(*m_mouse);
             if (a == PLAY)
@@ -110,7 +118,7 @@ void Game::update()
                     {
                         m_level_name = b;
                         m_level_num = 1;
-                        m_textload->setTextureFolder("images/" + m_level_name);
+                        m_textload->setTextureFolder("images/" + m_level_name + "/");
                         m_textload->clearLevel();
                     }
                     m_level->changeLevel("levels/" + m_level_name + "/lvl_" + std::to_string(m_level_num) + ".txt");

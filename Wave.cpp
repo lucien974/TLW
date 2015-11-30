@@ -88,9 +88,9 @@ int Wave::isWentOut(int n)
     return m_bloon[n]->isWentOut();
 }
 
-void Wave::isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
+bool Wave::isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
 {
-    m_bloon[n]->isTouch(pos_ball, damages, textload, effect, ice_limit);
+    return m_bloon[n]->isTouch(pos_ball, damages, textload, effect, ice_limit);
 }
 
 int Wave::getMoney(int n)

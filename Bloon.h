@@ -4,7 +4,6 @@
 #include <string>
 
 #include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 
 #include "Entity.h"
 #include "Textureloader.h"
@@ -22,7 +21,7 @@ class Bloon : public Entity
         bool isWentOut(); // If the bloon pass through th map
         int getSpeed(); // Get bloon speed
         int getAdvance(); // Return the number pixels crossed
-        int isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit); // Manage the collision between bullets and bloon
+        bool isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit); // Manage the collision between bullets and bloon
         int getMoney(); // Return money when hit
         void setSpeed(int speed);
         int getDamages(); // Return Damages when pass through the map

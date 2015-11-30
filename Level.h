@@ -41,6 +41,7 @@ class Level
         Menu *m_pause, *m_win, *m_loose;
         Button *m_text_life;
         sf::Music m_music;
+        std::deque<sf::Sound> m_sound;
         std::thread *m_thread;
         sf::RenderWindow *m_screen;
         Textureloader *m_textload;

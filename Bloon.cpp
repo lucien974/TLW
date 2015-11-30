@@ -118,13 +118,13 @@ void Bloon::initialize(Textureloader* textload)
     if (m_health > 9 && m_health < 100)
     {
         m_earn = 15;
-        setTexture(textload->getTexture("bloon_shield.png"), SHIELD);
+        setTexture(textload->getTexture("bloon_shield_1.png"), SHIELD);
         spriteStatus(true, SHIELD);
     }
     else if (m_health > 100 && m_health < 200)
     {
         m_earn = 15;
-        setTexture(textload->getTexture("bloon_shield_1.png"), SHIELD);
+        setTexture(textload->getTexture("bloon_shield_2.png"), SHIELD);
         spriteStatus(true, SHIELD);
     }
 }
@@ -176,7 +176,7 @@ int Bloon::getDamages()
     return 0;
 }
 
-int Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
+bool Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit)
 {
     if (damages >= 0)
     {
@@ -214,9 +214,10 @@ int Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload, 
                         }
                         break;
                     default:
+                        m_touch = false;
                         break;
                 }
-                if (m_touch)
+                if (m_touch && damages > 0)
                     return 1;
             }
             else
