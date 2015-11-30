@@ -7,6 +7,7 @@
 int main ()
 {
     XInitThreads(); // Initialization of multi-threading client
+    srand(time(nullptr));
 
     Game *game;
     game = new Game();

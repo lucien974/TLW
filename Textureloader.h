@@ -22,7 +22,7 @@ class Textureloader
         void setTextureFolder(std::string folder);
         void setBufferFolder(std::string folder);
         void setFontFolder(std::string folder);
-        void setForbidPosition(sf::FloatRect rect, std::string file_name, sf::Color color);
+        void setForbidPosition(sf::Vector2f origin, std::string file_name, sf::Color color);
         void clearLevel();
 
     private:

@@ -127,13 +127,22 @@ sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color color_sear
     }
 }
 
-void Textureloader::setForbidPosition(sf::FloatRect rect, std::string file_name, sf::Color color)
+void Textureloader::setForbidPosition(sf::Vector2f origin, std::string file_name, sf::Color color)
 {
-    for (int i(rect.top); i < rect.top + rect.height; ++i)
+    if (m_map.find(file_name) == m_map.end())
+        std::cout << "map doesn't exist" << std::endl;
+    else
     {
-        for (int j(rect.left); j < rect.left + rect.width; ++j)
+        for (int i(origin.x - 40); i < origin.x + 40; ++i)
         {
-            m_map[file_name].setPixel(j, i, color);
+            for (int j(origin.y - 40); j < origin.y + 40; ++j)
+            {
+                if (i > 0 && i < 900 && j > 0 && j < 600)
+                {
+                    if (m_map[file_name].getPixel(i, j) == sf::Color(0, 0, 0) || m_map[file_name].getPixel(i, j) == sf::Color(0, 128, 128))
+                        m_map[file_name].setPixel(i, j, color);
+                }
+            }
         }
     }
 }

@@ -1,30 +1,5 @@
 #include "Tower.h"
 
-Tower::Tower(int type, Textureloader* textload) :
-Entity(),
-m_shoot(true),
-m_up_price(false),
-m_tir(0.0f),
-m_firerate(0.0f),
-m_radian(0.0f),
-m_portee(0),
-m_cost(0),
-m_type(type),
-m_damages(0),
-m_turrets(0),
-m_nb_ball(0),
-m_type_effect(0),
-m_upgrade(1),
-m_canon(0),
-m_color(sf::Color::Black)
-{
-    for (int r(0); r < 3; ++r)
-        m_pass_canon[r] = false;
-    m_clock.restart();
-    setOrigin(40, 60);
-    init(textload);
-}
-
 Tower::Tower(int type, Textureloader* textload, sf::Vector2f position) :
 Entity(),
 m_shoot(true),
@@ -45,9 +20,10 @@ m_color(sf::Color::Black)
 {
     for (int r(0); r < 3; ++r)
         m_pass_canon[r] = false;
-    m_clock.restart();
-    init(textload);
+    initialize(textload);
+    m_effect_move = new TowerEffect(m_type_effect);
     setPosition(position);
+    m_clock.restart();
 }
 
 Tower::~Tower()
@@ -56,6 +32,7 @@ Tower::~Tower()
     m_bullet.clear();
     m_forward.clear();
     m_incrementation.clear();
+    delete m_effect_move;
 }
 
 void Tower::update()
@@ -103,6 +80,33 @@ void Tower::drawBullet(sf::RenderWindow* screen)
 {
     for (unsigned int r(0); r < m_bullet.size(); ++r)
     {
+        sf::Vector2f bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
+        if (m_effect_move->update(m_incrementation[r], bullet_to_bloon, m_forward[r], m_bullet[r].getRotation()))
+        {
+            m_bullet[r].move(m_forward[r]);
+            screen->draw(m_bullet[r]);
+        }
+        else
+        {
+            switch (m_type_effect)
+            {
+                case m_effect::none:
+                    m_bullet.erase(m_bullet.begin() + r);
+                    m_last_pos.erase(m_last_pos.begin() + r);
+                    m_forward.erase(m_forward.begin() + r);
+                    break;
+                case m_effect::ice:
+                    m_bullet.erase(m_bullet.begin() + r);
+                    m_last_pos.erase(m_last_pos.begin() + r);
+                    m_incrementation.erase(m_incrementation.begin() + r);
+                    m_forward.erase(m_forward.begin() + r);
+                    break;
+                default:
+                    std::cout << "unknown type of tower" << std::endl;
+                    break;
+            }
+        }
+        /*
         if (m_type_effect == m_effect::ice)
         {
             screen->draw(m_bullet[r]);
@@ -110,10 +114,6 @@ void Tower::drawBullet(sf::RenderWindow* screen)
         }
         else
         {
-            sf::Vector2f bullet_to_bloon;
-
-            bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
-
             if ((bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) <= 0)
             {
                 m_bullet.erase(m_bullet.begin() + r);
@@ -126,7 +126,7 @@ void Tower::drawBullet(sf::RenderWindow* screen)
                 screen->draw(m_bullet[r]);
             }
         }
-
+        //*/
     }
 }
 
@@ -230,7 +230,7 @@ void Tower::upgradeLeft(Textureloader* textload)
 {
     if (m_upgrade < 6)
         m_upgrade++;
-    init(textload);
+    initialize(textload);
 }
 
 void Tower::upgradeRight(Textureloader* textload)
@@ -239,10 +239,10 @@ void Tower::upgradeRight(Textureloader* textload)
         m_upgrade++;
     if (m_upgrade == 1)
         m_upgrade = 6;
-    init(textload);
+    initialize(textload);
 }
 
-void Tower::init(Textureloader* textload)
+void Tower::initialize(Textureloader* textload)
 {
     m_pass_canon[0] = true;
     m_canon = 7;
@@ -661,10 +661,10 @@ int Tower::getUpPrice(Textureloader* textload)
         int c = m_upgrade;
         m_upgrade = up;
         int b(m_cost);
-        init(textload);
+        initialize(textload);
         int a = m_cost - b;
         m_upgrade = c;
-        init(textload);
+        initialize(textload);
         if (m_upgrade != 1)
             m_cost -= a;
         return a;
