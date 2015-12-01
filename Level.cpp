@@ -351,7 +351,6 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 case sf::Event::GainedFocus:
                     break;
                 default:
-                    screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450, sf::VideoMode::getDesktopMode().height/2 - 300));
                     break;
             }
         }
