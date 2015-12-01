@@ -8,9 +8,7 @@ m_font_folder(font_folder)
 }
 
 Textureloader::Textureloader(std::string image_folder) :
-m_texture_folder(image_folder),
-m_buffer_folder(""),
-m_font_folder("")
+Textureloader(image_folder, {}, {})
 {
 }
 

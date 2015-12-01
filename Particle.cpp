@@ -1,11 +1,7 @@
 #include "Particle.h"
 
 Particle::Particle() :
-m_v0(0.0f, 0.0f),
-m_mass(1),
-m_limit(1),
-m_advance(0),
-m_follow_color(100)
+Particle(1, 1, {0.0f, 0.0f})
 {
 }
 

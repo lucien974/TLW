@@ -1,20 +1,12 @@
 #include "Button.h"
 
 Button::Button() :
-m_textload(nullptr),
-m_color_normal(0, 0, 0),
-m_color_hovered(0, 0, 0),
-m_shadows(false),
-m_clic(true)
+Button(nullptr)
 {
 }
 
 Button::Button(Textureloader *textload) :
-m_textload(textload),
-m_color_normal(0, 0, 0),
-m_color_hovered(0, 0, 0),
-m_shadows(false),
-m_clic(true)
+Button(textload, {}, {}, {0, 0, 0}, {0, 0, 0}, 0, {0, 0})
 {
 }
 
@@ -25,19 +17,22 @@ m_color_hovered(hovered_color),
 m_shadows(false),
 m_clic(true)
 {
-    m_button_normal.setString(sentence);
-    m_button_normal.setFont(m_textload->getFont(font + ".ttf"));
-    m_button_normal.setCharacterSize(char_size);
-    m_button_normal.setOrigin(m_button_normal.getGlobalBounds().width/2, m_button_normal.getGlobalBounds().height/2);
-    m_button_normal.setPosition(position.x, position.y);
-    m_button_normal.setColor(color);
+    if (!font.empty())
+    {
+        m_button_normal.setString(sentence);
+        m_button_normal.setFont(m_textload->getFont(font + ".ttf"));
+        m_button_normal.setCharacterSize(char_size);
+        m_button_normal.setOrigin(m_button_normal.getGlobalBounds().width/2, m_button_normal.getGlobalBounds().height/2);
+        m_button_normal.setPosition(position.x, position.y);
+        m_button_normal.setColor(color);
 
-    m_button_shadows.setString(sentence);
-    m_button_shadows.setFont(m_textload->getFont(font + ".ttf"));
-    m_button_shadows.setCharacterSize(char_size);
-    m_button_shadows.setOrigin(m_button_shadows.getGlobalBounds().width/2, m_button_shadows.getGlobalBounds().height/2);
-    m_button_shadows.setPosition(position.x, position.y);
-    m_button_shadows.setColor(sf::Color::Black);
+        m_button_shadows.setString(sentence);
+        m_button_shadows.setFont(m_textload->getFont(font + ".ttf"));
+        m_button_shadows.setCharacterSize(char_size);
+        m_button_shadows.setOrigin(m_button_shadows.getGlobalBounds().width/2, m_button_shadows.getGlobalBounds().height/2);
+        m_button_shadows.setPosition(position.x, position.y);
+        m_button_shadows.setColor(sf::Color::Black);
+    }
 }
 
 Button::~Button()
