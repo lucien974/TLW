@@ -15,7 +15,7 @@ bool TowerEffect::update(int &incrementation, sf::Vector2f &bullet_to_bloon, sf:
                 return true;
             break;
         case m_tower_effect::ice:
-            iceMove(incrementation, bullet_to_bloon, bullet_forward, tower_rotation);
+            return iceMove(incrementation, bullet_to_bloon, bullet_forward, tower_rotation);
             break;
         default:
             std::cout << "no known effect" << std::endl;
