@@ -32,6 +32,7 @@ class Tower : public Entity
         std::string getLeftUpgrade();
         std::string getRightUpgrade();
         int getUpPrice(Textureloader* textload);
+        void getTowerPrice();
 
     private:
         sf::Clock m_clock;

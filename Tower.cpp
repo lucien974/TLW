@@ -246,10 +246,12 @@ void Tower::initialize(Textureloader* textload)
 {
     m_pass_canon[0] = true;
     m_canon = 7;
+    getTowerPrice();
     switch (m_type)
     {
         case 1:
             m_turrets = 3;
+            m_type_effect = m_effect::none;
             switch (m_upgrade)
             {
                 case 1:
@@ -257,8 +259,6 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 750.0;
                     m_portee = 100;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost = 10;
                     break;
                 case 2:
                     setTexture(textload->getTexture("tower_1_2.png"), TOWER);
@@ -266,8 +266,6 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 110;
                     m_damages = 1;
                     m_color = sf::Color(50, 50, 50);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 3:
                     setTexture(textload->getTexture("tower_1_3.png"), TOWER);
@@ -275,8 +273,6 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 120;
                     m_damages = 1;
                     m_color = sf::Color(70, 70, 70);
-                    m_type_effect = m_effect::none;
-                    m_cost += 20;
                     break;
                 case 4:
                     setTexture(textload->getTexture("tower_1_4.png"), TOWER);
@@ -284,8 +280,6 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 130;
                     m_damages = 1;
                     m_color = sf::Color(90, 90, 90);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 5:
                     setTexture(textload->getTexture("tower_1_5.png"), TOWER);
@@ -293,40 +287,30 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 1;
                     m_color = sf::Color(0, 0, 255);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 6:
                     setTexture(textload->getTexture("tower_1_6.png"), TOWER);
                     m_firerate = 900.0;
                     m_portee = 120;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 7:
                     setTexture(textload->getTexture("tower_1_7.png"), TOWER);
                     m_firerate = 850.0;
                     m_portee = 150;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 8:
                     setTexture(textload->getTexture("tower_1_8.png"), TOWER);
                     m_firerate = 775.0;
                     m_portee = 160;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 9:
                     setTexture(textload->getTexture("tower_1_9.png"), TOWER);
                     m_firerate = 700.0;
                     m_portee = 200;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 default:
                     break;
@@ -334,6 +318,7 @@ void Tower::initialize(Textureloader* textload)
             break;
         case 2:
             m_turrets = 3;
+            m_type_effect = m_effect::none;
             switch (m_upgrade)
             {
                 case 1:
@@ -341,8 +326,6 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 666.0;
                     m_portee = 100;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost = 20;
                     break;
                 case 2:
                     setTexture(textload->getTexture("tower_2_2.png"), TOWER);
@@ -350,32 +333,24 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 1;
                     m_color = sf::Color::Yellow;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 3:
                     setTexture(textload->getTexture("tower_2_3.png"), TOWER);
                     m_firerate = 600.0;
                     m_portee = 200;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 4:
                     setTexture(textload->getTexture("tower_2_4.png"), TOWER);
                     m_firerate = 600.0;
                     m_portee = 250;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 5:
                     setTexture(textload->getTexture("tower_2_5.png"), TOWER);
                     m_firerate = 600.0;
                     m_portee = 300;
                     m_damages = 1;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 6:
                     setTexture(textload->getTexture("tower_2_6.png"), TOWER);
@@ -383,32 +358,24 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 110;
                     m_damages = 1;
                     m_color = sf::Color::Red;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 7:
                     setTexture(textload->getTexture("tower_2_7.png"), TOWER);
                     m_firerate = 600.0;
                     m_portee = 150;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 8:
                     setTexture(textload->getTexture("tower_2_8.png"), TOWER);
                     m_firerate = 575.0;
                     m_portee = 160;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 9:
                     setTexture(textload->getTexture("tower_2_9.png"), TOWER);
                     m_firerate = 550.0;
                     m_portee = 170;
                     m_damages = 4;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 default:
                     break;
@@ -416,6 +383,7 @@ void Tower::initialize(Textureloader* textload)
             break;
         case 3:
             m_turrets = 2;
+            m_type_effect = m_effect::none;
             switch (m_upgrade)
             {
                 case 1:
@@ -423,32 +391,24 @@ void Tower::initialize(Textureloader* textload)
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
-                    m_cost = 30;
                     break;
                 case 2:
                     setTexture(textload->getTexture("tower_3_2.png"), TOWER);
                     m_firerate = 666.0;
                     m_portee = 125;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 3:
                     setTexture(textload->getTexture("tower_3_3.png"), TOWER);
                     m_firerate = 600.0;
                     m_portee = 140;
                     m_damages = 3;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 4:
                     setTexture(textload->getTexture("tower_3_4.png"), TOWER);
                     m_firerate = 550.0;
                     m_portee = 160;
                     m_damages = 4;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 5:
                     setTexture(textload->getTexture("tower_3_5.png"), TOWER);
@@ -456,24 +416,18 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 170;
                     m_damages = 5;
                     m_color = sf::Color(0, 0, 255, 128);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 6:
                     setTexture(textload->getTexture("tower_3_6.png"), TOWER);
                     m_firerate = 750.0;
                     m_portee = 125;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 7:
                     setTexture(textload->getTexture("tower_3_7.png"), TOWER);
                     m_firerate = 700.0;
                     m_portee = 135;
                     m_damages = 2;
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 8:
                     setTexture(textload->getTexture("tower_3_8.png"), TOWER);
@@ -481,8 +435,6 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 145;
                     m_damages = 4;
                     m_color = sf::Color(255, 255, 255);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
                 case 9:
                     setTexture(textload->getTexture("tower_3_9.png"), TOWER);
@@ -490,13 +442,12 @@ void Tower::initialize(Textureloader* textload)
                     m_portee = 150;
                     m_damages = 8;
                     m_color = sf::Color(255, 255, 255, 128);
-                    m_type_effect = m_effect::none;
-                    m_cost += 15;
                     break;
             }
             break;
         case 4:
             m_canon = 2;
+            m_type_effect = m_effect::ice;
             switch (m_upgrade)
             {
                 case 1:
@@ -506,8 +457,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
-                    m_cost = 40;
                     break;
                 case 2:
                     setTexture(textload->getTexture("tower_4_2.png"), TOWER);
@@ -516,8 +465,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 3:
                     setTexture(textload->getTexture("tower_4_3.png"), TOWER);
@@ -526,8 +473,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 4:
                     setTexture(textload->getTexture("tower_4_4.png"), TOWER);
@@ -536,8 +481,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 5:
                     setTexture(textload->getTexture("tower_4_5.png"), TOWER);
@@ -546,8 +489,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 6:
                     setTexture(textload->getTexture("tower_4_6.png"), TOWER);
@@ -556,8 +497,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 25;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 7:
                     setTexture(textload->getTexture("tower_4_7.png"), TOWER);
@@ -566,8 +505,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 0;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 20;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 8:
                     setTexture(textload->getTexture("tower_4_8.png"), TOWER);
@@ -576,8 +513,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 15;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
                 case 9:
                     setTexture(textload->getTexture("tower_4_9.png"), TOWER);
@@ -586,8 +521,6 @@ void Tower::initialize(Textureloader* textload)
                     m_damages = 1;
                     m_color = sf::Color(255, 255, 255, 200);
                     m_nb_ball = 5;
-                    m_type_effect = m_effect::ice;
-                    m_cost += 15;
                     break;
             }
             break;
@@ -661,13 +594,158 @@ int Tower::getUpPrice(Textureloader* textload)
         int c = m_upgrade;
         m_upgrade = up;
         int b(m_cost);
-        initialize(textload);
+        getTowerPrice();
         int a = m_cost - b;
         m_upgrade = c;
-        initialize(textload);
+        getTowerPrice();
         if (m_upgrade != 1)
             m_cost -= a;
         return a;
     }
     return 0;
+}
+
+void Tower::getTowerPrice()
+{
+    switch (m_type)
+    {
+        case 1:
+            m_turrets = 3;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 10;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 20;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 2:
+            m_turrets = 3;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 20;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 15;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 3:
+            m_turrets = 2;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 30;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 15;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+            }
+            break;
+        case 4:
+            m_canon = 2;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 40;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 15;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
 }
