@@ -132,7 +132,7 @@ void Bloon::findWay(int x, int y, Textureloader* textload)
     if (m_carte != "")
     {
         // If the coord exist
-        if ((unsigned int)x < textload->getMap(m_carte).getSize().x && (unsigned int)y < textload->getMap(m_carte).getSize().y)
+        if (static_cast<unsigned int>(x) < textload->getMap(m_carte).getSize().x && static_cast<unsigned int>(y) < textload->getMap(m_carte).getSize().y)
         {
             m_color = textload->getMap(m_carte).getPixel(x, y);
             // If the color isn't green
