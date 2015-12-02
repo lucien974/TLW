@@ -112,10 +112,10 @@ int TowerManager::update(sf::Image &carte, sf::RenderWindow* screen, Textureload
                 m_tower_selected = -1;
             }
         }
-        if (((sf::Mouse::getPosition(*screen).x > m_tower[i]->getPosition().x - 40 &&
-            sf::Mouse::getPosition(*screen).x < m_tower[i]->getPosition().x + 40) &&
-            (sf::Mouse::getPosition(*screen).y > m_tower[i]->getPosition().y - 40 &&
-            sf::Mouse::getPosition(*screen).y < m_tower[i]->getPosition().y + 40)) &&
+        if (((sf::Mouse::getPosition(*screen).x > m_tower[i]->getPosition().x - 20 &&
+            sf::Mouse::getPosition(*screen).x < m_tower[i]->getPosition().x + 20) &&
+            (sf::Mouse::getPosition(*screen).y > m_tower[i]->getPosition().y - 20 &&
+            sf::Mouse::getPosition(*screen).y < m_tower[i]->getPosition().y + 20)) &&
             click == true &&
             found == false)
         {

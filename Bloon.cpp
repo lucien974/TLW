@@ -140,7 +140,6 @@ void Bloon::findWay(int x, int y, Textureloader* textload)
             {
                 setPosition(sf::Vector2f(x - 15, y - 15));
                 // All except the current boolean is set as false because the next position is found
-                m_direction = m_direction ^ 0b11111111;
                 m_find = true;
             }
             // If the color is blue the bloon passed through the map so we can destroy the bloon
