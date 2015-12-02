@@ -3,8 +3,8 @@
 Level::Level(Textureloader* textload, sf::RenderWindow *screen, std::string file) :
 m_money(0),
 m_lives(0),
-m_play_save(0),
 m_status(game_status::wait),
+m_play_save(0),
 m_clic(0),
 m_animation(0),
 m_done(false),
@@ -88,62 +88,64 @@ void Level::physicsMotor()
         int indice[2], oldest = 0;
         indice[0] = 0;
         m_mutex.lock();
-        for (int p(0); p < m_play_save; ++p)
+        for (unsigned int i(0); i < m_play_save && i < m_waves.size(); ++i)
         {
-            if (m_bloons[p] != nullptr)
+            if (m_waves[i] != nullptr)
             {
-                if (m_bloons[p]->isEmpty())
+                if (m_waves[i]->isEmpty())
                 {
-                    m_play_save--;
-                    delete m_bloons[p];
-                    m_bloons.erase(m_bloons.begin() + p);
+                    --m_play_save;
+                    if (!m_waves[i]->next() && m_play_save == 0 && m_waves.size() != 0)
+                        ++m_play_save;
+                    delete m_waves[i];
+                    m_waves.erase(m_waves.begin() + i);
                 }
             }
         }
         m_mutex.unlock();
-        for (int v(m_towers->getSize() - 1); v >= 0; --v)
+        for (int i(m_towers->getSize() - 1); i >= 0; --i)
         {
-            int n(m_bloons.size() - 1);
-            while (n >= 0)
+            int k(m_waves.size() - 1);
+            while (k >= 0)
             {
                 m_mutex.lock();
-                for (int g(0); g < m_bloons[n]->size(); ++g)
+                for (int j(0); j < m_waves[k]->size(); ++j)
                 {
-                    position = m_bloons[n]->getBloonPosition(g);
+                    position = m_waves[k]->getBloonPosition(j);
                     if (position.x >= 0 && position.x <= 900 &&
                        position.y >= 0 && position.y <= 600 &&
-                       v < m_towers->getSize())
+                       i < m_towers->getSize())
                     {
-                        if (m_bloons[n]->isNearOf(g, m_towers->getPosition(v), m_towers->getRange(v)) == true)
+                        if (m_waves[k]->isNearOf(j, m_towers->getPosition(i), m_towers->getRange(i)) == true)
                         {
-                            if (m_bloons[n]->getAdvance(g) > oldest)
+                            if (m_waves[k]->getAdvance(j) > oldest)
                             {
-                                oldest = m_bloons[n]->getAdvance(g);
-                                indice[1] = g;
-                                indice[0] = n;
+                                oldest = m_waves[k]->getAdvance(j);
+                                indice[1] = j;
+                                indice[0] = k;
                             }
                         }
                     }
                 }
-                n--;
+                --k;
                 m_mutex.unlock();
             }
             m_mutex.lock();
             if (oldest != 0)
             {
-                m_towers->rotateTowards(v, m_bloons[indice[0]]->getBloonPosition(indice[1]));
-                if (m_bloons[indice[0]]->isTouch(indice[1],
-                                            m_bloons[indice[0]]->getBloonPosition(indice[1]),
-                                            m_towers->shoot(v, m_bloons[indice[0]]->getBloonPosition(indice[1])),
+                m_towers->rotateTowards(i, m_waves[indice[0]]->getBloonPosition(indice[1]));
+                if (m_waves[indice[0]]->isTouch(indice[1],
+                                            m_waves[indice[0]]->getBloonPosition(indice[1]),
+                                            m_towers->shoot(i, m_waves[indice[0]]->getBloonPosition(indice[1])),
                                             m_textload,
-                                            m_towers->getEffect(v),
-                                            m_towers->getNbBall(v)) == true)
+                                            m_towers->getEffect(i),
+                                            m_towers->getNbBall(i)) == true)
                 {
                     m_sound.push_back(sf::Sound(m_textload->getBuffer("pop.ogg")));
                     m_sound.back().play();
                 }
 
-                m_money += m_bloons[indice[0]]->getMoney(indice[1]);
+                m_money += m_waves[indice[0]]->getMoney(indice[1]);
                 indice[0] = 0;
                 indice[1] = 0;
                 oldest = 0;
@@ -179,10 +181,10 @@ void Level::destroy()
     m_file.close();
     m_play_save = 0;
     m_mutex.lock();
-    while (m_bloons.size() > 0)
+    while (m_waves.size() > 0)
     {
-        delete m_bloons[0];
-        m_bloons.pop_front();
+        delete m_waves[0];
+        m_waves.pop_front();
     }
     m_mutex.unlock();
     m_done = true;
@@ -203,7 +205,7 @@ void Level::load()
             while (next_wave != -1)
             {
                 m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
-                m_bloons.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_map.png"));
+                m_waves.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_map.png"));
             }
             m_play_save = 1;
             m_status = game_status::wait;
@@ -240,10 +242,10 @@ void Level::close()
 
 void Level::update(sf::RenderWindow *screen, Textureloader* textload)
 {
-    m_mutex.lock();
+    std::lock_guard<std::mutex> guard(m_mutex);
     int dmg(0);
     unsigned int snd(0);
-    if (m_bloons.size() == 0)
+    if (m_waves.size() == 0)
         load();
     while (snd < m_sound.size())
     {
@@ -255,18 +257,18 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     if (m_status < game_status::wait)
     {
         //std::cout << m_play_save << endl;
-        for (int i(0); i < m_play_save; ++i)
+        for (unsigned int i(0); i < m_play_save; ++i)
         {
-            if (!m_bloons[i]->isEmpty())
+            if (!m_waves[i]->isEmpty())
             {
-                dmg = m_bloons[i]->update(screen, textload);
+                dmg = m_waves[i]->update(screen, textload);
                 if (dmg > 0)
                 {
                     m_sound.push_back(sf::Sound(textload->getBuffer("pop.ogg")));
                     m_sound.back().play();
                 }
                 m_lives -= dmg;
-                if (m_bloons[i]->next())
+                if (m_waves[i]->next())
                     m_play_save++;
             }
         }
@@ -292,7 +294,6 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, textload, m_money, m_delete, m_clic==2);
     if (m_clic == 2)
         m_clic = 0;
-    m_mutex.unlock();
 }
 
 void Level::forceRunning(sf::RenderWindow *screen, Textureloader* textload)

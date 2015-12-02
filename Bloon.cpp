@@ -172,14 +172,15 @@ bool Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload,
         {
             if (m_health > 0)
             {
+                m_life_lost = damages;
+                m_health -= damages;
                 switch (effect)
                 {
                     case -1:
-                        m_health -= damages;
                         m_touch = true;
-                        initialize(textload);
+                        if (m_health > 0)
+                            initialize(textload);
                         spriteStatus(false, ALL);
-                        m_life_lost = damages;
                         break;
                     case 0:
                         m_effect_status++;
@@ -187,10 +188,9 @@ bool Bloon::isTouch(sf::Vector2f pos_ball, int damages, Textureloader* textload,
                             m_effect_limit = ice_limit;
                         if (m_effect_status == m_effect_limit)
                         {
-                            m_life_lost = damages;
-                            m_health -= damages;
                             m_touch = true;
-                            initialize(textload);
+                            if (m_health > 0)
+                                initialize(textload);
                             m_clock.restart();
                             m_effect_status++;
                             m_status = m_effect::ice;
@@ -227,7 +227,7 @@ void Bloon::update(Textureloader* textload)
     }
     if ((m_effect_status < m_effect_limit || m_status == m_effect::none) && m_health > 0)
     {
-        for (int n(0); n < m_speed; ++n)
+        for (int n(0); n < m_speed && m_health > 0 && m_color != sf::Color::Blue; ++n)
         {
             m_way++;
             if ((m_direction & 0b00000001) == 0b1 && m_find == false)
@@ -281,7 +281,7 @@ void Bloon::update(Textureloader* textload)
                     if (m_find == true)
                         m_direction = 0b11011111;
                 }
-                /*
+                /**/
                 if (m_find == false)
                     std::cout << "Error at position : " << getPosition().x + 15 << ", " << getPosition().y + 15 << std::endl;
                 //*/

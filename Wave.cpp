@@ -18,10 +18,10 @@ int Wave::update(sf::RenderWindow* ecran, Textureloader* textload)
         m_bloon.push_back(new Bloon(m_type, textload, textload->getPxlPos(m_carte, sf::Color(255, 0, 0), BLOON)));
         m_bloon.back()->setMap(m_carte);
         m_gap = 0;
-        m_nb_bloons--;
+        --m_nb_bloons;
     }
     if (m_way > 0)
-        m_way--;
+        --m_way;
     m_gap++;
     unsigned int k(0);
     while (k < m_bloon.size())

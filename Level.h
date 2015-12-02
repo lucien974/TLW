@@ -29,9 +29,10 @@ class Level
         void destroy();
 
     private:
-        std::deque<Wave*> m_bloons;
+        std::deque<Wave*> m_waves;
         TowerManager *m_towers;
-        int m_money, m_lives, m_play_save, m_status;
+        int m_money, m_lives, m_status;
+        unsigned int m_play_save;
         char m_clic, m_animation;
         bool m_done, m_delete, m_end;
         std::ifstream m_file;
@@ -45,7 +46,7 @@ class Level
         std::thread *m_thread;
         sf::RenderWindow *m_screen;
         Textureloader *m_textload;
-        std::mutex m_mutex;
+        mutable std::mutex m_mutex;
         enum game_status{normal = 0, paused = 1, win = 2, loose = 3, wait = 4, play_animation = 5, end = 6};
 };
 

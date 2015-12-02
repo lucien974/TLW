@@ -20,7 +20,7 @@
 #define BUTTON "button"
 
 //Number levels limit
-#define NB_LEVELS 3
+#define NB_LEVELS 4
 
 #define PI 3.141592f
 
