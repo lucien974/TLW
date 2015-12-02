@@ -37,18 +37,18 @@ bool TowerEffect::iceMove(int &incrementation, sf::Vector2f &bullet_to_bloon, sf
         bullet_forward.x = a*std::sin(tower_rotation*(3.1415f / 180.0f));
         bullet_forward.y = -a*std::cos(tower_rotation*(3.1415f / 180.0f));
     }
-    if (incrementation >= 20 && incrementation < 90)
+    else if (incrementation >= 20 && incrementation < 90)
     {
         radian = rand()*0.5f;
         bullet_forward.x = a*std::sin((tower_rotation + radian)*(3.1415f / 180.0f));
         bullet_forward.y = -a*std::cos((tower_rotation + radian)*(3.1415f / 180.0f));
     }
-    if (incrementation >= 90 && incrementation <= 150)
+    else if (incrementation >= 90 && incrementation <= 150)
     {
         bullet_forward.x = rand()%5 - 2;
         bullet_forward.y = rand()%5 - 2;
     }
-    if (incrementation > 150)
+    else if (incrementation > 150)
     {
         return false;
     }
