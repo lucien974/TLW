@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <deque>
 #include <map>
 
@@ -19,7 +20,7 @@ class Particle : public sf::Transformable, public sf::Drawable
         ~Particle();
         void update(int number_of_generation, sf::RenderWindow &screen);
         void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-        void normalise(std::string a);
+        void normalize(std::string forceName);
         void rebound(sf::Vector2f direction);
         void setLimit(unsigned int limit);
         void setMass(float mass);

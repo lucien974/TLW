@@ -23,30 +23,25 @@ void Particle::setForce(std::string name, sf::Vector2f f)
     m_forces[name] = f;
 }
 
-void Particle::normalise(std::string a)
+void Particle::normalize(std::string forceName)
 {
-    std::string b = "";
-    for (auto &key : m_forces)
+    auto searchForces = m_forces.find(forceName);
+    auto searchRandomForces = m_random_forces.find(forceName);
+
+    if (searchForces != m_forces.end())
     {
-        if (key.first == a)
-        {
-            key.second /= static_cast<float>(sqrt(key.second.x*key.second.x + key.second.y*key.second.y));
-            b = a;
-        }
+        searchForces->second /= std::sqrt(std::pow(searchForces->second.x, 2.f) + std::pow(searchForces->second.y, 2.f));
     }
-    if (b != "")
+    else if (searchRandomForces != m_random_forces.end())
     {
-        for (auto &key : m_random_forces)
-        {
-            if (key.first == a)
-            {
-                key.second.first = 1;
-                b = a;
-            }
-        }
+        searchRandomForces->second.first = 1;
     }
-    if (b == "")
-        std::cout << "error force " << a << " don't found" << std::endl;
+    else
+    {
+        std::stringstream error;
+        error << "Error force " << forceName << " not found";
+        throw std::runtime_error(error.str());
+    }
 }
 
 void Particle::setRandomForce(std::string name, sf::Vector2f f, float angle)
