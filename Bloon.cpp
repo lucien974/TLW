@@ -15,14 +15,11 @@ m_exit(false),
 m_find(false),
 m_touch(false),
 m_earn_money(false),
+m_direction(255),
 m_carte("")
 {
-    for (int m(0); m < 8; m++)
-    {
-        m_direction[m] = true;
-    }
     initialize(textload);
-    setPosition(start_pos);
+    setPosition(sf::Vector2f(start_pos.x - 15, start_pos.y - 15));
     m_time_update.restart();
 }
 
@@ -129,37 +126,27 @@ void Bloon::initialize(Textureloader* textload)
     }
 }
 
-void Bloon::findWay(unsigned int x, unsigned int y, int postab, Textureloader* textload)
+void Bloon::findWay(int x, int y, Textureloader* textload)
 {
     // If the mao exist
     if (m_carte != "")
     {
         // If the coord exist
-        if (x < textload->getMap(m_carte).getSize().x && y < textload->getMap(m_carte).getSize().y)
+        if ((unsigned int)x < textload->getMap(m_carte).getSize().x && (unsigned int)y < textload->getMap(m_carte).getSize().y)
         {
             m_color = textload->getMap(m_carte).getPixel(x, y);
             // If the color isn't green
-            if (m_color != sf::Color(0, 153, 0))
+            if (m_color != sf::Color(0, 153, 0) && m_color != sf::Color(0, 0, 128))
             {
-                setPosition(sf::Vector2f(x, y));
+                setPosition(sf::Vector2f(x - 15, y - 15));
                 // All except the current boolean is set as false because the next position is found
-                for (int v(0); v < 8; v++)
-                {
-                    if (v == postab)
-                    {
-                        m_direction[postab] = false;
-                    }
-                    else
-                    {
-                        m_direction[v] = true;
-                    }
-                }
+                m_direction = m_direction ^ 0b11111111;
                 m_find = true;
             }
             // If the color is blue the bloon passed through the map so we can destroy the bloon
             if (m_color == sf::Color::Blue)
             {
-                setPosition(sf::Vector2f(x, y));
+                setPosition(sf::Vector2f(x - 15, y - 15));
                 m_exit = true;
             }
         }
@@ -244,31 +231,61 @@ void Bloon::update(Textureloader* textload)
         for (int n(0); n < m_speed; ++n)
         {
             m_way++;
-            if (m_direction[0] == true && m_find == false)
-                findWay(getPosition().x + 1, getPosition().y, 1, textload);
-
-            if (m_direction[2] == true && m_find == false)
-                findWay(getPosition().x, getPosition().y + 1, 3, textload);
-
-            if (m_direction[1] == true && m_find == false)
-                findWay(getPosition().x - 1, getPosition().y, 0, textload);
-
-            if (m_direction[3] == true && m_find == false)
-                findWay(getPosition().x, getPosition().y - 1, 2, textload);
-
+            if ((m_direction & 0b00000001) == 0b1 && m_find == false)
+            {
+                findWay(getPosition().x + 16, getPosition().y + 15, textload);
+                if (m_find == true)
+                    m_direction = 0b11111101;
+            }
+            if ((m_direction & 0b00000100) == 0b100 && m_find == false)
+            {
+                //std::cout << (int)m_direction << std::endl;
+                findWay(getPosition().x + 15, getPosition().y + 16, textload);
+                if (m_find == true)
+                    m_direction = 0b11110111;
+            }
+            if ((m_direction & 0b00000010) == 0b10 && m_find == false)
+            {
+                findWay(getPosition().x + 14, getPosition().y + 15, textload);
+                if (m_find == true)
+                    m_direction = 0b11111110;
+            }
+            if ((m_direction & 0b00001000) == 0b1000 && m_find == false)
+            {
+                findWay(getPosition().x + 15, getPosition().y + 14, textload);
+                if (m_find == true)
+                    m_direction = 0b11111011;
+            }
             if (m_find == false)
             {
-                if (m_direction[4] == true && m_find == false)
-                    findWay(getPosition().x + 1, getPosition().y - 1, 6, textload);
-
-                if (m_direction[5] == true && m_find == false)
-                    findWay(getPosition().x + 1, getPosition().y + 1, 7, textload);
-
-                if (m_direction[6] == true && m_find == false)
-                    findWay(getPosition().x - 1, getPosition().y + 1, 4, textload);
-
-                if (m_direction[7] == true && m_find == false)
-                    findWay(getPosition().x - 1, getPosition().y - 1, 5, textload);
+                if ((m_direction & 0b00010000) == 0b10000 && m_find == false)
+                {
+                    findWay(getPosition().x + 16, getPosition().y + 14, textload);
+                    if (m_find == true)
+                        m_direction = 0b10111111;
+                }
+                if ((m_direction & 0b00100000) == 0b100000 && m_find == false)
+                {
+                    findWay(getPosition().x + 16, getPosition().y + 16, textload);
+                    if (m_find == true)
+                        m_direction = 0b01111111;
+                }
+                if ((m_direction & 0b01000000) == 0b1000000 && m_find == false)
+                {
+                    findWay(getPosition().x + 14, getPosition().y + 16, textload);
+                    if (m_find == true)
+                        m_direction = 0b11101111;
+                }
+                if ((m_direction & 0b10000000) == 0b10000000 && m_find == false)
+                {
+                    findWay(getPosition().x + 14, getPosition().y + 14, textload);
+                    if (m_find == true)
+                        m_direction = 0b11011111;
+                }
+                /*
+                if (m_find == false)
+                    std::cout << "Error at position : " << getPosition().x + 15 << ", " << getPosition().y + 15 << std::endl;
+                //*/
             }
             m_find = false;
         }

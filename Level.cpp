@@ -21,7 +21,8 @@ m_textload(textload)
         std::cout << "Impossible d'ouvrir le fichier" << std::endl;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON));
+    m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
+                              m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);
 
     m_sprite_life.setTexture(m_textload->getTexture("heart.png"));
     m_sprite_life.setPosition(820, 552);
@@ -39,11 +40,11 @@ m_textload(textload)
 
     m_interface.setTexture(m_textload->getTexture("tower_manager.png"));
     m_interface.setPosition(0, 0);
-
+    /*
     m_button_play.setTexture(m_textload->getTexture("play.png"));
     m_button_play.setOrigin(25, 25);
     m_button_play.setPosition(25, 330);
-
+    //*/
     m_pause = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color(0, 128, 0));
     m_pause->setTitle("PAUSE", sf::Vector2i(450, 50));
     m_pause->newButton(RESUME, sf::Vector2i(0, 150));

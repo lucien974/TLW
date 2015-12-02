@@ -17,7 +17,7 @@ class Bloon : public Entity
         void initialize(Textureloader* textload); // Initialization of all variables of bloon
         void update(Textureloader* textload); // move the bloon
         void update();
-        void findWay(unsigned int x, unsigned int y, int postab, Textureloader* textload); // Research of the next position of the bloon
+        void findWay(int x, int y, Textureloader* textload); // Research of the next position of the bloon
         bool isWentOut(); // If the bloon pass through th map
         int getSpeed(); // Get bloon speed
         int getAdvance(); // Return the number pixels crossed
@@ -31,7 +31,8 @@ class Bloon : public Entity
     private:
         int m_speed, m_health, m_earn, m_way, m_effect_status, m_effect_limit, m_status, m_life_lost;
         sf::Color m_color;
-        bool m_exit, m_direction[8], m_find, m_touch, m_earn_money;
+        bool m_exit, m_find, m_touch, m_earn_money;
+        unsigned char m_direction;
         std::string m_carte;
         sf::Clock m_clock, m_time_update;
 

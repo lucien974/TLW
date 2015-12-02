@@ -26,7 +26,7 @@ m_clic(0)
 
     m_textload->setTextureFolder("images/" + m_level_name + "/");
 
-    m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "TOWER DEFENSE");
+    m_screen = new sf::RenderWindow(sf::VideoMode(900, 600, 32), "BALLONS WAR");
     m_screen->setFramerateLimit(60);
     m_screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450, sf::VideoMode::getDesktopMode().height/2 - 300));
 
@@ -41,6 +41,8 @@ m_clic(0)
     m_mouse = new Particle(10.0, 100, sf::Vector2f(0.0, -3.0));
     m_mouse->setForce("P", sf::Vector2f(0.0, 1.01));
     m_mouse->setRandomForce("Fireworks", sf::Vector2f(1.0, -20.0), 30);
+
+    m_screen->setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width/2 - 450, sf::VideoMode::getDesktopMode().height/2 - 300));
 }
 
 Game::~Game()
