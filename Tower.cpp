@@ -179,7 +179,7 @@ void Tower::upgradeRight(Textureloader* textload)
 {
     if (m_upgrade < 9 && m_upgrade > 5)
         m_upgrade++;
-    if (m_upgrade == 1)
+    else if (m_upgrade == 1)
         m_upgrade = 6;
     initialize(textload);
 }
@@ -411,24 +411,24 @@ void Tower::initialize(Textureloader* textload)
                 case 3:
                     setTexture(textload->getTexture("tower_4_3.png"), TOWER);
                     m_firerate = 30;
-                    m_portee = 75;
-                    m_damages = 0;
+                    m_portee = 80;
+                    m_damages = 2;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
                     break;
                 case 4:
                     setTexture(textload->getTexture("tower_4_4.png"), TOWER);
                     m_firerate = 20;
-                    m_portee = 75;
-                    m_damages = 1;
+                    m_portee = 90;
+                    m_damages = 3;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
                     break;
                 case 5:
                     setTexture(textload->getTexture("tower_4_5.png"), TOWER);
                     m_firerate = 0;
-                    m_portee = 75;
-                    m_damages = 1;
+                    m_portee = 100;
+                    m_damages = 3;
                     m_color = sf::Color(200, 200, 180, 180);
                     m_nb_ball = 30;
                     break;
@@ -460,7 +460,7 @@ void Tower::initialize(Textureloader* textload)
                     setTexture(textload->getTexture("tower_4_9.png"), TOWER);
                     m_firerate = 5;
                     m_portee = 75;
-                    m_damages = 1;
+                    m_damages = 2;
                     m_color = sf::Color(255, 255, 255, 200);
                     m_nb_ball = 5;
                     break;
@@ -516,35 +516,44 @@ std::string Tower::getRightUpgrade()
     return "";
 }
 
-int Tower::getUpPrice(Textureloader* textload)
+int Tower::getLeftUpPrice(Textureloader* textload)
 {
-    if (m_upgrade != 5 && m_upgrade != 9)
+    if (m_upgrade < 6)
     {
-        int up(0);
-        if (m_upgrade == 1)
-        {
-            m_up_price = !m_up_price;
-            if (m_up_price == false)
-                up = 6;
-            else
-                up = 2;
-        }
-        else
-        {
-            up = m_upgrade + 1;
-        }
-        int c = m_upgrade;
-        m_upgrade = up;
-        int b(m_cost);
+        int cost(0);
+        ++m_upgrade;
+        cost = m_cost;
         getTowerPrice();
-        int a = m_cost - b;
-        m_upgrade = c;
+        cost = m_cost - cost;
+        --m_upgrade;
         getTowerPrice();
-        if (m_upgrade != 1)
-            m_cost -= a;
-        return a;
+        return cost;
     }
     return 0;
+}
+
+int Tower::getRightUpPrice(Textureloader* textload)
+{
+    int cost(0);
+    if (m_upgrade > 5 && m_upgrade < 9)
+    {
+        cost = m_cost;
+        ++m_upgrade;
+        getTowerPrice();
+        cost = m_cost - cost;
+        --m_upgrade;
+        getTowerPrice();
+    }
+    else if (m_upgrade == 1)
+    {
+        cost = m_cost;
+        m_upgrade = 6;
+        getTowerPrice();
+        cost = m_cost - cost;
+        m_upgrade = 1;
+        getTowerPrice();
+    }
+    return cost;
 }
 
 void Tower::getTowerPrice()
@@ -659,31 +668,31 @@ void Tower::getTowerPrice()
             switch (m_upgrade)
             {
                 case 1:
-                    m_cost = 40;
+                    m_cost = 60;
                     break;
                 case 2:
                     m_cost += 15;
                     break;
                 case 3:
-                    m_cost += 15;
+                    m_cost += 175;
                     break;
                 case 4:
-                    m_cost += 15;
+                    m_cost += 450;
                     break;
                 case 5:
-                    m_cost += 15;
+                    m_cost += 1750;
                     break;
                 case 6:
-                    m_cost += 15;
+                    m_cost += 150;
                     break;
                 case 7:
-                    m_cost += 15;
+                    m_cost += 300;
                     break;
                 case 8:
-                    m_cost += 15;
+                    m_cost += 550;
                     break;
                 case 9:
-                    m_cost += 15;
+                    m_cost += 1500;
                     break;
             }
             break;

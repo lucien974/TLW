@@ -67,7 +67,7 @@ void Level::initialize()
     m_file.open(m_file_name, std::ios::in);
     m_animation = 0;
 
-    m_money = 500;
+    m_money = 5000;
     m_lives = 200;
     m_towers = new TowerManager(m_textload);
     m_status = game_status::wait;

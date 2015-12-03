@@ -30,7 +30,8 @@ class Tower : public Entity
         std::string getPrice();
         std::string getLeftUpgrade();
         std::string getRightUpgrade();
-        int getUpPrice(Textureloader* textload);
+        int getRightUpPrice(Textureloader* textload);
+        int getLeftUpPrice(Textureloader* textload);
         void getTowerPrice();
 
     private:
