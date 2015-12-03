@@ -126,7 +126,7 @@ void Game::update()
                 }
                 else
                 {
-                    std::cout << "File error not enough levels" << std::endl;
+                    std::cout << "File error not enough levels (" << m_number_levels << " instead of " << NB_LEVELS << ")" << std::endl;
                     m_screen->close();
                 }
             }

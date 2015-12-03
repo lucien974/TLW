@@ -19,9 +19,6 @@
 //Type button
 #define BUTTON "button"
 
-//Number levels limit
-#define NB_LEVELS 4
-
 #define PI 3.141592f
 
 #endif // INCLUDE_H_INCLUDED

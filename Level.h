@@ -46,7 +46,7 @@ class Level
         std::thread *m_thread;
         sf::RenderWindow *m_screen;
         Textureloader *m_textload;
-        mutable std::mutex m_mutex;
+        std::mutex m_mutex;
         enum game_status{normal = 0, paused = 1, win = 2, loose = 3, wait = 4, play_animation = 5, end = 6};
 };
 

@@ -13,10 +13,10 @@ class Entity: public sf::Transformable, public sf::Drawable
     public:
         Entity();
         virtual ~Entity();
-        void setTexture(sf::Texture& texture, std::string name);
+        void setTexture(const sf::Texture& texture, std::string name);
         void setPosition(sf::Vector2f a);
         void setPosition(int x, int y);
-        void setTexture(sf::Texture& texture, sf::Vector2f origin, std::string name);
+        void setTexture(const sf::Texture& texture, sf::Vector2f origin, std::string name);
         void disableEffect();
         void spriteStatus(bool a, std::string name);
         void draw(sf::RenderTarget &target, sf::RenderStates states) const;

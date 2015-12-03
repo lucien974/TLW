@@ -31,7 +31,7 @@ void Textureloader::setFontFolder(std::string folder)
     m_font_folder = folder;
 }
 
-sf::Texture& Textureloader::getTexture(std::string filename)
+const sf::Texture& Textureloader::getTexture(std::string filename)
 {
     std::string a;
     a = m_texture_folder + filename;
@@ -47,7 +47,7 @@ sf::Texture& Textureloader::getTexture(std::string filename)
     }
 }
 
-sf::SoundBuffer& Textureloader::getBuffer(std::string filename)
+const sf::SoundBuffer& Textureloader::getBuffer(std::string filename)
 {
     std::string b;
     b = m_buffer_folder + filename;
@@ -63,7 +63,7 @@ sf::SoundBuffer& Textureloader::getBuffer(std::string filename)
     }
 }
 
-sf::Font& Textureloader::getFont(std::string filename)
+const sf::Font& Textureloader::getFont(std::string filename)
 {
     std::string c;
     c = m_font_folder + filename;
@@ -79,7 +79,7 @@ sf::Font& Textureloader::getFont(std::string filename)
     }
 }
 
-sf::Image& Textureloader::getMap(std::string filename)
+const sf::Image& Textureloader::getMap(std::string filename)
 {
     std::string r;
     r = m_texture_folder + filename;
@@ -95,7 +95,7 @@ sf::Image& Textureloader::getMap(std::string filename)
     }
 }
 
-sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color color_search, std::string type)
+const sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color color_search, std::string type)
 {
     m_map_pos_it = m_map_pos.find(type);
     if (m_map_pos_it != m_map_pos.end())
@@ -131,7 +131,7 @@ void Textureloader::setForbidPosition(sf::Vector2f origin, std::string file_name
         std::cout << "map doesn't exist" << std::endl;
     else
     {
-        for (int i(origin.x - 40); i < origin.x + 40; ++i)
+        for (auto i(origin.x - 40); i < origin.x + 40; ++i)
         {
             for (int j(origin.y - 40); j < origin.y + 40; ++j)
             {
@@ -155,16 +155,25 @@ void Textureloader::clearLevel()
                 m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
                 break;
             case 'm':
-                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
+                m_texture[key.first].loadFromFile(m_texture_folder + key.first);
                 break;
             case 'p':
-                m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
-                break;
-            case 'v':
                 m_texture[key.first].loadFromFile(m_texture_folder + "/" + key.first);
                 break;
             default:
                 break;
         }
     }
+    if (m_map.find("virtual_map.png") != m_map.end())
+    {
+        m_map.erase(m_map.find("virtual_map.png"));
+        if (m_map["virtual_map.png"].loadFromFile(m_texture_folder + "virtual_map.png"))
+        {
+            m_map_pos.clear();
+        }
+        else
+            std::cout << "map not found" << std::endl;
+    }
+    else
+        std::cout << "virtual_map " << m_texture_folder + "virtual_map.png not found" << std::endl;
 }

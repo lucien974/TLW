@@ -21,6 +21,7 @@ m_textload(textload)
         std::cout << "Impossible d'ouvrir le fichier" << std::endl;
 
     m_button_play.setTexture(m_textload->getTexture("play.png"));
+    m_button_play.setOrigin(m_button_play.getLocalBounds().width/2, m_button_play.getLocalBounds().height/2);
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
                               m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);
 
@@ -40,11 +41,7 @@ m_textload(textload)
 
     m_interface.setTexture(m_textload->getTexture("tower_manager.png"));
     m_interface.setPosition(0, 0);
-    /*
-    m_button_play.setTexture(m_textload->getTexture("play.png"));
-    m_button_play.setOrigin(25, 25);
-    m_button_play.setPosition(25, 330);
-    //*/
+
     m_pause = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color(0, 128, 0));
     m_pause->setTitle("PAUSE", sf::Vector2i(450, 50));
     m_pause->newButton(RESUME, sf::Vector2i(0, 150));
@@ -81,6 +78,7 @@ void Level::initialize()
 
 void Level::physicsMotor()
 {
+    /**/
     sf::Vector2f position;
     std::cout << "!!!!! thread launch !!!!!" << std::endl;
     while (m_status != game_status::loose && m_status != game_status::end && m_done == false)
@@ -103,6 +101,7 @@ void Level::physicsMotor()
             }
         }
         m_mutex.unlock();
+        /**/
         for (int i(m_towers->getSize() - 1); i >= 0; --i)
         {
             int k(m_waves.size() - 1);
@@ -152,6 +151,7 @@ void Level::physicsMotor()
             }
             m_mutex.unlock();
         }
+        //*/
         std::this_thread::sleep_for (std::chrono::milliseconds(1));
     }
     std::cout << "!!!!! thread exit !!!!!" << std::endl;
@@ -228,6 +228,10 @@ void Level::changeLevel(std::string file)
     m_end = false;
     m_status = game_status::wait;
     m_animation = 0;
+    delete m_towers;
+    m_towers = new TowerManager(m_textload);
+    m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
+                              m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);
 }
 
 bool Level::isDone()
@@ -242,7 +246,7 @@ void Level::close()
 
 void Level::update(sf::RenderWindow *screen, Textureloader* textload)
 {
-    std::lock_guard<std::mutex> guard(m_mutex);
+    m_mutex.lock();
     int dmg(0);
     unsigned int snd(0);
     if (m_waves.size() == 0)
@@ -257,7 +261,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     if (m_status < game_status::wait)
     {
         //std::cout << m_play_save << endl;
-        for (unsigned int i(0); i < m_play_save; ++i)
+        for (unsigned int i(0); i < m_play_save && i < m_waves.size(); ++i)
         {
             if (!m_waves[i]->isEmpty())
             {
@@ -272,6 +276,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
                     m_play_save++;
             }
         }
+        //std::cout << m_waves.size() << std::endl;
     }
     else
     {
@@ -294,6 +299,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, textload, m_money, m_delete, m_clic==2);
     if (m_clic == 2)
         m_clic = 0;
+    m_mutex.unlock();
 }
 
 void Level::forceRunning(sf::RenderWindow *screen, Textureloader* textload)

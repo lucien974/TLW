@@ -44,7 +44,7 @@ TowerManager::~TowerManager()
     m_tower.clear();
 }
 
-int TowerManager::update(sf::Image &carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up)
+int TowerManager::update(const sf::Image &carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up)
 {
     m_money->setSentence(std::to_string(money) + " '");
     screen->draw(*m_money);

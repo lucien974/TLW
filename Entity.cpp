@@ -12,7 +12,7 @@ Entity::~Entity()
     m_draw_status.clear();
 }
 
-void Entity::setTexture(sf::Texture& texture, std::string name)
+void Entity::setTexture(const sf::Texture& texture, std::string name)
 {
     m_sprite[name].setTexture(texture);
     m_sprite[name].setOrigin(m_sprite[name].getGlobalBounds().width/2, m_sprite[name].getGlobalBounds().height/2);
@@ -36,7 +36,7 @@ float Entity::getRotation()
     return m_sprite.begin()->second.getRotation();
 }
 
-void Entity::setTexture(sf::Texture& texture, sf::Vector2f origin, std::string name)
+void Entity::setTexture(const sf::Texture& texture, sf::Vector2f origin, std::string name)
 {
     setTexture(texture, name);
     m_sprite[name].setOrigin(origin.x, origin.y);

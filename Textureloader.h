@@ -14,11 +14,11 @@ class Textureloader
         Textureloader(std::string image_folder, std::string buffer_folder, std::string font_folder);
         Textureloader(std::string image_folder);
         ~Textureloader();
-        sf::Texture& getTexture(std::string filename);
-        sf::SoundBuffer& getBuffer(std::string filename);
-        sf::Font& getFont(std::string filename);
-        sf::Image& getMap(std::string filename);
-        sf::Vector2f getPxlPos(std::string filename, sf::Color color_search, std::string type);
+        const sf::Texture& getTexture(std::string filename);
+        const sf::SoundBuffer& getBuffer(std::string filename);
+        const sf::Font& getFont(std::string filename);
+        const sf::Image& getMap(std::string filename);
+        const sf::Vector2f getPxlPos(std::string filename, sf::Color color_search, std::string type);
         void setTextureFolder(std::string folder);
         void setBufferFolder(std::string folder);
         void setFontFolder(std::string folder);

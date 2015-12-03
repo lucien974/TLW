@@ -6,6 +6,9 @@
 #include "Level.h"
 #include "Particle.h"
 
+//Number levels limit
+#define NB_LEVELS 2
+
 class Game
 {
     public:
