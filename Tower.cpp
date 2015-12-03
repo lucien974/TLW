@@ -39,43 +39,6 @@ void Tower::update()
 {
 }
 
-void Tower::iceMove(int r)
-{
-    m_incrementation[r]++;
-    float a;
-    if (m_incrementation[r] < 150)
-    {
-        sf::Vector2f bullet_to_bloon;
-        bullet_to_bloon = m_last_pos[r] - m_bullet[r].getPosition();
-        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5 ;
-    }
-    if (m_incrementation[r] < 20)
-    {
-        m_forward[r].x = a*std::sin(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-        m_forward[r].y = -a*std::cos(m_bullet[r].getRotation()*(3.1415f / 180.0f));
-    }
-    if (m_incrementation[r] >= 20 && m_incrementation[r] < 90)
-    {
-        m_radian = rand()*0.5f;
-        m_forward[r].x = a*std::sin((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-        m_forward[r].y = -a*std::cos((m_bullet[r].getRotation() + m_radian)*(3.1415f / 180.0f));
-    }
-    if (m_incrementation[r] >= 90 && m_incrementation[r] <= 150)
-    {
-        m_forward[r].x = rand()%5 - 2;
-        m_forward[r].y = rand()%5 - 2;
-    }
-    if (m_incrementation[r] > 150)
-    {
-        m_bullet.erase(m_bullet.begin() + r);
-        m_last_pos.erase(m_last_pos.begin() + r);
-        m_incrementation.erase(m_incrementation.begin() + r);
-        m_forward.erase(m_forward.begin() + r);
-    }
-    else
-        m_bullet[r].move(m_forward[r]);
-}
-
 void Tower::drawBullet(sf::RenderWindow* screen)
 {
     for (unsigned int r(0); r < m_bullet.size(); ++r)

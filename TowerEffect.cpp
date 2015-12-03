@@ -30,7 +30,7 @@ bool TowerEffect::iceMove(int &incrementation, sf::Vector2f &bullet_to_bloon, sf
     float a, radian;
     if (incrementation < 150)
     {
-        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5 ;
+        a = sqrt(bullet_to_bloon.x*bullet_to_bloon.x + bullet_to_bloon.y*bullet_to_bloon.y)/5;
     }
     if (incrementation < 20)
     {
