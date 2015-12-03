@@ -111,8 +111,8 @@ void Level::physicsMotor()
                 for (int j(0); j < m_waves[k]->size(); ++j)
                 {
                     position = m_waves[k]->getBloonPosition(j);
-                    if (position.x >= 0 && position.x <= 900 &&
-                       position.y >= 0 && position.y <= 600 &&
+                    if (position.x >= 0 && position.x <= 775 &&
+                       position.y >= 74 && position.y <= 530 &&
                        i < m_towers->getSize())
                     {
                         if (m_waves[k]->isNearOf(j, m_towers->getPosition(i), m_towers->getRange(i)) == true)
@@ -197,27 +197,39 @@ void Level::destroy()
 
 void Level::load()
 {
-    if (m_file)
+    if (m_file.is_open())
     {
-        if (m_file.eof() != true)
+        int nb_bloons, type_of_bloon, gap, next_wave=0;
+        char firstChar;
+
+        while (next_wave != -1 && !m_file.eof())
         {
-            int nb_bloons, type_of_bloon, gap, next_wave=0;
-            while (next_wave != -1)
+            // Checking if the first character of the line is really a digit
+            firstChar = m_file.peek();
+            if (std::isdigit(firstChar))
             {
                 m_file >> nb_bloons >> gap >> type_of_bloon >> next_wave;
                 m_waves.push_back(new Wave(nb_bloons, type_of_bloon, gap, next_wave, "virtual_map.png"));
             }
-            m_play_save = 1;
-            m_status = game_status::wait;
-            m_animation = 0;
+
+            // Seeks the next line
+            m_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
-        else
-        {
-            m_status = game_status::win;
-        }
+
+        m_play_save = 1;
+        m_status = game_status::wait;
+        m_animation = 0;
     }
     else
-        std::cout << "unable to load level ! " << m_file_name << " ! (please contact the developpers)" << std::endl;
+    {
+        std::stringstream error;
+        error << "Unable to load level " << m_file_name << " ! (please contact the developpers)";
+        throw std::runtime_error(error.str());
+    }
+    if (m_file.eof() == true && m_waves.size() == 0)
+    {
+        m_status = game_status::win;
+    }
 }
 
 void Level::changeLevel(std::string file)
@@ -228,6 +240,7 @@ void Level::changeLevel(std::string file)
     m_end = false;
     m_status = game_status::wait;
     m_animation = 0;
+    m_textload->clearLevel();
     m_towers->clear(m_textload);
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
                               m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);

@@ -2,9 +2,12 @@
 #define LEVEL_H_INCLUDED
 
 #include <string>
+#include <cctype>
 #include <fstream>
 #include <thread>
 #include <mutex>
+#include <sstream>
+#include <stdexcept>
 
 #include "Wave.h"
 #include "TowerManager.h"
