@@ -69,27 +69,6 @@ void Tower::drawBullet(sf::RenderWindow* screen)
                     break;
             }
         }
-        /*
-        if (m_type_effect == m_effect::ice)
-        {
-            screen->draw(m_bullet[r]);
-            iceMove(r);
-        }
-        else
-        {
-            if ((bullet_to_bloon.x*m_forward[r].x + bullet_to_bloon.y*m_forward[r].y) <= 0)
-            {
-                m_bullet.erase(m_bullet.begin() + r);
-                m_last_pos.erase(m_last_pos.begin() + r);
-                m_forward.erase(m_forward.begin() + r);
-            }
-            else
-            {
-                m_bullet[r].move(m_forward[r]);
-                screen->draw(m_bullet[r]);
-            }
-        }
-        //*/
     }
 }
 

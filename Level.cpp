@@ -228,8 +228,7 @@ void Level::changeLevel(std::string file)
     m_end = false;
     m_status = game_status::wait;
     m_animation = 0;
-    delete m_towers;
-    m_towers = new TowerManager(m_textload);
+    m_towers->clear(m_textload);
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
                               m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);
 }
@@ -404,6 +403,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 a = m_loose->update(screen, m_clic);
                 if (a == RESTART)
                 {
+                    m_towers->clear(m_textload);
                     destroy();
                     initialize();
                     std::cout << "game restarted" << std::endl;
@@ -420,6 +420,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 a = m_win->update(screen, m_clic);
                 if (a == RESTART)
                 {
+                    m_towers->clear(m_textload);
                     destroy();
                     initialize();
                 }

@@ -222,3 +222,13 @@ bool TowerManager::getStatus()
     else
         return false;
 }
+
+void TowerManager::clear(Textureloader *textload)
+{
+    for (unsigned int i(0); i < m_tower.size(); ++i)
+    {
+        textload->setForbidPosition(m_tower[i]->getPosition(), "virtual_map.png", sf::Color::Black);
+        delete m_tower[i];
+    }
+    m_tower.clear();
+}

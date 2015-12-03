@@ -20,6 +20,7 @@ class TowerManager
         int shoot(int n, sf::Vector2f bloon);
         int getEffect(int n);
         int getNbBall(int n);
+        void clear(Textureloader *textload);
 
     private:
         std::deque<Tower*> m_tower, m_selection;
