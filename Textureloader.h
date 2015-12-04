@@ -27,16 +27,11 @@ class Textureloader
 
     private:
         std::map<std::string, sf::Texture> m_texture;
-        std::map<std::string, sf::Texture>::iterator m_texture_it;
         std::map<std::string, sf::SoundBuffer> m_buffer;
-        std::map<std::string, sf::SoundBuffer>::iterator m_buffer_it;
         std::map<std::string, sf::Font> m_font;
-        std::map<std::string, sf::Font>::iterator m_font_it;
         std::string m_texture_folder, m_buffer_folder, m_font_folder;
         std::map<std::string, sf::Image> m_map;
-        std::map<std::string, sf::Image>::iterator m_map_it;
         std::map<std::string, sf::Vector2f> m_map_pos;
-        std::map<std::string, sf::Vector2f>::iterator m_map_pos_it;
 };
 
 #endif // TEXTURELOADER_H_INCLUDED
