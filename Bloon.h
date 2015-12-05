@@ -34,7 +34,7 @@ class Bloon : public Entity
         bool m_exit, m_find, m_touch, m_earn_money;
         unsigned char m_direction;
         std::string m_carte;
-        sf::Clock m_clock, m_time_update;
+        sf::Clock m_clock;
 
         enum m_shield{none = 0, ice = 0, burn = 1, glue = 2, reverse = 3};
 };

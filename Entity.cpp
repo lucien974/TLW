@@ -222,3 +222,13 @@ int Entity::getRange()
 {
     return static_cast<int>(m_range.getRadius());
 }
+
+void Entity::move(float x, float y)
+{
+    for (auto &key : m_sprite)
+    {
+        key.second.move(x, y);
+        if (key.first == TOWER)
+            m_range.move(x, y);
+    }
+}

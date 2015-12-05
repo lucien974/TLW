@@ -35,6 +35,7 @@ class Entity: public sf::Transformable, public sf::Drawable
         int getRange();
         void rotateTowards(sf::Vector2f pos2);
         virtual void update() = 0;
+        void move(float x, float y);
 
     protected:
         enum m_effect{none = -1, ice = 0, burn = 1, glue = 2, reverse = 3};

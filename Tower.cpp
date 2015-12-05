@@ -184,6 +184,302 @@ void Tower::upgradeRight(Textureloader* textload)
     initialize(textload);
 }
 
+int Tower::getEffect()
+{
+    return m_type_effect;
+}
+
+int Tower::getNbBall()
+{
+    if (m_type_effect == m_effect::ice)
+        return m_nb_ball;
+    else
+        return 0;
+}
+
+std::string Tower::getUpgrade(int num)
+{
+    switch (num)
+    {
+        case 0:
+            if (m_upgrade == 1 || m_upgrade < 5)
+            {
+                return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
+            }
+            break;
+        case 1:
+            if ((m_upgrade == 1) || (m_upgrade > 5 && m_upgrade < 9))
+            {
+                if (m_upgrade != 1)
+                {
+                    return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
+                }
+                else
+                {
+                    return "tower_" + std::to_string(m_type) + "_6.png";
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    return "";
+}
+
+int Tower::getUpgradePrice(Textureloader *textload, int num)
+{
+    int cost(0);
+    switch (num)
+    {
+        case 0:
+            if (m_upgrade < 6)
+            {
+                ++m_upgrade;
+                cost = m_cost;
+                getTowerPrice();
+                cost = m_cost - cost;
+                --m_upgrade;
+                getTowerPrice();
+            }
+            break;
+        case 1:
+            if (m_upgrade > 5 && m_upgrade < 9)
+            {
+                cost = m_cost;
+                ++m_upgrade;
+                getTowerPrice();
+                cost = m_cost - cost;
+                --m_upgrade;
+                getTowerPrice();
+            }
+            else if (m_upgrade == 1)
+            {
+                cost = m_cost;
+                m_upgrade = 6;
+                getTowerPrice();
+                cost = m_cost - cost;
+                m_upgrade = 1;
+                getTowerPrice();
+            }
+            break;
+        default:
+            std::cout << "unknown upgrade cost" << std::endl;
+            break;
+    }
+    return cost;
+}
+
+void Tower::upgrade(Textureloader* textload, int num)
+{
+    switch (num)
+    {
+        case 0:
+            if (m_upgrade < 6)
+                m_upgrade++;
+            break;
+        case 1:
+            if (m_upgrade < 9 && m_upgrade > 5)
+                m_upgrade++;
+            else if (m_upgrade == 1)
+                m_upgrade = 6;
+            break;
+        default:
+            std::cout << "unknown type of tower" << std::endl;
+            break;
+    }
+    initialize(textload);
+}
+
+int Tower::getLeftUpPrice(Textureloader* textload)
+{
+    if (m_upgrade < 6)
+    {
+        int cost(0);
+        ++m_upgrade;
+        cost = m_cost;
+        getTowerPrice();
+        cost = m_cost - cost;
+        --m_upgrade;
+        getTowerPrice();
+        return cost;
+    }
+    return 0;
+}
+
+int Tower::getRightUpPrice(Textureloader* textload)
+{
+    int cost(0);
+    if (m_upgrade > 5 && m_upgrade < 9)
+    {
+        cost = m_cost;
+        ++m_upgrade;
+        getTowerPrice();
+        cost = m_cost - cost;
+        --m_upgrade;
+        getTowerPrice();
+    }
+    else if (m_upgrade == 1)
+    {
+        cost = m_cost;
+        m_upgrade = 6;
+        getTowerPrice();
+        cost = m_cost - cost;
+        m_upgrade = 1;
+        getTowerPrice();
+    }
+    return cost;
+}
+
+int Tower::getType()
+{
+    return m_type;
+}
+
+void Tower::getTowerPrice()
+{
+    switch (m_type)
+    {
+        case 1:
+            m_turrets = 3;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 10;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 20;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 2:
+            m_turrets = 3;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 20;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 15;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 3:
+            m_turrets = 2;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 30;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 15;
+                    break;
+                case 4:
+                    m_cost += 15;
+                    break;
+                case 5:
+                    m_cost += 15;
+                    break;
+                case 6:
+                    m_cost += 15;
+                    break;
+                case 7:
+                    m_cost += 15;
+                    break;
+                case 8:
+                    m_cost += 15;
+                    break;
+                case 9:
+                    m_cost += 15;
+                    break;
+            }
+            break;
+        case 4:
+            m_canon = 2;
+            switch (m_upgrade)
+            {
+                case 1:
+                    m_cost = 60;
+                    break;
+                case 2:
+                    m_cost += 15;
+                    break;
+                case 3:
+                    m_cost += 175;
+                    break;
+                case 4:
+                    m_cost += 450;
+                    break;
+                case 5:
+                    m_cost += 1750;
+                    break;
+                case 6:
+                    m_cost += 150;
+                    break;
+                case 7:
+                    m_cost += 300;
+                    break;
+                case 8:
+                    m_cost += 750;
+                    break;
+                case 9:
+                    m_cost += 1500;
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 void Tower::initialize(Textureloader* textload)
 {
     m_pass_canon[0] = true;
@@ -471,232 +767,4 @@ void Tower::initialize(Textureloader* textload)
     }
     setRange(m_portee);
     setOrigin(40, 60);
-}
-
-int Tower::getEffect()
-{
-    return m_type_effect;
-}
-
-int Tower::getNbBall()
-{
-    if (m_type_effect == m_effect::ice)
-        return m_nb_ball;
-    else
-        return 0;
-}
-
-std::string Tower::getPrice()
-{
-    return std::to_string(m_cost);
-}
-
-std::string Tower::getLeftUpgrade()
-{
-    if (m_upgrade == 1 || m_upgrade < 5)
-    {
-        return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
-    }
-    return "";
-}
-
-std::string Tower::getRightUpgrade()
-{
-    if ((m_upgrade == 1) || (m_upgrade > 5 && m_upgrade < 9))
-    {
-        if (m_upgrade != 1)
-        {
-            return "tower_" + std::to_string(m_type) + "_" + std::to_string(m_upgrade + 1) + ".png";
-        }
-        else
-        {
-            return "tower_" + std::to_string(m_type) + "_6.png";
-        }
-    }
-    return "";
-}
-
-int Tower::getLeftUpPrice(Textureloader* textload)
-{
-    if (m_upgrade < 6)
-    {
-        int cost(0);
-        ++m_upgrade;
-        cost = m_cost;
-        getTowerPrice();
-        cost = m_cost - cost;
-        --m_upgrade;
-        getTowerPrice();
-        return cost;
-    }
-    return 0;
-}
-
-int Tower::getRightUpPrice(Textureloader* textload)
-{
-    int cost(0);
-    if (m_upgrade > 5 && m_upgrade < 9)
-    {
-        cost = m_cost;
-        ++m_upgrade;
-        getTowerPrice();
-        cost = m_cost - cost;
-        --m_upgrade;
-        getTowerPrice();
-    }
-    else if (m_upgrade == 1)
-    {
-        cost = m_cost;
-        m_upgrade = 6;
-        getTowerPrice();
-        cost = m_cost - cost;
-        m_upgrade = 1;
-        getTowerPrice();
-    }
-    return cost;
-}
-
-void Tower::getTowerPrice()
-{
-    switch (m_type)
-    {
-        case 1:
-            m_turrets = 3;
-            switch (m_upgrade)
-            {
-                case 1:
-                    m_cost = 10;
-                    break;
-                case 2:
-                    m_cost += 15;
-                    break;
-                case 3:
-                    m_cost += 20;
-                    break;
-                case 4:
-                    m_cost += 15;
-                    break;
-                case 5:
-                    m_cost += 15;
-                    break;
-                case 6:
-                    m_cost += 15;
-                    break;
-                case 7:
-                    m_cost += 15;
-                    break;
-                case 8:
-                    m_cost += 15;
-                    break;
-                case 9:
-                    m_cost += 15;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 2:
-            m_turrets = 3;
-            switch (m_upgrade)
-            {
-                case 1:
-                    m_cost = 20;
-                    break;
-                case 2:
-                    m_cost += 15;
-                    break;
-                case 3:
-                    m_cost += 15;
-                    break;
-                case 4:
-                    m_cost += 15;
-                    break;
-                case 5:
-                    m_cost += 15;
-                    break;
-                case 6:
-                    m_cost += 15;
-                    break;
-                case 7:
-                    m_cost += 15;
-                    break;
-                case 8:
-                    m_cost += 15;
-                    break;
-                case 9:
-                    m_cost += 15;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 3:
-            m_turrets = 2;
-            switch (m_upgrade)
-            {
-                case 1:
-                    m_cost = 30;
-                    break;
-                case 2:
-                    m_cost += 15;
-                    break;
-                case 3:
-                    m_cost += 15;
-                    break;
-                case 4:
-                    m_cost += 15;
-                    break;
-                case 5:
-                    m_cost += 15;
-                    break;
-                case 6:
-                    m_cost += 15;
-                    break;
-                case 7:
-                    m_cost += 15;
-                    break;
-                case 8:
-                    m_cost += 15;
-                    break;
-                case 9:
-                    m_cost += 15;
-                    break;
-            }
-            break;
-        case 4:
-            m_canon = 2;
-            switch (m_upgrade)
-            {
-                case 1:
-                    m_cost = 60;
-                    break;
-                case 2:
-                    m_cost += 15;
-                    break;
-                case 3:
-                    m_cost += 175;
-                    break;
-                case 4:
-                    m_cost += 450;
-                    break;
-                case 5:
-                    m_cost += 1750;
-                    break;
-                case 6:
-                    m_cost += 150;
-                    break;
-                case 7:
-                    m_cost += 300;
-                    break;
-                case 8:
-                    m_cost += 550;
-                    break;
-                case 9:
-                    m_cost += 1500;
-                    break;
-            }
-            break;
-        default:
-            break;
-    }
 }

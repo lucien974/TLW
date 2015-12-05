@@ -25,13 +25,19 @@ class Button : public sf::Transformable, public sf::Drawable
         void setCharacterSize(int char_size);
         void setPosition(sf::Vector2f position);
         void onCondition(bool condition);
+        void move(float x, float y);
+        void setOrigin(sf::Vector2f origin);
+        void setOrigin(float x, float y);
+        float getCharacterSize();
         sf::Vector2i getPosition();
         sf::FloatRect getGlobalBounds();
+        sf::FloatRect getLocalBounds();
 
     private:
         Textureloader *m_textload;
         sf::Text m_button_normal, m_button_shadows;
         sf::Color m_color_normal, m_color_hovered;
+        sf::Vector2f m_gap;
         bool m_shadows, m_clic;
 };
 

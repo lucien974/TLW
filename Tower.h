@@ -27,11 +27,14 @@ class Tower : public Entity
         void initialize(Textureloader* textload);
         int getEffect();
         int getNbBall();
-        std::string getPrice();
+        int getType();
         std::string getLeftUpgrade();
         std::string getRightUpgrade();
         int getRightUpPrice(Textureloader* textload);
         int getLeftUpPrice(Textureloader* textload);
+        std::string getUpgrade(int num);
+        int getUpgradePrice(Textureloader *textload, int num);
+        void upgrade (Textureloader* textload, int num);
         void getTowerPrice();
 
     private:

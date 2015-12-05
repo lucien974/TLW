@@ -6,12 +6,14 @@
 #include "Tower.h"
 #include "Button.h"
 
+#define NB_UPGRADES 2
+
 class TowerManager
 {
     public:
         TowerManager(Textureloader* textload);
         ~TowerManager();
-        int update(const sf::Image &carte, sf::RenderWindow* screen, Textureloader* textload, int money, bool sup, bool clic_up);
+        int update(const sf::Image &virtual_map, sf::RenderWindow* screen, int money, bool sup, char *clic);
         int getSize();
         bool getStatus();
         sf::Vector2f getPosition(int num);
@@ -20,14 +22,28 @@ class TowerManager
         int shoot(int n, sf::Vector2f bloon);
         int getEffect(int n);
         int getNbBall(int n);
-        void clear(Textureloader *textload);
+        void clear();
+        void shortcuts(unsigned char shortcuts, int &money);
 
     private:
-        std::deque<Tower*> m_tower, m_selection;
+        int selectTowersManager(sf::RenderWindow *screen, int money, const sf::Image &virtual_map, bool clic_up);
+        void towersAnimation(sf::RenderWindow *screen);
+        int selectTowers(sf::RenderWindow *screen, int money, bool clic_up);
+        void initialPosition(sf::RenderWindow *screen, const sf::Image &virtual_map, bool clic_up);
+
+        int selectUpgradeManager(sf::RenderWindow *screen, int money, bool clic_up);
+        void initialUpgradePosition(sf::RenderWindow *screen, int money);
+        void towersUpgradeAnimation(sf::RenderWindow *screen);
+        int selectUpgrade(sf::RenderWindow *screen, int money, bool clic_up);
+
+        std::deque<Tower*> m_tower;
+        std::deque<std::tuple<Tower*, float, unsigned char>> m_selection;
         std::deque<Button> m_cost_sprite;
-        int m_select, m_tower_selected;
-        sf::Sprite m_up[2];
-        Button *m_up_price[2], *m_money;
+        int m_select, m_select_upgrade, m_tower_selected;
+        std::tuple<sf::Sprite, float, unsigned char> m_up[NB_UPGRADES];
+        sf::Vector2f m_selection_position;
+        Button *m_up_price[NB_UPGRADES], *m_money;
+        Textureloader *m_textload;
 };
 
 #endif // TOWER_MANAGER_H_INCLUDED

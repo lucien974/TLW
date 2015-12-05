@@ -14,6 +14,7 @@ Button::Button(Textureloader *textload, std::string sentence, std::string font, 
 m_textload(textload),
 m_color_normal(color),
 m_color_hovered(hovered_color),
+m_gap(sf::Vector2f(0, 0)),
 m_shadows(false),
 m_clic(true)
 {
@@ -145,4 +146,39 @@ sf::Vector2i Button::getPosition()
 sf::FloatRect Button::getGlobalBounds()
 {
     return m_button_normal.getGlobalBounds();
+}
+
+void Button::move(float x, float y)
+{
+    m_button_normal.move(x, y);
+    m_button_shadows.move(x, y);
+}
+
+void Button::setOrigin(sf::Vector2f origin)
+{
+    m_button_normal.setOrigin(origin);
+    m_button_shadows.setOrigin(origin);
+}
+
+void Button::setOrigin(float x, float y)
+{
+    m_button_normal.setOrigin(x, y);
+    m_button_shadows.setOrigin(x, y);
+}
+
+sf::FloatRect Button::getLocalBounds()
+{
+    sf::FloatRect local;
+    local = m_button_normal.getLocalBounds();
+    if (m_shadows)
+    {
+        local.width += m_gap.x;
+        local.height += m_gap.y;
+    }
+    return local;
+}
+
+float Button::getCharacterSize()
+{
+    return m_button_normal.getCharacterSize();
 }

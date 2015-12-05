@@ -2,11 +2,12 @@
 
 Level::Level(Textureloader* textload, sf::RenderWindow *screen, std::string file) :
 m_money(0),
-m_lives(0),
 m_status(game_status::wait),
+m_lives(0),
 m_play_save(0),
 m_clic(0),
 m_animation(0),
+m_shortcuts(0),
 m_done(false),
 m_delete(false),
 m_end(false),
@@ -241,7 +242,7 @@ void Level::changeLevel(std::string file)
     m_status = game_status::wait;
     m_animation = 0;
     m_textload->clearLevel();
-    m_towers->clear(m_textload);
+    m_towers->clear();
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
                               m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).y - 15);
 }
@@ -270,6 +271,16 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
         else
             ++snd;
     }
+    screen->draw(m_interface);
+    if (m_status >= game_status::wait)
+        screen->draw(m_button_play);
+    m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, m_money, m_delete, &m_clic);
+    m_towers->shortcuts(m_shortcuts, m_money);
+    m_shortcuts = 0b0;
+    /*
+    if (m_clic == 2)
+        m_clic = 0;
+        //*/
     if (m_status < game_status::wait)
     {
         //std::cout << m_play_save << endl;
@@ -294,21 +305,17 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     {
         if (m_button_play.getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y))
         {
-            if (m_clic)
+            if (m_clic == 2)
             {
                 m_status = game_status::play_animation;
             }
         }
     }
-    if (m_lives < 0)
+    if (m_lives <= 0)
         m_status = game_status::loose;
-    screen->draw(m_interface);
     m_text_life->setSentence(std::to_string(m_lives));
     screen->draw(*m_text_life);
     screen->draw(m_sprite_life);
-    if (m_status >= game_status::wait)
-        screen->draw(m_button_play);
-    m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, textload, m_money, m_delete, m_clic==2);
     if (m_clic == 2)
         m_clic = 0;
     m_mutex.unlock();
@@ -350,6 +357,18 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                             {
                                 m_delete = true;
                             }
+                            break;
+                        case sf::Keyboard::Numpad6:
+                            m_shortcuts = 0b1;
+                            break;
+                        case sf::Keyboard::Numpad2:
+                            m_shortcuts = 0b10;
+                            break;
+                        case sf::Keyboard::Numpad4:
+                            m_shortcuts = 0b100;
+                            break;
+                        case sf::Keyboard::Numpad8:
+                            m_shortcuts = 0b1000;
                             break;
                         default:
                             break;
@@ -416,7 +435,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 a = m_loose->update(screen, m_clic);
                 if (a == RESTART)
                 {
-                    m_towers->clear(m_textload);
+                    m_towers->clear();
                     destroy();
                     initialize();
                     std::cout << "game restarted" << std::endl;
@@ -433,7 +452,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 a = m_win->update(screen, m_clic);
                 if (a == RESTART)
                 {
-                    m_towers->clear(m_textload);
+                    m_towers->clear();
                     destroy();
                     initialize();
                 }

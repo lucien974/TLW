@@ -20,7 +20,6 @@ m_carte("")
 {
     initialize(textload);
     setPosition(sf::Vector2f(start_pos.x - 15, start_pos.y - 15));
-    m_time_update.restart();
 }
 
 Bloon::~Bloon()
@@ -128,7 +127,7 @@ void Bloon::initialize(Textureloader* textload)
 
 void Bloon::findWay(int x, int y, Textureloader* textload)
 {
-    // If the mao exist
+    // If the map exist
     if (m_carte != "")
     {
         // If the coord exist
@@ -220,7 +219,7 @@ int Bloon::getHealth()
 
 void Bloon::update(Textureloader* textload)
 {
-    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status > m_effect_limit && m_health > 0)
+    if (m_clock.getElapsedTime().asMilliseconds() >= 1000 && m_effect_status == -1 && m_health > 0)
     {
         m_effect_status = 0;
         spriteStatus(false, ICE);
@@ -289,7 +288,6 @@ void Bloon::update(Textureloader* textload)
             m_find = false;
         }
     }
-    m_time_update.restart();
 }
 
 void Bloon::update()

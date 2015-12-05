@@ -34,9 +34,10 @@ class Level
     private:
         std::deque<Wave*> m_waves;
         TowerManager *m_towers;
-        int m_money, m_lives, m_status;
-        unsigned int m_play_save;
+        int m_money, m_status;
+        unsigned int m_lives, m_play_save;
         char m_clic, m_animation;
+        unsigned char m_shortcuts;
         bool m_done, m_delete, m_end;
         std::ifstream m_file;
         std::string m_file_name;
