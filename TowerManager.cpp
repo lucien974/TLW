@@ -8,7 +8,7 @@ m_selection_position(sf::Vector2f(0, 0))
 {
     m_textload = textload;
     for (int a(1); a < 5; ++a)
-        m_selection.push_back(std::make_tuple(new Tower(a, m_textload, sf::Vector2f(0, 0)), PI/4, 50));
+        m_selection.push_back(std::make_tuple(new Tower(a, m_textload, sf::Vector2f(0, 0)), PI/4, NB_ANIMATION));
     for (int n(0); n < 4; ++n)
     {
 
@@ -23,7 +23,7 @@ m_selection_position(sf::Vector2f(0, 0))
     for (int i(0); i < NB_UPGRADES; ++i)
     {
         std::get<1>(m_up[i]) = i*PI;
-        std::get<2>(m_up[i]) = 50;
+        std::get<2>(m_up[i]) = NB_ANIMATION;
     }
 
     m_up_price[0] = new Button(m_textload, "", "nb", sf::Color::Black, sf::Color::Yellow, 12, sf::Vector2i(80, 555));
@@ -62,6 +62,7 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
     screen->draw(*m_money);
 
     bool found = false, click = clic_up;
+    /**/
     for (unsigned int i(0); i < m_tower.size(); ++i)
     {
         sf::Vector2f a;
@@ -75,7 +76,7 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
                 a.y > m_tower[m_tower_selected]->getPosition().y + 40)) &&
                 virtual_map.getPixel(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) != sf::Color(0, 0, 128) &&
                 click == true &&
-                m_select_upgrade == -1)
+                (m_select_upgrade == -1))
             {
                 click = false;
                 m_tower[m_tower_selected]->drawRange(false);
@@ -93,11 +94,17 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
             if (m_tower_selected != -1)
                 m_tower[m_tower_selected]->drawRange(false);
             m_tower_selected = i;
+            m_select_upgrade = -1;
             click = false;
         }
         screen->draw(*m_tower[i]);
     }
     /**/
+    if (m_select_upgrade == -1)
+    {
+        money = selectTowersManager(screen, money, virtual_map, clic_up);
+        clic_up = false;
+    }
     if (m_tower_selected != -1 && m_tower_selected < static_cast<int>(m_tower.size()) && m_select == -1)
     {
         if (sup)
@@ -112,36 +119,12 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
         {
             m_tower[m_tower_selected]->drawRange(true);
             money = selectUpgradeManager(screen, money, clic_up);
-        /*
-            m_tower[m_tower_selected]->drawRange(true);
-            for (int i(0); i < NB_UPGRADES; ++i)
-            {
-                if (m_tower[m_tower_selected]->getUpgrade(i) != "")
-                {
-                    m_up[i].setTexture(m_textload->getTexture(m_tower[m_tower_selected]->getUpgrade(i)));
-                    m_up[i].setOrigin(m_up[i].getLocalBounds().height/2, m_up[i].getLocalBounds().width/2);
-
-                    m_up_price[i]->onCondition(money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i));
-                    m_up_price[i]->setSentence(std::to_string(m_tower[m_tower_selected]->getUpgradePrice(m_textload, i)));
-                    if (m_up[i].getGlobalBounds().contains(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y) &&
-                       clic_up == true &&
-                       money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i))
-                    {
-                        money -= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i);
-                        m_tower[m_tower_selected]->upgradeRight(m_textload);
-                        clic_up = false;
-                    }
-                    screen->draw(m_up[i]);
-                    screen->draw(*m_up_price[i]);
-                }
-            }
-        //*/
         }
     }
+    if (m_select != -1)
+        m_select_upgrade = -1;
     int n = money;
-    if (m_tower_selected == -1)
-        money = selectTowersManager(screen, money, virtual_map, clic_up);
-    if ((clic_up == false || click == false || money != n) && *clic == 2)
+    if ((click == false || money != n) && *clic == 2)
     {
         *clic = 0;
     }
@@ -150,27 +133,30 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
 
 int TowerManager::selectUpgradeManager(sf::RenderWindow *screen, int money, bool clic_up)
 {
-    switch (m_select_upgrade)
+    if (m_select == -1)
     {
-        case -1:
-            initialUpgradePosition(screen, money);
-            break;
-        case 0:
-            towersUpgradeAnimation(screen);
-            break;
-        case 1:
-            money = selectUpgrade(screen, money, clic_up);
-            break;
-        default:
-            std::cout << "unknown upgrade command" << std::endl;
-            break;
+        switch (m_select_upgrade)
+        {
+            case -1:
+                initialUpgradePosition(screen, money);
+                break;
+            case 0:
+                towersUpgradeAnimation(screen);
+                break;
+            case 1:
+                money = selectUpgrade(screen, money, clic_up);
+                break;
+            default:
+                std::cout << "unknown upgrade command" << std::endl;
+                break;
+        }
     }
     return money;
 }
 
 void TowerManager::initialUpgradePosition(sf::RenderWindow *screen, int money)
 {
-    for (int i(0); i < NB_UPGRADES; ++i)
+    for (int i(0); i < NB_UPGRADES && m_tower_selected != -1; ++i)
     {
         if (m_tower[m_tower_selected]->getUpgrade(i) != "")
         {
@@ -197,6 +183,7 @@ void TowerManager::initialUpgradePosition(sf::RenderWindow *screen, int money)
 
 void TowerManager::towersUpgradeAnimation(sf::RenderWindow *screen)
 {
+    int no_animation(0);
     for (int i(0); i < NB_UPGRADES; ++i)
     {
         if (std::get<2>(m_up[i]) > 0)
@@ -204,44 +191,63 @@ void TowerManager::towersUpgradeAnimation(sf::RenderWindow *screen)
             if (std::get<0>(m_up[i]).getPosition() != sf::Vector2f(-1, -1))
             {
                 --std::get<2>(m_up[i]);
-                std::get<0>(m_up[i]).move(std::cos(std::get<1>(m_up[i])), std::sin(std::get<1>(m_up[i])));
-                m_up_price[i]->move(std::cos(std::get<1>(m_up[i])), std::sin(std::get<1>(m_up[i])));
+                std::get<0>(m_up[i]).move(std::cos(std::get<1>(m_up[i]))*5, std::sin(std::get<1>(m_up[i]))*5);
+                m_up_price[i]->move(std::cos(std::get<1>(m_up[i]))*5, std::sin(std::get<1>(m_up[i]))*5);
             }
         }
         else
         {
             m_select_upgrade = 1;
-            std::get<2>(m_up[i]) = 50;
+            std::get<2>(m_up[i]) = NB_ANIMATION;
         }
         if (std::get<0>(m_up[i]).getPosition() != sf::Vector2f(-1, -1))
         {
             screen->draw(std::get<0>(m_up[i]));
             screen->draw(*m_up_price[i]);
         }
+        else
+        {
+            ++no_animation;
+        }
     }
+    if (no_animation == 2)
+        m_select_upgrade = 1;
 }
 
 int TowerManager::selectUpgrade(sf::RenderWindow *screen, int money, bool clic_up)
 {
     sf::Vector2f a;
+    int diselect(0);
     a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
-    for (int i(0); i < NB_UPGRADES; ++i)
+    for (int i(0); i < NB_UPGRADES && m_tower_selected != -1 && m_select_upgrade != -1; ++i)
     {
-        if (std::get<0>(m_up[i]).getPosition() != sf::Vector2f(-1, -1))
+        if (std::get<0>(m_up[i]).getPosition() != sf::Vector2f(-1, -1) && m_tower[m_tower_selected]->getUpgrade(i) != "")
         {
             screen->draw(std::get<0>(m_up[i]));
             screen->draw(*m_up_price[i]);
         }
-        if (a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y &&
-            a.x > std::get<0>(m_up[i]).getPosition().x - 20 && a.x < std::get<0>(m_up[i]).getPosition().x + 20 &&
-            a.y > std::get<0>(m_up[i]).getPosition().y - 20 && a.y < std::get<0>(m_up[i]).getPosition().y + 20 &&
-            clic_up == true &&
-            money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i))
+        if (clic_up == true)
         {
-            money -= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i);
-            m_tower[m_tower_selected]->upgrade(m_textload, i);
-            m_select_upgrade = -1;
+            if (a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y &&
+                a.x > std::get<0>(m_up[i]).getPosition().x - 20 && a.x < std::get<0>(m_up[i]).getPosition().x + 20 &&
+                a.y > std::get<0>(m_up[i]).getPosition().y - 20 && a.y < std::get<0>(m_up[i]).getPosition().y + 20 &&
+                money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i))
+            {
+                money -= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i);
+                m_tower[m_tower_selected]->upgrade(m_textload, i);
+                m_select_upgrade = -1;
+            }
+            else
+            {
+                ++diselect;
+            }
         }
+    }
+    if (diselect == 2)
+    {
+        m_tower[m_tower_selected]->drawRange(false);
+        m_tower_selected = -1;
+        m_select_upgrade = -1;
     }
     return money;
 }
@@ -276,7 +282,7 @@ void TowerManager::initialPosition(sf::RenderWindow *screen, const sf::Image &vi
     a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
     if (a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y)
     {
-        if (virtual_map.getPixel(a.x, a.y) == sf::Color(0, 0, 0))
+        if (virtual_map.getPixel(a.x + 15, a.y + 15) == sf::Color(0, 0, 0))
         {
             if (clic_up == true)
             {
@@ -288,6 +294,7 @@ void TowerManager::initialPosition(sf::RenderWindow *screen, const sf::Image &vi
                     m_selection_position = a;
                 }
                 m_select = 0;
+                m_tower_selected = -1;
             }
         }
         /*
@@ -307,24 +314,25 @@ void TowerManager::towersAnimation(sf::RenderWindow *screen)
         if (std::get<2>(key) > 0)
         {
             --std::get<2>(key);
-            (std::get<0>(key))->move(std::cos(std::get<1>(key)), std::sin(std::get<1>(key)));
-            m_cost_sprite[i].move(std::cos(std::get<1>(key)), std::sin(std::get<1>(key)));
+            (std::get<0>(key))->move(std::cos(std::get<1>(key))*5, std::sin(std::get<1>(key))*5);
+            m_cost_sprite[i].move(std::cos(std::get<1>(key))*5, std::sin(std::get<1>(key))*5);
         }
         else
         {
             m_select = 1;
-            std::get<2>(key) = 50;
+            std::get<2>(key) = NB_ANIMATION;
         }
         screen->draw(*std::get<0>(key));
         screen->draw(m_cost_sprite[i]);
         ++i;
     }
+    m_tower_selected = -1;
 }
 
 int TowerManager::selectTowers(sf::RenderWindow *screen, int money, bool clic_up)
 {
     sf::Vector2f a;
-    int i(0);
+    int i(0), diselect(0);
     a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
     for (auto &key : m_selection)
     {
@@ -347,10 +355,13 @@ int TowerManager::selectTowers(sf::RenderWindow *screen, int money, bool clic_up
         else
         {
             if (clic_up == true)
-                m_select = -1;
+                ++diselect;
         }
         ++i;
     }
+    m_tower_selected = -1;
+    if (diselect == 4)
+        m_select = -1;
     return money;
 }
 

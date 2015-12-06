@@ -7,6 +7,8 @@
 #include "Button.h"
 
 #define NB_UPGRADES 2
+#define NB_TOWERS 4
+#define NB_ANIMATION 10
 
 class TowerManager
 {
