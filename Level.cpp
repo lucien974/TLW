@@ -311,6 +311,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
             }
         }
     }
+    m_towers->drawMoney(screen, m_money);
     if (m_lives <= 0)
         m_status = game_status::loose;
     m_text_life->setSentence(std::to_string(m_lives));

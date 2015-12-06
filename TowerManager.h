@@ -24,6 +24,7 @@ class TowerManager
         int shoot(int n, sf::Vector2f bloon);
         int getEffect(int n);
         int getNbBall(int n);
+        void drawMoney(sf::RenderWindow *screen, int money);
         void clear();
         void shortcuts(unsigned char shortcuts, int &money);
 

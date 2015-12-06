@@ -55,13 +55,15 @@ TowerManager::~TowerManager()
     m_tower.clear();
 }
 
-int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen, int money, bool sup, char *clic)
+void TowerManager::drawMoney(sf::RenderWindow *screen, int money)
 {
-    bool clic_up(*clic == 2);
     m_money->setSentence(std::to_string(money) + " '");
     screen->draw(*m_money);
+}
 
-    bool found = false, click = clic_up;
+int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen, int money, bool sup, char *clic)
+{
+    bool clic_up(*clic == 2), found = false, click = clic_up;
     /**/
     for (unsigned int i(0); i < m_tower.size(); ++i)
     {
