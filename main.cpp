@@ -2,7 +2,7 @@
 #include <X11/Xlib.h>
 
 // Fait : Animation
-// � Faire : ???
+// A Faire : Priorité des chemins de ballons
 
 int main ()
 {

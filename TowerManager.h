@@ -9,6 +9,7 @@
 #define NB_UPGRADES 2
 #define NB_TOWERS 4
 #define NB_ANIMATION 10
+#define MONEY_GAP 25
 
 class TowerManager
 {
@@ -27,6 +28,7 @@ class TowerManager
         void drawMoney(sf::RenderWindow *screen, int money);
         void clear();
         void shortcuts(unsigned char shortcuts, int &money);
+        void save(std::ofstream *save);
 
     private:
         int selectTowersManager(sf::RenderWindow *screen, int money, const sf::Image &virtual_map, bool clic_up);

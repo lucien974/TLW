@@ -169,7 +169,7 @@ void TowerManager::initialUpgradePosition(sf::RenderWindow *screen, int money)
 
             m_up_price[i]->setSentence(std::to_string(m_tower[m_tower_selected]->getUpgradePrice(m_textload, i)));
             m_up_price[i]->setOrigin(m_up_price[i]->getLocalBounds().width/2, m_up_price[i]->getCharacterSize()/2);
-            m_up_price[i]->setPosition(sf::Vector2f(std::get<0>(m_up[i]).getPosition().x, std::get<0>(m_up[i]).getPosition().y));
+            m_up_price[i]->setPosition(sf::Vector2f(std::get<0>(m_up[i]).getPosition().x, std::get<0>(m_up[i]).getPosition().y + MONEY_GAP));
             m_up_price[i]->onCondition(money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i));
 
             screen->draw(std::get<0>(m_up[i]));
@@ -292,7 +292,7 @@ void TowerManager::initialPosition(sf::RenderWindow *screen, const sf::Image &vi
                 {
                     std::get<1>(m_selection[i]) = i*(PI/2);
                     std::get<0>(m_selection[i])->setPosition(a);
-                    m_cost_sprite[i].setPosition(a);
+                    m_cost_sprite[i].setPosition(sf::Vector2f(a.x, a.y + MONEY_GAP));
                     m_selection_position = a;
                 }
                 m_select = 0;
@@ -449,4 +449,14 @@ void TowerManager::clear()
         delete m_tower[i];
     }
     m_tower.clear();
+}
+
+void TowerManager::save(std::ofstream *save)
+{
+/*
+    for (auto &key : m_tower)
+    {
+        *save << "t " << key->getType() << " " << key->getUpgrade() << " " << key->getPosition().x << " " <<  key->getPosition().y << std::endl;
+    }
+    //*/
 }

@@ -2,7 +2,6 @@
 #define BUTTON_H_INCLUDED
 
 #include <string>
-#include <string>
 
 #include "Textureloader.h"
 

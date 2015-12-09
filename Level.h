@@ -14,13 +14,16 @@
 #include "Button.h"
 #include "Menu.h"
 
+#define MONEY_UP 5000
+#define LIFE_UP 5000
+
 class Level
 {
     public:
         Level(Textureloader* textload, sf::RenderWindow *screen, std::string file);
         ~Level();
         void update(sf::RenderWindow *ecran, Textureloader* textload);
-        void run(sf::RenderWindow *ecran, Textureloader* textload);
+        bool run(sf::RenderWindow *ecran, Textureloader* textload);
         bool isDone();
         void close();
         void physicsMotor();
@@ -30,6 +33,7 @@ class Level
         void load();
         void initialize();
         void destroy();
+        void save();
 
     private:
         std::deque<Wave*> m_waves;
@@ -40,7 +44,7 @@ class Level
         unsigned char m_shortcuts;
         bool m_done, m_delete, m_end;
         std::ifstream m_file;
-        std::string m_file_name;
+        std::string m_file_name, m_cheat_code;
         sf::Event m_event;
         sf::Sprite m_map, m_button_play, m_interface, m_sprite_life;
         Menu *m_pause, *m_win, *m_loose;

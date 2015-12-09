@@ -9,6 +9,15 @@
 #include "Textureloader.h"
 #include "Include.h"
 
+#define RIGHT      0b00000001
+#define LEFT       0b00000010
+#define DOWN       0b00000100
+#define UP         0b00001000
+#define UP_RIGHT   0b00010000
+#define DOWN_RIGHT 0b00100000
+#define DOWN_LEFT  0b01000000
+#define UP_LEFT    0b10000000
+
 class Bloon : public Entity
 {
     public:
@@ -29,8 +38,9 @@ class Bloon : public Entity
         void setMap(std::string bloon_map); // Change the map name
 
     private:
+
         int m_speed, m_health, m_earn, m_way, m_effect_status, m_effect_limit, m_status, m_life_lost;
-        sf::Color m_color;
+        sf::Color m_color, m_color_ref;
         bool m_exit, m_find, m_touch, m_earn_money;
         unsigned char m_direction;
         std::string m_carte;

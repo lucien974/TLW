@@ -25,6 +25,8 @@ class Wave
         int getMoney(int n);
         int getAdvance(int n);
         bool isTouch(int n, sf::Vector2f pos_ball, int damages, Textureloader* textload, int effect, int ice_limit);
+        void setType(int type);
+        void reset(int nb_bloons, int type, int gap, int next_wave);
 
     private:
         int m_gap, m_nb_bloons, m_cursor, m_type, m_way;

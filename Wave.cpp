@@ -121,3 +121,16 @@ void Wave::destroyBloon(unsigned int num)
         m_bloon.erase(m_bloon.begin() + num);
     }
 }
+
+void Wave::setType(int type)
+{
+    m_type = type;
+}
+
+void Wave::reset(int nb_bloons, int type, int gap, int next_wave)
+{
+    m_nb_bloons = nb_bloons;
+    m_type = type;
+    m_gap = gap;
+    m_way = next_wave;
+}

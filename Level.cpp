@@ -12,6 +12,7 @@ m_done(false),
 m_delete(false),
 m_end(false),
 m_file_name(file),
+m_cheat_code(""),
 m_thread(nullptr),
 m_screen(screen),
 m_textload(textload)
@@ -46,6 +47,8 @@ m_textload(textload)
     m_pause = new Menu(m_textload, "abaddon", 50, sf::Color::Green, sf::Color(0, 128, 0));
     m_pause->setTitle("PAUSE", sf::Vector2i(450, 50));
     m_pause->newButton(RESUME, sf::Vector2i(0, 150));
+    m_pause->newButton(RETURN_TO_MAIN_MENU, sf::Vector2i(0, 75));
+    m_pause->newButton(SAVE, sf::Vector2i(0, 75));
     m_pause->newButton(EXIT, sf::Vector2i(0, 75));
     m_pause->setBackground(sf::Color(0, 0, 0, 128));
     m_pause->onMouseClick(true, RESUME);
@@ -68,7 +71,7 @@ void Level::initialize()
     m_file.open(m_file_name, std::ios::in);
     m_animation = 0;
 
-    m_money = 5000;
+    m_money = 10;
     m_lives = 200;
     m_towers = new TowerManager(m_textload);
     m_status = game_status::wait;
@@ -271,7 +274,6 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
         else
             ++snd;
     }
-    screen->draw(m_interface);
     if (m_status >= game_status::wait)
         screen->draw(m_button_play);
     m_money = m_towers->update(textload->getMap("virtual_map.png"), screen, m_money, m_delete, &m_clic);
@@ -311,6 +313,7 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
             }
         }
     }
+    screen->draw(m_interface);
     m_towers->drawMoney(screen, m_money);
     if (m_lives <= 0)
         m_status = game_status::loose;
@@ -329,7 +332,7 @@ void Level::forceRunning(sf::RenderWindow *screen, Textureloader* textload)
     run(screen, textload);
 }
 
-void Level::run(sf::RenderWindow *screen, Textureloader* textload)
+bool Level::run(sf::RenderWindow *screen, Textureloader* textload)
 {
     char status=0;
     while (m_done == false && m_end == false)
@@ -390,6 +393,20 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                     break;
                 case sf::Event::GainedFocus:
                     break;
+                case sf::Event::TextEntered:
+                    if (m_event.text.unicode < 128)
+                    {
+                        if (static_cast<int>(m_event.text.unicode) == 13)
+                        {
+                            if (m_cheat_code == "money.upgrade")
+                                m_money += MONEY_UP;
+                            else if (m_cheat_code == "lives.upgrade")
+                                m_lives += LIFE_UP;
+                            else
+                                m_cheat_code.clear();
+                        }
+                        m_cheat_code.push_back(m_event.text.unicode);
+                    }
                 default:
                     break;
             }
@@ -429,6 +446,10 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 }
                 else if (a == EXIT)
                     m_done = true;
+                else if (a == RETURN_TO_MAIN_MENU)
+                    return true;
+                else if (a == SAVE)
+                    save();
                 else if (m_clic == 2)
                     m_clic = 0;
                 break;
@@ -469,6 +490,7 @@ void Level::run(sf::RenderWindow *screen, Textureloader* textload)
         screen->display();
         screen->clear();
     }
+    return false;
 }
 
 void Level::buttonAnimation()
@@ -487,4 +509,11 @@ void Level::buttonAnimation()
     {
         m_button_play.scale(1.05, 1.05);
     }
+}
+
+void Level::save()
+{
+    std::ifstream save;
+    save.open("save/save.txt", std::ios::out);
+
 }

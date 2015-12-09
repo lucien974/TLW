@@ -22,16 +22,11 @@ class Tower : public Entity
         int getNumberBullet();
         int sell();
         int getCost();
-        void upgradeLeft(Textureloader* textload);
-        void upgradeRight(Textureloader* textload);
         void initialize(Textureloader* textload);
         int getEffect();
         int getNbBall();
         int getType();
-        std::string getLeftUpgrade();
-        std::string getRightUpgrade();
-        int getRightUpPrice(Textureloader* textload);
-        int getLeftUpPrice(Textureloader* textload);
+        int getUpgrade();
         std::string getUpgrade(int num);
         int getUpgradePrice(Textureloader *textload, int num);
         void upgrade (Textureloader* textload, int num);

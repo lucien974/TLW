@@ -14,7 +14,9 @@
 #define EXIT "EXIT"
 #define RESTART "RESTART"
 #define TITLE "TITLE"
-#define PLAY "play"
+#define PLAY "PLAY"
+#define RETURN_TO_MAIN_MENU "RETURN TO MAIN MENU"
+#define SAVE "SAVE"
 
 //Type button
 #define BUTTON "button"

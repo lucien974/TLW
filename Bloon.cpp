@@ -11,6 +11,7 @@ m_effect_limit(0),
 m_status(m_effect::none),
 m_life_lost(0),
 m_color(0, 0, 0),
+m_color_ref(255, 255, 255),
 m_exit(false),
 m_find(false),
 m_touch(false),
@@ -135,7 +136,14 @@ void Bloon::findWay(int x, int y, Textureloader* textload)
         {
             m_color = textload->getMap(m_carte).getPixel(x, y);
             // If the color isn't green
-            if (m_color != sf::Color(0, 153, 0) && m_color != sf::Color(0, 0, 128))
+            if (m_color.r == 255 && m_color.g == 1 && m_color.b == 255)
+            {
+                m_color_ref.r -= 5;
+                setPosition(sf::Vector2f(x - 15, y - 15));
+                // All except the current boolean is set as false because the next position is found
+                m_find = true;
+            }
+            if (m_color != sf::Color(0, 153, 0) && m_color != sf::Color(0, 0, 128) && (m_color == m_color_ref || m_color == sf::Color(255, 0, 128)))
             {
                 setPosition(sf::Vector2f(x - 15, y - 15));
                 // All except the current boolean is set as false because the next position is found
@@ -144,7 +152,6 @@ void Bloon::findWay(int x, int y, Textureloader* textload)
             // If the color is blue the bloon passed through the map so we can destroy the bloon
             if (m_color == sf::Color::Blue)
             {
-                setPosition(sf::Vector2f(x - 15, y - 15));
                 m_exit = true;
             }
         }
@@ -237,7 +244,6 @@ void Bloon::update(Textureloader* textload)
             }
             if ((m_direction & 0b00000100) == 0b100 && m_find == false)
             {
-                //std::cout << (int)m_direction << std::endl;
                 findWay(getPosition().x + 15, getPosition().y + 16, textload);
                 if (m_find == true)
                     m_direction = 0b11110111;
@@ -280,10 +286,6 @@ void Bloon::update(Textureloader* textload)
                     if (m_find == true)
                         m_direction = 0b11011111;
                 }
-                /**/
-                if (m_find == false)
-                    std::cout << "Error at position : " << getPosition().x + 15 << ", " << getPosition().y + 15 << std::endl;
-                //*/
             }
             m_find = false;
         }

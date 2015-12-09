@@ -168,22 +168,6 @@ int Tower::getCost()
     return m_cost;
 }
 
-void Tower::upgradeLeft(Textureloader* textload)
-{
-    if (m_upgrade < 6)
-        m_upgrade++;
-    initialize(textload);
-}
-
-void Tower::upgradeRight(Textureloader* textload)
-{
-    if (m_upgrade < 9 && m_upgrade > 5)
-        m_upgrade++;
-    else if (m_upgrade == 1)
-        m_upgrade = 6;
-    initialize(textload);
-}
-
 int Tower::getEffect()
 {
     return m_type_effect;
@@ -290,49 +274,14 @@ void Tower::upgrade(Textureloader* textload, int num)
     initialize(textload);
 }
 
-int Tower::getLeftUpPrice(Textureloader* textload)
-{
-    if (m_upgrade < 6)
-    {
-        int cost(0);
-        ++m_upgrade;
-        cost = m_cost;
-        getTowerPrice();
-        cost = m_cost - cost;
-        --m_upgrade;
-        getTowerPrice();
-        return cost;
-    }
-    return 0;
-}
-
-int Tower::getRightUpPrice(Textureloader* textload)
-{
-    int cost(0);
-    if (m_upgrade > 5 && m_upgrade < 9)
-    {
-        cost = m_cost;
-        ++m_upgrade;
-        getTowerPrice();
-        cost = m_cost - cost;
-        --m_upgrade;
-        getTowerPrice();
-    }
-    else if (m_upgrade == 1)
-    {
-        cost = m_cost;
-        m_upgrade = 6;
-        getTowerPrice();
-        cost = m_cost - cost;
-        m_upgrade = 1;
-        getTowerPrice();
-    }
-    return cost;
-}
-
 int Tower::getType()
 {
     return m_type;
+}
+
+int Tower::getUpgrade()
+{
+    return m_upgrade;
 }
 
 void Tower::getTowerPrice()
