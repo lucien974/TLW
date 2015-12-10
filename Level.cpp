@@ -3,6 +3,7 @@
 Level::Level(Textureloader* textload, sf::RenderWindow *screen, std::string file) :
 m_money(0),
 m_status(game_status::wait),
+m_last_status(0),
 m_lives(0),
 m_play_save(0),
 m_clic(0),
@@ -296,7 +297,10 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
                     m_sound.push_back(sf::Sound(textload->getBuffer("pop.ogg")));
                     m_sound.back().play();
                 }
-                m_lives -= dmg;
+                if (static_cast<unsigned int>(dmg) < m_lives)
+                    m_lives -= dmg;
+                else
+                    m_status = game_status::loose;
                 if (m_waves[i]->next())
                     m_play_save++;
             }
@@ -315,8 +319,6 @@ void Level::update(sf::RenderWindow *screen, Textureloader* textload)
     }
     screen->draw(m_interface);
     m_towers->drawMoney(screen, m_money);
-    if (m_lives <= 0)
-        m_status = game_status::loose;
     m_text_life->setSentence(std::to_string(m_lives));
     screen->draw(*m_text_life);
     screen->draw(m_sprite_life);
@@ -334,11 +336,10 @@ void Level::forceRunning(sf::RenderWindow *screen, Textureloader* textload)
 
 bool Level::run(sf::RenderWindow *screen, Textureloader* textload)
 {
-    char status=0;
     while (m_done == false && m_end == false)
     {
         if (m_status != game_status::paused)
-            status = m_status;
+            m_last_status = m_status;
         while (screen->pollEvent(m_event))
         {
             switch (m_event.type)
@@ -402,10 +403,10 @@ bool Level::run(sf::RenderWindow *screen, Textureloader* textload)
                                 m_money += MONEY_UP;
                             else if (m_cheat_code == "lives.upgrade")
                                 m_lives += LIFE_UP;
-                            else
-                                m_cheat_code.clear();
+                            m_cheat_code.clear();
                         }
-                        m_cheat_code.push_back(m_event.text.unicode);
+                        else
+                            m_cheat_code.push_back(m_event.text.unicode);
                     }
                 default:
                     break;
@@ -441,13 +442,15 @@ bool Level::run(sf::RenderWindow *screen, Textureloader* textload)
                 a = m_pause->update(screen, m_clic);
                 if (a == RESUME)
                 {
-                    m_status = status;
+                    m_status = m_last_status;
                     m_clic = 0;
                 }
                 else if (a == EXIT)
                     m_done = true;
                 else if (a == RETURN_TO_MAIN_MENU)
+                {
                     return true;
+                }
                 else if (a == SAVE)
                     save();
                 else if (m_clic == 2)

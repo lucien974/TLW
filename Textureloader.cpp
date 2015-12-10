@@ -111,13 +111,15 @@ const sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color colo
 void Textureloader::setForbidPosition(sf::Vector2f origin, std::string file_name, sf::Color color)
 {
     float gap(15);
+    origin.x += gap;
+    origin.y += gap;
     if (m_map.find(file_name) == m_map.end())
         std::cout << "map doesn't exist" << std::endl;
     else
     {
-        for (auto i(origin.x - 40 - gap); i < origin.x + 40 - gap; ++i)
+        for (auto i(origin.x - 35); i < origin.x + 35; ++i)
         {
-            for (int j(origin.y - 40 - gap); j < origin.y + 40 - gap; ++j)
+            for (int j(origin.y - 35); j < origin.y + 35; ++j)
             {
                 if (i > 0 && i < 900 && j > 0 && j < 600)
                 {

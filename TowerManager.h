@@ -32,13 +32,13 @@ class TowerManager
 
     private:
         int selectTowersManager(sf::RenderWindow *screen, int money, const sf::Image &virtual_map, bool clic_up);
-        void towersAnimation(sf::RenderWindow *screen);
+        void towersAnimation(sf::RenderWindow *screen, int money);
         int selectTowers(sf::RenderWindow *screen, int money, bool clic_up);
         void initialPosition(sf::RenderWindow *screen, const sf::Image &virtual_map, bool clic_up);
 
         int selectUpgradeManager(sf::RenderWindow *screen, int money, bool clic_up);
         void initialUpgradePosition(sf::RenderWindow *screen, int money);
-        void towersUpgradeAnimation(sf::RenderWindow *screen);
+        void towersUpgradeAnimation(sf::RenderWindow *screen, int money);
         int selectUpgrade(sf::RenderWindow *screen, int money, bool clic_up);
 
         std::deque<Tower*> m_tower;

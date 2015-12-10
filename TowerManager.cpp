@@ -90,7 +90,8 @@ int TowerManager::update(const sf::Image &virtual_map, sf::RenderWindow* screen,
             (sf::Mouse::getPosition(*screen).y > m_tower[i]->getPosition().y - 20 &&
             sf::Mouse::getPosition(*screen).y < m_tower[i]->getPosition().y + 20)) &&
             click == true &&
-            found == false)
+            found == false &&
+            m_tower_selected == -1)
         {
             found = true;
             if (m_tower_selected != -1)
@@ -143,7 +144,7 @@ int TowerManager::selectUpgradeManager(sf::RenderWindow *screen, int money, bool
                 initialUpgradePosition(screen, money);
                 break;
             case 0:
-                towersUpgradeAnimation(screen);
+                towersUpgradeAnimation(screen, money);
                 break;
             case 1:
                 money = selectUpgrade(screen, money, clic_up);
@@ -183,7 +184,7 @@ void TowerManager::initialUpgradePosition(sf::RenderWindow *screen, int money)
     m_select_upgrade = 0;
 }
 
-void TowerManager::towersUpgradeAnimation(sf::RenderWindow *screen)
+void TowerManager::towersUpgradeAnimation(sf::RenderWindow *screen, int money)
 {
     int no_animation(0);
     for (int i(0); i < NB_UPGRADES; ++i)
@@ -195,6 +196,7 @@ void TowerManager::towersUpgradeAnimation(sf::RenderWindow *screen)
                 --std::get<2>(m_up[i]);
                 std::get<0>(m_up[i]).move(std::cos(std::get<1>(m_up[i]))*5, std::sin(std::get<1>(m_up[i]))*5);
                 m_up_price[i]->move(std::cos(std::get<1>(m_up[i]))*5, std::sin(std::get<1>(m_up[i]))*5);
+                m_up_price[i]->onCondition(money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i));
             }
         }
         else
@@ -227,6 +229,7 @@ int TowerManager::selectUpgrade(sf::RenderWindow *screen, int money, bool clic_u
         {
             screen->draw(std::get<0>(m_up[i]));
             screen->draw(*m_up_price[i]);
+            m_up_price[i]->onCondition(money >= m_tower[m_tower_selected]->getUpgradePrice(m_textload, i));
         }
         if (clic_up == true)
         {
@@ -266,7 +269,7 @@ int TowerManager::selectTowersManager(sf::RenderWindow *screen, int money, const
             initialPosition(screen, virtual_map, clic_up);
             break;
         case 0:
-            towersAnimation(screen);
+            towersAnimation(screen, money);
             break;
         case 1:
             money = selectTowers(screen, money, clic_up);
@@ -308,7 +311,7 @@ void TowerManager::initialPosition(sf::RenderWindow *screen, const sf::Image &vi
     }
 }
 
-void TowerManager::towersAnimation(sf::RenderWindow *screen)
+void TowerManager::towersAnimation(sf::RenderWindow *screen, int money)
 {
     int i(0);
     for (auto &key : m_selection)
@@ -318,6 +321,7 @@ void TowerManager::towersAnimation(sf::RenderWindow *screen)
             --std::get<2>(key);
             (std::get<0>(key))->move(std::cos(std::get<1>(key))*5, std::sin(std::get<1>(key))*5);
             m_cost_sprite[i].move(std::cos(std::get<1>(key))*5, std::sin(std::get<1>(key))*5);
+            m_cost_sprite[i].onCondition(money >= (std::get<0>(key))->getCost());
         }
         else
         {
@@ -338,6 +342,7 @@ int TowerManager::selectTowers(sf::RenderWindow *screen, int money, bool clic_up
     a = sf::Vector2f(sf::Mouse::getPosition(*screen).x, sf::Mouse::getPosition(*screen).y);
     for (auto &key : m_selection)
     {
+        m_cost_sprite[i].onCondition(money >= (std::get<0>(key))->getCost());
         screen->draw(*std::get<0>(key));
         screen->draw(m_cost_sprite[i]);
         if (a.x > 0 && a.x < screen->getSize().x && a.y > 0 && a.y < screen->getSize().y &&
@@ -348,7 +353,7 @@ int TowerManager::selectTowers(sf::RenderWindow *screen, int money, bool clic_up
         {
 
             m_tower.push_back(new Tower(std::get<0>(key)->getType(), m_textload, m_selection_position));
-            m_textload->setForbidPosition(m_tower.back()->getPosition(), "virtual_map.png", sf::Color(0, 128, 128));
+            m_textload->setForbidPosition(sf::Vector2f(m_tower.back()->getPosition().x, m_tower.back()->getPosition().y), "virtual_map.png", sf::Color(0, 128, 128));
             money -= std::get<0>(key)->getCost();
             m_select = -1;
             m_selection_position = sf::Vector2f(0, 0);
