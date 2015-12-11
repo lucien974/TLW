@@ -8,7 +8,7 @@ m_menu(true),
 m_enable_animation(false),
 m_clic(0)
 {
-    m_file.open("levels/game.txt", std::ios::in);
+    m_file.open("levels/game.txt");
     m_file >> m_level_name;
 
     m_textload = new Textureloader("images/", "sons/", "polices/");

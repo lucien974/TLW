@@ -1,6 +1,7 @@
 #ifndef GAME_INCLUDED
 #define GAME_INCLUDED
 
+#include <fstream>
 #include <string>
 
 #include "Level.h"
@@ -29,7 +30,7 @@ class Game
         sf::Sprite m_background;
         Particle *m_mouse;
         Wave *m_animation;
-        std::fstream m_file;
+        std::ifstream m_file;
         std::string m_level_name;
         unsigned int m_level_num, m_number_levels;
         bool m_menu, m_enable_animation;
