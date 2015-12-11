@@ -18,8 +18,7 @@ bool TowerEffect::update(int &incrementation, sf::Vector2f &bullet_to_bloon, sf:
             return iceMove(incrementation, bullet_to_bloon, bullet_forward, tower_rotation);
             break;
         default:
-            std::cout << "no known effect" << std::endl;
-            return false;
+            throw std::runtime_error("Unknown effect");
             break;
     }
 }

@@ -9,6 +9,10 @@ m_enable_animation(false),
 m_clic(0)
 {
     m_file.open("levels/game.txt");
+    if (!m_file.is_open())
+    {
+        throw std::runtime_error("Unable to load levels");
+    }
     m_file >> m_level_name;
 
     m_textload = new Textureloader("images/", "sons/", "polices/");
@@ -60,11 +64,6 @@ Game::~Game()
 
 void Game::update()
 {
-    if (!m_file)
-    {
-        m_screen->close();
-        std::cout << "Game file don't found" << std::endl;
-    }
     while (m_screen->isOpen())
     {
         event();
@@ -108,8 +107,9 @@ void Game::run()
             }
             else
             {
-                std::cout << "File error not enough levels (" << m_number_levels << " instead of " << NB_LEVELS << ")" << std::endl;
-                m_screen->close();
+                std::stringstream error;
+                error << "File error not enough levels (" << m_number_levels << " instead of " << NB_LEVELS << ")";
+                throw std::runtime_error(error.str());
             }
         }
         else

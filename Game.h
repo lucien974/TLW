@@ -2,6 +2,8 @@
 #define GAME_INCLUDED
 
 #include <fstream>
+#include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include "Level.h"

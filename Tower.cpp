@@ -65,7 +65,7 @@ void Tower::drawBullet(sf::RenderWindow* screen)
                     m_forward.erase(m_forward.begin() + r);
                     break;
                 default:
-                    std::cout << "unknown type of tower" << std::endl;
+                    throw std::runtime_error("Unknown type of tower");
                     break;
             }
         }
@@ -99,8 +99,10 @@ int Tower::shoot(sf::Vector2f bloon)
         }
         if (m_bullet.back().getPosition().x == 0 && m_bullet.back().getPosition().y == 0)
         {
-            std::cout << "error, x : " << getPosition().x << ", y : " << getPosition().y << ", pass : " << pass << std::endl;
-            std::cout << "0 : " << m_pass_canon[0] << ", 1 : " << m_pass_canon[1] << ", 2 : " << m_pass_canon[2] << std::endl;
+            std::stringstream error;
+            error << "error, x : " << getPosition().x << ", y : " << getPosition().y << ", pass : " << pass << "\n";
+            error << "0 : " << m_pass_canon[0] << ", 1 : " << m_pass_canon[1] << ", 2 : " << m_pass_canon[2];
+            throw std::runtime_error(error.str());
         }
         m_bullet.back().rotate(getRotation());
         if (m_type_effect == m_effect::ice)
@@ -247,7 +249,7 @@ int Tower::getUpgradePrice(Textureloader *textload, int num)
             }
             break;
         default:
-            std::cout << "unknown upgrade cost" << std::endl;
+            throw std::runtime_error("Unknown upgrade cost");
             break;
     }
     return cost;
@@ -268,7 +270,7 @@ void Tower::upgrade(Textureloader* textload, int num)
                 m_upgrade = 6;
             break;
         default:
-            std::cout << "unknown type of tower" << std::endl;
+            throw std::runtime_error("Unknown type of tower");
             break;
     }
     initialize(textload);

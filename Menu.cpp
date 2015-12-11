@@ -71,5 +71,9 @@ void Menu::onMouseClick(bool clic, std::string type)
     if (it != m_buttons.end())
         m_buttons[type]->onMouseClick(clic);
     else
-        std::cout << "Button " << type << " didn't find" << std::endl;
+    {
+        std::stringstream error;
+        error << "Button " << type << " not found";
+        throw std::runtime_error(error.str());
+    }
 }

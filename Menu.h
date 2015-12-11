@@ -3,6 +3,8 @@
 
 #include <string>
 #include <map>
+#include <sstream>
+#include <stdexcept>
 
 #include "Button.h"
 #include "Include.h"

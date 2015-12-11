@@ -2,6 +2,7 @@
 #define TOWER_MANAGER_H_INCLUDED
 
 #include <deque>
+#include <stdexcept>
 
 #include "Tower.h"
 #include "Button.h"

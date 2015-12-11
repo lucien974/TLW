@@ -103,8 +103,7 @@ const sf::Vector2f Textureloader::getPxlPos(std::string filename, sf::Color colo
                 }
             }
         }
-        std::cout << "Error pxl of reference not found" << std::endl;
-        return sf::Vector2f(0, 0);
+        throw std::runtime_error("Error pxl of reference not found");
     }
 }
 
@@ -114,7 +113,7 @@ void Textureloader::setForbidPosition(sf::Vector2f origin, std::string file_name
     origin.x += gap;
     origin.y += gap;
     if (m_map.find(file_name) == m_map.end())
-        std::cout << "map doesn't exist" << std::endl;
+        throw std::runtime_error("Map doesn't exist");
     else
     {
         for (auto i(origin.x - 35); i < origin.x + 35; ++i)
@@ -158,8 +157,12 @@ void Textureloader::clearLevel()
             m_map_pos.clear();
         }
         else
-            std::cout << "map not found" << std::endl;
+            throw std::runtime_error("Map not found");
     }
     else
-        std::cout << "virtual_map " << m_texture_folder + "virtual_map.png not found" << std::endl;
+    {
+        std::stringstream error;
+        error << "virtual_map " << m_texture_folder + "virtual_map.png not found";
+        throw std::runtime_error(error.str());
+    }
 }

@@ -2,7 +2,10 @@
 #define EFFECT_H_INCLUDED
 
 #include <iostream>
+#include <stdexcept>
+
 #include <SFML/Graphics.hpp>
+
 #include "Include.h"
 
 class TowerEffect

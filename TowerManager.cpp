@@ -150,7 +150,7 @@ int TowerManager::selectUpgradeManager(sf::RenderWindow *screen, int money, bool
                 money = selectUpgrade(screen, money, clic_up);
                 break;
             default:
-                std::cout << "unknown upgrade command" << std::endl;
+                throw std::runtime_error("Unknown upgrade command");
                 break;
         }
     }
@@ -275,7 +275,7 @@ int TowerManager::selectTowersManager(sf::RenderWindow *screen, int money, const
             money = selectTowers(screen, money, clic_up);
             break;
         default:
-            std::cout << "unknown tower command" << std::endl;
+            throw std::runtime_error("Unknown tower command");
             break;
     }
     return money;

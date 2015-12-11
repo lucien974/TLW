@@ -20,9 +20,6 @@ m_textload(textload)
 {
     m_map.setTexture(m_textload->getTexture("map.png"));
 
-    if (!m_file)
-        std::cout << "Impossible d'ouvrir le fichier" << std::endl;
-
     m_button_play.setTexture(m_textload->getTexture("play.png"));
     m_button_play.setOrigin(m_button_play.getLocalBounds().width/2, m_button_play.getLocalBounds().height/2);
     m_button_play.setPosition(m_textload->getPxlPos("virtual_map.png", sf::Color(255, 0, 128), BUTTON).x - 15,
@@ -69,7 +66,11 @@ m_textload(textload)
 
 void Level::initialize()
 {
-    m_file.open(m_file_name, std::ios::in);
+    m_file.open(m_file_name);
+    if (!m_file.is_open())
+    {
+        throw std::runtime_error("Unable to load level");
+    }
     m_animation = 0;
 
     m_money = 10;
@@ -487,7 +488,7 @@ bool Level::run(sf::RenderWindow *screen, Textureloader* textload)
                     m_clic = 0;
                 break;
             default:
-                std::cout << "Error game status undeclared" << std::endl;
+                throw std::runtime_error("Error game status undefined");
                 break;
         }
         screen->display();
